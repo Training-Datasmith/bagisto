@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Helpers;
 
 use Carbon\Carbon;
@@ -16,7 +18,8 @@ class CatalogRuleIndex
         protected CatalogRuleRepository $catalogRuleRepository,
         protected CatalogRuleProduct $catalogRuleProductHelper,
         protected CatalogRuleProductPrice $catalogRuleProductPriceHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Full re-index

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product;
 
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +16,9 @@ class ProductImage
      *
      * @return void
      */
-    public function __construct(protected ProductRepository $productRepository) {}
+    public function __construct(protected ProductRepository $productRepository)
+    {
+    }
 
     /**
      * Retrieve collection of gallery images.

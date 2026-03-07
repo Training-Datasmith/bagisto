@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shipping;
 
 use Illuminate\Support\Facades\Config;
@@ -30,7 +32,7 @@ class Shipping
         $ratesList = [];
 
         foreach (Config::get('carriers') as $shippingMethod) {
-            $object = new $shippingMethod['class'];
+            $object = new $shippingMethod['class']();
 
             if ($rates = $object->calculate()) {
                 if (is_array($rates)) {
@@ -128,7 +130,7 @@ class Shipping
         $methods = [];
 
         foreach (Config::get('carriers') as $shippingMethod) {
-            $object = new $shippingMethod['class'];
+            $object = new $shippingMethod['class']();
 
             if (! $object->isAvailable()) {
                 continue;

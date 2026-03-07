@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers;
 
 use Webkul\Marketing\Repositories\SearchTermRepository;
@@ -15,7 +17,8 @@ class SearchController extends Controller
     public function __construct(
         protected SearchTermRepository $searchTermRepository,
         protected SearchRepository $searchRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Index to handle the view loaded with the search results

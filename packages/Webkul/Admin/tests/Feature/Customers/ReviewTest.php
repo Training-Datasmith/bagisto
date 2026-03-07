@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use Webkul\Customer\Models\Customer;
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Models\ProductReview;
-use Webkul\Product\Models\ProductReviewAttachment;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Customer\Models\Customer;
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Models\ProductReview;
+use Webkul\Product\Models\ProductReviewAttachment;
 
 it('should returns the review page', function () {
     // Act and Assert.

@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Notification;
-use Webkul\Admin\Mail\Admin\ResetPasswordNotification;
-use Webkul\User\Models\Admin;
 
 use function Pest\Laravel\postJson;
+
+use Webkul\Admin\Mail\Admin\ResetPasswordNotification;
+
+use Webkul\User\Models\Admin;
 
 it('should send the reset password link', function () {
     // Arrange.

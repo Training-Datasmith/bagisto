@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataGrid\Exports;
 
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -15,7 +17,9 @@ class DataGridExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMap
      *
      * @return void
      */
-    public function __construct(protected DataGrid $datagrid) {}
+    public function __construct(protected DataGrid $datagrid)
+    {
+    }
 
     /**
      * Query.

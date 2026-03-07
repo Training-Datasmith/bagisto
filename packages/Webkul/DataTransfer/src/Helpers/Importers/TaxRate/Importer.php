@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\TaxRate;
 
 use Illuminate\Support\Arr;
@@ -16,12 +18,12 @@ class Importer extends AbstractImporter
     /**
      * Error code for non existing identifier
      */
-    const ERROR_IDENTIFIER_NOT_FOUND_FOR_DELETE = 'identifier_not_found_to_delete';
+    public const ERROR_IDENTIFIER_NOT_FOUND_FOR_DELETE = 'identifier_not_found_to_delete';
 
     /**
      * Error code for duplicated identifier
      */
-    const ERROR_DUPLICATE_IDENTIFIER = 'duplicated_identifier';
+    public const ERROR_DUPLICATE_IDENTIFIER = 'duplicated_identifier';
 
     /**
      * Permanent entity columns

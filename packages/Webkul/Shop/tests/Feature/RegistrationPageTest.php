@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Mail;
-use Webkul\Admin\Mail\Customer\RegistrationNotification as AdminRegistrationNotification;
-use Webkul\Core\Models\CoreConfig;
-use Webkul\Shop\Mail\Customer\EmailVerificationNotification;
-use Webkul\Shop\Mail\Customer\RegistrationNotification as ShopRegistrationNotification;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\postJson;
+
+use Webkul\Admin\Mail\Customer\RegistrationNotification as AdminRegistrationNotification;
+
+use Webkul\Core\Models\CoreConfig;
+use Webkul\Shop\Mail\Customer\EmailVerificationNotification;
+use Webkul\Shop\Mail\Customer\RegistrationNotification as ShopRegistrationNotification;
 
 it('returns a successful response', function () {
     // Act and Assert.

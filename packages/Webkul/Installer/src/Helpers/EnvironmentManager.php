@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Helpers;
 
 use Exception;
@@ -11,7 +13,9 @@ class EnvironmentManager
      *
      * @return void
      */
-    public function __construct(protected DatabaseManager $databaseManager) {}
+    public function __construct(protected DatabaseManager $databaseManager)
+    {
+    }
 
     /**
      * Generate ENV File and Installation.

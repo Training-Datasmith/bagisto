@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Tests\Concerns;
 
 use Webkul\CartRule\Contracts\CartRule;

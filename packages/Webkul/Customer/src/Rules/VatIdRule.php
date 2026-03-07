@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Rules;
 
 use Closure;
@@ -25,7 +27,7 @@ class VatIdRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $validator = new VatValidator;
+        $validator = new VatValidator();
 
         if (! empty($value) && ! $validator->validate($value, $this->country)) {
             $fail('customer::app.validations.vat-id.invalid-format')->translate();

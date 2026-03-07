@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Marketing\Mail;
 
 use Illuminate\Mail\Mailables\Address;
@@ -17,7 +19,8 @@ class NewsletterMail extends Mailable
     public function __construct(
         public string $email,
         public Campaign $campaign
-    ) {}
+    ) {
+    }
 
     /**
      * Get the message envelope.

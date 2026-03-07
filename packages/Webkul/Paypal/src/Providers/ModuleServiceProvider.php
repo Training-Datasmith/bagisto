@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Paypal\Providers;
 
 use Webkul\Core\Providers\CoreModuleServiceProvider;

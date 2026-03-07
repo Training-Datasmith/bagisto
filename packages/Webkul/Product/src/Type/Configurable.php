@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Type;
 
 use Illuminate\Support\Str;
@@ -511,7 +513,7 @@ class Configurable extends AbstractType
      */
     public function validateCartItem(CartItemModel $item): CartItemValidationResult
     {
-        $validation = new CartItemValidationResult;
+        $validation = new CartItemValidationResult();
 
         if ($this->isCartItemInactive($item)) {
             $validation->itemIsInactive();

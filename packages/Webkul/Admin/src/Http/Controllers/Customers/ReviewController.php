@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers;
 
 use Illuminate\Http\JsonResponse;
@@ -17,7 +19,9 @@ class ReviewController extends Controller
      *
      * @return void
      */
-    public function __construct(protected ProductReviewRepository $productReviewRepository) {}
+    public function __construct(protected ProductReviewRepository $productReviewRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

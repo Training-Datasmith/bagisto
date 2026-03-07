@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\postJson;
+
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\CartItem;
@@ -15,11 +21,9 @@ use Webkul\Sales\Models\InvoiceItem;
 use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
+
 use Webkul\Sales\Models\OrderPayment;
 use Webkul\Sales\Models\OrderTransaction;
-
-use function Pest\Laravel\get;
-use function Pest\Laravel\postJson;
 
 it('should return the index page of transactions', function () {
     // Act and Assert.

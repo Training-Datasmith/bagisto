@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'Het veld :attribute mag alleen alfa, numerieke, spaties, komma\'s en streepjes bevatten.',
     'alpha-numeric-space' => 'Het veld :attribute mag alleen alfa, numeriek en spaties bevatten.',

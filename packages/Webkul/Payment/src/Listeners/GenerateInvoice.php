@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Payment\Listeners;
 
 use Webkul\Sales\Repositories\InvoiceRepository;
@@ -18,7 +20,8 @@ class GenerateInvoice
     public function __construct(
         protected OrderRepository $orderRepository,
         protected InvoiceRepository $invoiceRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Generate a new invoice.

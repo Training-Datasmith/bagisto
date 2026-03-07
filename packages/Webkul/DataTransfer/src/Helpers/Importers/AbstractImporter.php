@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers;
 
 use Illuminate\Support\Facades\Bus;
@@ -131,7 +133,9 @@ abstract class AbstractImporter
      *
      * @return void
      */
-    public function __construct(protected ImportBatchRepository $importBatchRepository) {}
+    public function __construct(protected ImportBatchRepository $importBatchRepository)
+    {
+    }
 
     /**
      * Validate data row

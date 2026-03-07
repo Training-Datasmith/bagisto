@@ -1,12 +1,15 @@
 <?php
 
-use Webkul\Attribute\Models\Attribute;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Attribute\Models\Attribute;
 
 it('should show attribute page', function () {
     // Act and Assert.

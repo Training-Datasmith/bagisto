@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Concerns;
 
 use Webkul\Core\Contracts\Currency;

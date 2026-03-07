@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'O atributo : só aceita caracteres alfanuméricos, espaços, vírgulas e traços.',
     'alpha-numeric-space' => 'O atributo : só aceita caracteres alfanuméricos e espaços.',

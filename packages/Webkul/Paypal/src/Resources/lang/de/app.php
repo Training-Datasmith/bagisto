@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'errors' => [
         'invalid-configs' => 'Es scheint ein Konfigurationsproblem mit der PayPal-Zahlungsmethode zu geben. Bitte wenden Sie sich an den Ladenbesitzer, um Unterstützung zu erhalten.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Traits;
 
 use ArPHP\I18N\Arabic;
@@ -102,7 +104,7 @@ trait PDFHandler
      */
     private function adjustArabicAndPersianContent(string $html): string
     {
-        $arabic = new Arabic;
+        $arabic = new Arabic();
 
         $positions = $arabic->arIdentify($html);
 

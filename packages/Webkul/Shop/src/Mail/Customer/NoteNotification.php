@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Mail\Customer;
 
 use Illuminate\Mail\Mailables\Address;
@@ -15,7 +17,9 @@ class NoteNotification extends Mailable
      *
      * @return void
      */
-    public function __construct(public CustomerNote $customerNote) {}
+    public function __construct(public CustomerNote $customerNote)
+    {
+    }
 
     /**
      * Get the message envelope.

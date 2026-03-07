@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Checkout\Listeners;
 
 use Webkul\Checkout\Facades\Cart;

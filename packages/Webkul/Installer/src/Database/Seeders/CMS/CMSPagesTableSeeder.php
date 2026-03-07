@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Database\Seeders\CMS;
 
 use Carbon\Carbon;

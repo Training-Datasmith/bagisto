@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Carbon\Carbon;
@@ -14,7 +16,9 @@ class BookingController extends Controller
      *
      * @return void
      */
-    public function __construct(protected BookingRepository $bookingRepository) {}
+    public function __construct(protected BookingRepository $bookingRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

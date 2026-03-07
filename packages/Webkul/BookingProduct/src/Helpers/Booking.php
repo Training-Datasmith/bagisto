@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\BookingProduct\Helpers;
 
 use Carbon\Carbon;
@@ -312,7 +314,7 @@ class Booking
      */
     public function validateCartItem(CartItem $item): CartItemValidationResult
     {
-        $result = new CartItemValidationResult;
+        $result = new CartItemValidationResult();
 
         if ($this->isCartItemInactive($item)) {
             $result->itemIsInactive();

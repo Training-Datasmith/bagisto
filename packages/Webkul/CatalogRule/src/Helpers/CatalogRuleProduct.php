@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Helpers;
 
 use Carbon\Carbon;
@@ -20,7 +22,8 @@ class CatalogRuleProduct
         protected ProductRepository $productRepository,
         protected CatalogRuleProductRepository $catalogRuleProductRepository,
         protected Validator $validator
-    ) {}
+    ) {
+    }
 
     /**
      * Collect discount on cart

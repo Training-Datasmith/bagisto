@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => ':attribute केवल अल्फा, न्यूमेरिक, स्पेस, कॉमा और डैश स्वीकार कर सकती है।',
     'alpha-numeric-space' => ':attribute केवल अल्फा, न्यूमेरिक और रिक्त स्थान स्वीकार कर सकती है।',

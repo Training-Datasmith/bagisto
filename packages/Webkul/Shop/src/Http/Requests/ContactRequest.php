@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +30,7 @@ class ContactRequest extends FormRequest
         return Captcha::getValidations([
             'name' => 'string|required',
             'email' => 'string|required',
-            'contact' => new PhoneNumber,
+            'contact' => new PhoneNumber(),
             'message' => 'required',
         ]);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\User\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -14,7 +16,9 @@ use Webkul\User\Database\Factories\AdminFactory;
 
 class Admin extends Authenticatable implements AdminContract
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.

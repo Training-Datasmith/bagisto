@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Type;
 
 use Illuminate\Http\UploadedFile;
@@ -284,7 +286,7 @@ class Simple extends AbstractType
      */
     public function validateCartItem(CartItem $item): CartItemValidationResult
     {
-        $validation = new CartItemValidationResult;
+        $validation = new CartItemValidationResult();
 
         if ($this->isCartItemInactive($item)) {
             $validation->itemIsInactive();

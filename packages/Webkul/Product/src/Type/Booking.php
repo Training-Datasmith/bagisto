@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Type;
 
 use Carbon\Carbon;
@@ -66,7 +68,8 @@ class Booking extends AbstractType
         protected ProductCustomerGroupPriceRepository $productCustomerGroupPriceRepository,
         protected BookingProductRepository $bookingProductRepository,
         protected BookingHelper $bookingHelper
-    ) {}
+    ) {
+    }
 
     /**
      * @param  int  $id
@@ -258,7 +261,7 @@ class Booking extends AbstractType
      */
     public function validateCartItem(CartItem $item): CartItemValidationResult
     {
-        $result = new CartItemValidationResult;
+        $result = new CartItemValidationResult();
 
         if (parent::isCartItemInactive($item)) {
             $result->itemIsInactive();

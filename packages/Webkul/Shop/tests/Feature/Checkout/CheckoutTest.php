@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
+
+use function Pest\Laravel\postJson;
+
 use Webkul\Admin\Mail\Order\CreatedNotification as AdminOrderCreatedNotification;
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
@@ -17,9 +22,8 @@ use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderPayment;
-use Webkul\Shop\Mail\Order\CreatedNotification as ShopOrderCreatedNotification;
 
-use function Pest\Laravel\postJson;
+use Webkul\Shop\Mail\Order\CreatedNotification as ShopOrderCreatedNotification;
 
 it('should handle certain validation errors when storing the guest user address for cart billing and shipping', function () {
     // Arrange.

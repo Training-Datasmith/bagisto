@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Marketing\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -9,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class Mailable extends BaseMailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Add the sender to the message.

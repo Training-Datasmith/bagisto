@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Tests;
 
 use Tests\TestCase;
@@ -8,5 +10,6 @@ use Webkul\Shop\Tests\Concerns\ShopTestBench;
 
 class ShopTestCase extends TestCase
 {
-    use CoreAssertions, ShopTestBench;
+    use CoreAssertions;
+    use ShopTestBench;
 }

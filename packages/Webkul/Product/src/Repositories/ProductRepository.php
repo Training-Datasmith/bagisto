@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Repositories;
 
 use Illuminate\Container\Container;
@@ -207,8 +209,9 @@ class ProductRepository extends Repository
         $product = $this->findBySlug($slug);
 
         if (! $product) {
-            throw (new ModelNotFoundException)->setModel(
-                get_class($this->model), $slug
+            throw (new ModelNotFoundException())->setModel(
+                get_class($this->model),
+                $slug
             );
         }
 

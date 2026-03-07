@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Category\Repositories;
 
 use Illuminate\Support\Facades\DB;
@@ -245,7 +247,7 @@ class CategoryRepository extends Repository
                         Storage::delete($category->{$type});
                     }
 
-                    $manager = new ImageManager;
+                    $manager = new ImageManager();
 
                     $image = $manager->make(request()->file($file))->encode('webp');
 

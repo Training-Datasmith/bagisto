@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Tax\Facades;
 
 use Illuminate\Support\Facades\Facade;

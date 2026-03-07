@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shipping\Carriers;
 
 use Webkul\Checkout\Models\CartShippingRate;
@@ -39,7 +41,7 @@ class Free extends AbstractShipping
      */
     public function getRate(): CartShippingRate
     {
-        $cartShippingRate = new CartShippingRate;
+        $cartShippingRate = new CartShippingRate();
 
         $cartShippingRate->carrier = $this->getCode();
         $cartShippingRate->carrier_title = $this->getConfigData('title');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Marketing\Listeners;
 
 use Illuminate\Support\Facades\Event;
@@ -13,7 +15,7 @@ class Page
      *
      * @var int
      */
-    const PERMANENT_REDIRECT_CODE = 301;
+    public const PERMANENT_REDIRECT_CODE = 301;
 
     /**
      * Create a new listener instance.
@@ -23,7 +25,8 @@ class Page
     public function __construct(
         protected PageRepository $pageRepository,
         protected URLRewriteRepository $urlRewriteRepository
-    ) {}
+    ) {
+    }
 
     /**
      * After page is created

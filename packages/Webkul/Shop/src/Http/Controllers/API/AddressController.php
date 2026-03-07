@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\API;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,7 +17,9 @@ class AddressController extends APIController
      *
      * @return void
      */
-    public function __construct(protected CustomerAddressRepository $customerAddressRepository) {}
+    public function __construct(protected CustomerAddressRepository $customerAddressRepository)
+    {
+    }
 
     /**
      * Customer addresses.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\Customer;
 
 use Webkul\Customer\Repositories\CustomerRepository;
@@ -24,7 +26,9 @@ class Storage
      *
      * @return void
      */
-    public function __construct(protected CustomerRepository $customerRepository) {}
+    public function __construct(protected CustomerRepository $customerRepository)
+    {
+    }
 
     /**
      * Initialize storage

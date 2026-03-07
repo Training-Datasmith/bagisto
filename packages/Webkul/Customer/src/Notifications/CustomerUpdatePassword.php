@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -9,14 +11,17 @@ use Webkul\Customer\Models\Customer;
 
 class CustomerUpdatePassword extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(public Customer $customer) {}
+    public function __construct(public Customer $customer)
+    {
+    }
 
     /**
      * Build the message.

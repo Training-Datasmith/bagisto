@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CMS\Repositories;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -102,8 +104,9 @@ class PageRepository extends Repository
             return $page;
         }
 
-        throw (new ModelNotFoundException)->setModel(
-            get_class($this->model), $urlKey
+        throw (new ModelNotFoundException())->setModel(
+            get_class($this->model),
+            $urlKey
         );
     }
 }

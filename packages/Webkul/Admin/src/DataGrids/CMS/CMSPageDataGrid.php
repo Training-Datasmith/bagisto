@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\CMS;
 
 use Illuminate\Support\Facades\DB;

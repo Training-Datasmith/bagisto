@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\DataGrids;
 
 use Illuminate\Support\Facades\DB;
@@ -10,27 +12,27 @@ class GDPRRequestsDatagrid extends DataGrid
     /**
      * Request status "approved".
      */
-    const STATUS_COMPLETED = 'completed';
+    public const STATUS_COMPLETED = 'completed';
 
     /**
      * Request status "pending", indicating awaiting approval.
      */
-    const STATUS_PENDING = 'pending';
+    public const STATUS_PENDING = 'pending';
 
     /**
      * Request status "declined", indicating rejection or denial.
      */
-    const STATUS_DECLINED = 'declined';
+    public const STATUS_DECLINED = 'declined';
 
     /**
      * Request status "processing".
      */
-    const STATUS_PROCESSING = 'processing';
+    public const STATUS_PROCESSING = 'processing';
 
     /**
      * Request status "revoked".
      */
-    const STATUS_REVOKED = 'revoked';
+    public const STATUS_REVOKED = 'revoked';
 
     /**
      * $status Stores the status of the GDPR request.

@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Contracts;
 
-interface Import {}
+interface Import
+{
+}

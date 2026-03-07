@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\Customer;
 
 use Illuminate\Support\Facades\Event;
@@ -23,7 +25,8 @@ class CustomerController extends Controller
         protected CustomerRepository $customerRepository,
         protected ProductReviewRepository $productReviewRepository,
         protected SubscribersListRepository $subscriptionRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Taking the customer to profile details page.

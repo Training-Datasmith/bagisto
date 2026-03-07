@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataGrid;
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -108,12 +110,16 @@ abstract class DataGrid
     /**
      * Prepare actions.
      */
-    public function prepareActions() {}
+    public function prepareActions()
+    {
+    }
 
     /**
      * Prepare mass actions.
      */
-    public function prepareMassActions() {}
+    public function prepareMassActions()
+    {
+    }
 
     /**
      * Set primary column.

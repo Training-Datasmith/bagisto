@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\SocialLogin;
 
 use Laravel\Socialite\One\TwitterProvider;
@@ -35,7 +37,8 @@ class SocialiteManager extends BaseSocialiteManager
         }
 
         return $this->buildProvider(
-            GithubProvider::class, $config
+            GithubProvider::class,
+            $config
         );
     }
 
@@ -62,7 +65,8 @@ class SocialiteManager extends BaseSocialiteManager
         }
 
         return $this->buildProvider(
-            FacebookProvider::class, $config
+            FacebookProvider::class,
+            $config
         );
     }
 
@@ -89,7 +93,8 @@ class SocialiteManager extends BaseSocialiteManager
         }
 
         return $this->buildProvider(
-            GoogleProvider::class, $config
+            GoogleProvider::class,
+            $config
         );
     }
 
@@ -116,7 +121,8 @@ class SocialiteManager extends BaseSocialiteManager
         }
 
         return $this->buildProvider(
-            LinkedInOpenIdProvider::class, $config
+            LinkedInOpenIdProvider::class,
+            $config
         );
     }
 
@@ -147,7 +153,8 @@ class SocialiteManager extends BaseSocialiteManager
         }
 
         return new TwitterProvider(
-            $this->container->make('request'), new TwitterServer($this->formatConfig($config))
+            $this->container->make('request'),
+            new TwitterServer($this->formatConfig($config))
         );
     }
 }

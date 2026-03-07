@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\Communications;
 
 use Illuminate\Http\JsonResponse;
@@ -15,7 +17,9 @@ class EventController extends Controller
      *
      * @return void
      */
-    public function __construct(protected EventRepository $eventRepository) {}
+    public function __construct(protected EventRepository $eventRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

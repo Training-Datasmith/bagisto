@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Validations;
 
 use Closure;
@@ -28,7 +30,8 @@ class ProductCategoryUniqueSlug implements ValidationRule
     public function __construct(
         protected $tableName = null,
         protected $id = null
-    ) {}
+    ) {
+    }
 
     /**
      * Run the validation rule.

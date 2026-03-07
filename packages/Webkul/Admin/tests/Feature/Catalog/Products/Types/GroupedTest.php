@@ -1,14 +1,16 @@
 <?php
 
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Models\Product;
-use Webkul\Product\Models\ProductFlat;
-use Webkul\Product\Models\ProductGroupedProduct;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Models\Product;
+use Webkul\Product\Models\ProductFlat;
+use Webkul\Product\Models\ProductGroupedProduct;
 
 it('should fail the validation with errors when certain inputs are not provided when store in grouped product', function () {
     // Act and Assert.
@@ -23,7 +25,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should return the create page of grouped product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getSimpleProductFactory()->create();
+    $product = (new ProductFaker())->getSimpleProductFactory()->create();
 
     $productId = $product->id + 1;
 
@@ -51,7 +53,7 @@ it('should return the create page of grouped product', function () {
 
 it('should return the grouped edit page', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -78,7 +80,7 @@ it('should return the grouped edit page', function () {
 
 it('should fail the validation with errors when certain inputs are not provided when update in grouped product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -94,7 +96,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should fail the validation with errors if certain data is not provided correctly in grouped product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -121,7 +123,7 @@ it('should fail the validation with errors if certain data is not provided corre
 
 it('should update the grouped product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -172,7 +174,7 @@ it('should update the grouped product', function () {
 
 it('should update the grouped product options', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     $links = [];
 
@@ -229,7 +231,7 @@ it('should update the grouped product options', function () {
 
 it('should delete a grouped product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getGroupedProductFactory()->create();
+    $product = (new ProductFaker())->getGroupedProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();

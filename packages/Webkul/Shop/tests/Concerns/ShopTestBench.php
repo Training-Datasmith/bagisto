@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Tests\Concerns;
 
 use Webkul\Customer\Contracts\Customer as CustomerContract;
@@ -12,7 +14,7 @@ trait ShopTestBench
      */
     public function loginAsCustomer(?CustomerContract $customer = null): CustomerContract
     {
-        $customer = $customer ?? (new CustomerFaker)->factory()->create();
+        $customer = $customer ?? (new CustomerFaker())->factory()->create();
 
         $this->actingAs($customer);
 

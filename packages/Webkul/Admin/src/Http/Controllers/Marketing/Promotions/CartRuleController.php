@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\Promotions;
 
 use Exception;
@@ -18,7 +20,9 @@ class CartRuleController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CartRuleRepository $cartRuleRepository) {}
+    public function __construct(protected CartRuleRepository $cartRuleRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -167,13 +171,15 @@ class CartRuleController extends Controller
             Event::dispatch('promotions.cart_rule.delete.after', $id);
 
             return new JsonResponse([
-                'message' => trans('admin::app.marketing.promotions.cart-rules.delete-success'
+                'message' => trans(
+                    'admin::app.marketing.promotions.cart-rules.delete-success'
                 )]);
         } catch (Exception $e) {
         }
 
         return new JsonResponse([
-            'message' => trans('admin::app.marketing.promotions.cart-rules.delete-failed'
+            'message' => trans(
+                'admin::app.marketing.promotions.cart-rules.delete-failed'
             )], 400);
     }
 }

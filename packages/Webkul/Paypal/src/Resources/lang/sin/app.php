@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'errors' => [
         'invalid-configs' => 'PayPal ගෙවීම් ක්‍රමය සඳහා පිහිටුම් ගැටලුවක් පවතී මෙන් පෙනේ. කරුණාකර මාලිකා ලගට සහය සඳහා අමතන්න.',

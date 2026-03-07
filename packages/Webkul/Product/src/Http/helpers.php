@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Product\Facades\ProductImage;
 use Webkul\Product\Facades\ProductVideo;
 use Webkul\Product\Helpers\Toolbar;

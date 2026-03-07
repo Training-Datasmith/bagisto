@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\DataGrid;
 
 use Illuminate\Support\Facades\Event;
@@ -11,7 +13,9 @@ class SavedFilterController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(protected SavedFilterRepository $savedFilterRepository) {}
+    public function __construct(protected SavedFilterRepository $savedFilterRepository)
+    {
+    }
 
     /**
      * Save filters to the database.

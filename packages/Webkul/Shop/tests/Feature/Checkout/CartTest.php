@@ -1,20 +1,23 @@
 <?php
 
-use Webkul\Checkout\Models\Cart;
-use Webkul\Checkout\Models\CartAddress;
-use Webkul\Checkout\Models\CartItem;
-use Webkul\Core\Models\CoreConfig;
-use Webkul\Customer\Models\Customer;
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Tax\Models\TaxCategory;
-use Webkul\Tax\Models\TaxMap;
-use Webkul\Tax\Models\TaxRate;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Checkout\Models\Cart;
+use Webkul\Checkout\Models\CartAddress;
+use Webkul\Checkout\Models\CartItem;
+use Webkul\Core\Models\CoreConfig;
+
+use Webkul\Customer\Models\Customer;
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Tax\Models\TaxCategory;
+use Webkul\Tax\Models\TaxMap;
+use Webkul\Tax\Models\TaxRate;
 
 it('should display the cart items for a guest user', function () {
     // Arrange.

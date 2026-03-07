@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Paypal\Payment;
 
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
@@ -68,7 +70,7 @@ class SmartButton extends Paypal
      */
     public function createOrder($body)
     {
-        $request = new OrdersCreateRequest;
+        $request = new OrdersCreateRequest();
         $request->headers['PayPal-Partner-Attribution-Id'] = $this->paypalPartnerAttributionId;
         $request->prefer('return=representation');
         $request->body = $body;
@@ -136,7 +138,9 @@ class SmartButton extends Paypal
      *
      * @return string
      */
-    public function getRedirectUrl() {}
+    public function getRedirectUrl()
+    {
+    }
 
     /**
      * Set up and return PayPal PHP SDK environment with PayPal access credentials.

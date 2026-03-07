@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Middleware\EncryptCookies;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncryptCookies;
@@ -44,8 +46,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies('*');
     })
     ->withSchedule(function (Schedule $schedule) {
-        //
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+
     })->create();

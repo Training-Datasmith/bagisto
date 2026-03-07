@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Sources;
 
 use Illuminate\Support\Arr;
@@ -65,7 +67,7 @@ class XLS extends AbstractSource
     {
         $this->rewind();
 
-        $spreadsheet = new Spreadsheet;
+        $spreadsheet = new Spreadsheet();
 
         $sheet = $spreadsheet->getActiveSheet();
 

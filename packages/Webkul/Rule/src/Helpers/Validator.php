@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Rule\Helpers;
 
 use Webkul\Checkout\Contracts\Cart as CheckoutContract;
@@ -99,6 +101,7 @@ class Validator
                     return $cart->{$attributeCode};
                 }
 
+                // no break
             case 'cart_item':
                 return $entity->{$attributeCode};
 

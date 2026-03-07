@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Mail;
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\postJson;
+
 use Webkul\Admin\Mail\Order\RefundedNotification as AdminRefundedNotification;
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
@@ -15,11 +21,9 @@ use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderPayment;
+
 use Webkul\Sales\Models\Refund;
 use Webkul\Shop\Mail\Order\RefundedNotification as ShopRefundedNotification;
-
-use function Pest\Laravel\get;
-use function Pest\Laravel\postJson;
 
 it('should return the refund index page', function () {
     // Act and Assert.

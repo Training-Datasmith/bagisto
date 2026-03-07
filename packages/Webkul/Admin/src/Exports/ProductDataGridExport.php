@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Exports;
 
 use Illuminate\Support\Collection;
@@ -60,7 +62,9 @@ class ProductDataGridExport implements FromCollection, ShouldAutoSize, WithHeadi
     /**
      * Create a new instance.
      */
-    public function __construct(protected DataGrid $datagrid) {}
+    public function __construct(protected DataGrid $datagrid)
+    {
+    }
 
     /**
      * Return the cached product collection.

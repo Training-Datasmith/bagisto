@@ -1,10 +1,12 @@
 <?php
 
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Contracts\ProductFlat;
+declare(strict_types=1);
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
+
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Contracts\ProductFlat;
 
 it('should return the product index page', function () {
     // Act and Assert.
@@ -18,7 +20,7 @@ it('should return the product index page', function () {
 
 it('should copy the existing product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getSimpleProductFactory()->create();
+    $product = (new ProductFaker())->getSimpleProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -45,7 +47,7 @@ it('should copy the existing product', function () {
 
 it('should perform the mass action from update status for products', function () {
     // Arrange.
-    $products = (new ProductFaker)->getSimpleProductFactory()->count(2)->create();
+    $products = (new ProductFaker())->getSimpleProductFactory()->count(2)->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -72,7 +74,7 @@ it('should perform the mass action from update status for products', function ()
 
 it('should perform the mass action for delete for products', function () {
     // Arrange.
-    $products = (new ProductFaker)->getSimpleProductFactory()->count(2)->create();
+    $products = (new ProductFaker())->getSimpleProductFactory()->count(2)->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -94,7 +96,7 @@ it('should perform the mass action for delete for products', function () {
 
 it('should search the product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getSimpleProductFactory()->count(2)->create();
+    $product = (new ProductFaker())->getSimpleProductFactory()->count(2)->create();
 
     // Act and Assert.
     $this->loginAsAdmin();

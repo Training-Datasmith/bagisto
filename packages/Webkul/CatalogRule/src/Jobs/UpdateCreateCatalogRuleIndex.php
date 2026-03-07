@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -14,7 +16,10 @@ use Webkul\Product\Repositories\ProductRepository;
 
 class UpdateCreateCatalogRuleIndex implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Default batch size
@@ -26,7 +31,9 @@ class UpdateCreateCatalogRuleIndex implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected CatalogRule $catalogRule) {}
+    public function __construct(protected CatalogRule $catalogRule)
+    {
+    }
 
     /**
      * Execute the job.

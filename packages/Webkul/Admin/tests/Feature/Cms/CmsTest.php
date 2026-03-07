@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
-use Webkul\CMS\Models\Page;
-use Webkul\CMS\Models\PageTranslation;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
+
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\CMS\Models\Page;
+use Webkul\CMS\Models\PageTranslation;
 
 it('should returns the cms page', function () {
     // Act and Assert.

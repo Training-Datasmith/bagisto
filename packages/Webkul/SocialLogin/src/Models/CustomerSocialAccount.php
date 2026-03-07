@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\SocialLogin\Models;
 
 use Illuminate\Database\Eloquent\Model;

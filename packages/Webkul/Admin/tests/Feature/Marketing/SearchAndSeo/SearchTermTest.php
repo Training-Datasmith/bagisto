@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Marketing\Models\SearchTerm;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Marketing\Models\SearchTerm;
 
 it('should show the search terms index page', function () {
     // Act and Assert.

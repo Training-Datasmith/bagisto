@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,7 +31,8 @@ class OrderController extends Controller
         protected OrderCommentRepository $orderCommentRepository,
         protected CartRepository $cartRepository,
         protected CustomerGroupRepository $customerGroupRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

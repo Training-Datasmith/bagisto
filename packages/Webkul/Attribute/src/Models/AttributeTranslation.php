@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Attribute\Models;
 
 use Illuminate\Database\Eloquent\Model;

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Webkul\Core\Models\SubscribersList;
-use Webkul\Customer\Models\CompareItem;
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Shop\Mail\Customer\SubscriptionNotification;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
+
+use Webkul\Core\Models\SubscribersList;
+
+use Webkul\Customer\Models\CompareItem;
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Shop\Mail\Customer\SubscriptionNotification;
 
 it('returns a successful response', function () {
     // Act and Assert.

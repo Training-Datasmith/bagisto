@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\DataGrid\DataGrid;
 use Webkul\DataGrid\Exceptions\InvalidDataGridException;
 

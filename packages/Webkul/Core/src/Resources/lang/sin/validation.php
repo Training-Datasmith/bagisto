@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'ක්ෂණික :attribute එකක් අනුලකුණු, සූදා, ස්පේස්, කොමා සහ හිස් ප්‍රමාණවත් වේ.',
     'alpha-numeric-space' => 'ක්ෂණික :attribute එකක් අනුලකුණු, සූදා සහ ස්පේස් ප්‍රමාණවත් වේ.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\Product;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -46,57 +48,57 @@ class Importer extends AbstractImporter
     /**
      * Product type simple
      */
-    const PRODUCT_TYPE_SIMPLE = 'simple';
+    public const PRODUCT_TYPE_SIMPLE = 'simple';
 
     /**
      * Product type virtual
      */
-    const PRODUCT_TYPE_VIRTUAL = 'virtual';
+    public const PRODUCT_TYPE_VIRTUAL = 'virtual';
 
     /**
      * Product type downloadable
      */
-    const PRODUCT_TYPE_DOWNLOADABLE = 'downloadable';
+    public const PRODUCT_TYPE_DOWNLOADABLE = 'downloadable';
 
     /**
      * Product type configurable
      */
-    const PRODUCT_TYPE_CONFIGURABLE = 'configurable';
+    public const PRODUCT_TYPE_CONFIGURABLE = 'configurable';
 
     /**
      * Product type bundle
      */
-    const PRODUCT_TYPE_BUNDLE = 'bundle';
+    public const PRODUCT_TYPE_BUNDLE = 'bundle';
 
     /**
      * Product type grouped
      */
-    const PRODUCT_TYPE_GROUPED = 'grouped';
+    public const PRODUCT_TYPE_GROUPED = 'grouped';
 
     /**
      * Error code for invalid product type
      */
-    const ERROR_INVALID_TYPE = 'invalid_product_type';
+    public const ERROR_INVALID_TYPE = 'invalid_product_type';
 
     /**
      * Error code for non existing SKU
      */
-    const ERROR_SKU_NOT_FOUND_FOR_DELETE = 'sku_not_found_to_delete';
+    public const ERROR_SKU_NOT_FOUND_FOR_DELETE = 'sku_not_found_to_delete';
 
     /**
      * Error code for duplicate url key
      */
-    const ERROR_DUPLICATE_URL_KEY = 'duplicated_url_key';
+    public const ERROR_DUPLICATE_URL_KEY = 'duplicated_url_key';
 
     /**
      * Error code for invalid attribute family code
      */
-    const ERROR_INVALID_ATTRIBUTE_FAMILY_CODE = 'attribute_family_code_not_found';
+    public const ERROR_INVALID_ATTRIBUTE_FAMILY_CODE = 'attribute_family_code_not_found';
 
     /**
      * Error code for super attribute code not found
      */
-    const ERROR_SUPER_ATTRIBUTE_CODE_NOT_FOUND = 'attribute_family_code_not_found';
+    public const ERROR_SUPER_ATTRIBUTE_CODE_NOT_FOUND = 'attribute_family_code_not_found';
 
     /**
      * Error message templates
@@ -389,7 +391,7 @@ class Importer extends AbstractImporter
                 'bundle_options.*.type' => 'sometimes|required|in:select,radio,checkbox,multiselect',
                 'bundle_options.*.required' => 'sometimes|required|boolean',
                 'bundle_options.*.sku' => 'sometimes|required',
-                'bundle_options.*.price' => ['sometimes', 'required', new Decimal],
+                'bundle_options.*.price' => ['sometimes', 'required', new Decimal()],
                 'bundle_options.*.qty' => 'sometimes|required|integer',
                 'bundle_options.*.default' => 'sometimes|required|boolean',
             ];
@@ -437,7 +439,7 @@ class Importer extends AbstractImporter
                 'customer_group_prices.*.group' => 'sometimes|required',
                 'customer_group_prices.*.qty' => 'sometimes|required|integer',
                 'customer_group_prices.*.type' => 'sometimes|required|in:fixed,discount',
-                'customer_group_prices.*.price' => ['sometimes', 'required', new Decimal],
+                'customer_group_prices.*.price' => ['sometimes', 'required', new Decimal()],
             ];
 
             $customerGroupPrices = explode('|', $rowData['customer_group_prices'] ?? '');
@@ -506,11 +508,11 @@ class Importer extends AbstractImporter
     public function getValidationRules(array $rowData): array
     {
         $rules = [
-            'sku' => ['required', new Slug],
+            'sku' => ['required', new Slug()],
             'url_key' => ['required'],
             'special_price_from' => ['nullable', 'date'],
             'special_price_to' => ['nullable', 'date', 'after_or_equal:special_price_from'],
-            'special_price' => ['nullable', new Decimal, 'lt:price'],
+            'special_price' => ['nullable', new Decimal(), 'lt:price'],
         ];
 
         $attributes = $this->getProductTypeFamilyAttributes($rowData['type'], $rowData['attribute_family_code']);
@@ -533,7 +535,7 @@ class Importer extends AbstractImporter
                 && $attribute->validation
             ) {
                 if ($attribute->validation === 'decimal') {
-                    $validations[] = new Decimal;
+                    $validations[] = new Decimal();
                 } elseif ($attribute->validation === 'regex') {
                     $validations[] = 'regex:'.$attribute->regex;
                 } else {
@@ -542,7 +544,7 @@ class Importer extends AbstractImporter
             }
 
             if ($attribute->type == 'price') {
-                $validations[] = new Decimal;
+                $validations[] = new Decimal();
             }
 
             if ($attribute->is_unique) {
@@ -1403,7 +1405,7 @@ class Importer extends AbstractImporter
             foreach ($images as $key => $image) {
                 $file = new UploadedFile($image['path'], $image['name']);
 
-                $image = (new ImageManager)->make($file)->encode('webp');
+                $image = (new ImageManager())->make($file)->encode('webp');
 
                 $imageDirectory = $this->productImageRepository->getProductDirectory((object) $product);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\User;
 
 use Illuminate\Auth\Events\PasswordReset;
@@ -44,7 +46,8 @@ class ResetPasswordController extends Controller
             ]);
 
             $response = $this->broker()->reset(
-                request(['email', 'password', 'password_confirmation', 'token']), function ($admin, $password) {
+                request(['email', 'password', 'password_confirmation', 'token']),
+                function ($admin, $password) {
                     $this->resetPassword($admin, $password);
                 }
             );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class CurrencyController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CurrencyRepository $currencyRepository) {}
+    public function __construct(protected CurrencyRepository $currencyRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -40,7 +44,7 @@ class CurrencyController extends Controller
     public function store(): JsonResponse
     {
         $this->validate(request(), [
-            'code' => ['required', 'min:3', 'max:3', 'unique:currencies,code', new Code],
+            'code' => ['required', 'min:3', 'max:3', 'unique:currencies,code', new Code()],
             'name' => 'required',
         ]);
 

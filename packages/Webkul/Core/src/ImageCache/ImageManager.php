@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\ImageCache;
 
 use Intervention\Image\AbstractDriver;
@@ -70,7 +72,7 @@ class ImageManager extends BaseImageManager
             $driverClass = sprintf('Intervention\\Image\\%s\\Driver', $driverName);
 
             if (class_exists($driverClass)) {
-                return new $driverClass;
+                return new $driverClass();
             }
 
             throw new NotSupportedException(

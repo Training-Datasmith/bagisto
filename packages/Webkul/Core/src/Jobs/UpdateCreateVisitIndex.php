@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -12,7 +14,10 @@ use Webkul\Core\Repositories\VisitRepository;
 
 class UpdateCreateVisitIndex implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
@@ -24,7 +29,8 @@ class UpdateCreateVisitIndex implements ShouldQueue
     public function __construct(
         protected $model,
         protected $log
-    ) {}
+    ) {
+    }
 
     /**
      * Execute the job.

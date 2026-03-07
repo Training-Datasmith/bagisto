@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Webkul\Attribute\Models\Attribute;
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Models\Product;
-use Webkul\Product\Models\ProductAttributeValue;
-use Webkul\Product\Models\ProductFlat;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Attribute\Models\Attribute;
+
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Models\Product;
+use Webkul\Product\Models\ProductAttributeValue;
+use Webkul\Product\Models\ProductFlat;
 
 it('should fail the validation with errors when certain inputs are not provided when store in downloadable product', function () {
     // Act and Assert.
@@ -26,7 +30,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should return the create page of downloadable product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getSimpleProductFactory()->create();
+    $product = (new ProductFaker())->getSimpleProductFactory()->create();
 
     $productId = $product->id + 1;
 
@@ -69,7 +73,7 @@ it('should return the create page of downloadable product', function () {
 
 it('should return the edit page of downloadable product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -86,7 +90,7 @@ it('should return the edit page of downloadable product', function () {
 
 it('should upload link the product upload link', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -104,7 +108,7 @@ it('should upload link the product upload link', function () {
 
 it('should fail the validation with errors when certain inputs are not provided when update in downloadable product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -121,7 +125,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should fail the validation with errors if certain data is not provided correctly in downloadable product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -149,7 +153,7 @@ it('should fail the validation with errors if certain data is not provided corre
 
 it('should upload the sample file', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -312,7 +316,7 @@ it('should update the downloadable product', function () {
 
 it('should delete a downloadable product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getDownloadableProductFactory()->create();
+    $product = (new ProductFaker())->getDownloadableProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();

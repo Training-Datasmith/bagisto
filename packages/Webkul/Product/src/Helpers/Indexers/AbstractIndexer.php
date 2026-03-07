@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Helpers\Indexers;
 
 abstract class AbstractIndexer
@@ -26,7 +28,9 @@ abstract class AbstractIndexer
      *
      * @return void
      */
-    public function reindexFull() {}
+    public function reindexFull()
+    {
+    }
 
     /**
      * Reindex necessary products

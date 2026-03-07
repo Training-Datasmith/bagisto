@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Payment\Facades\Payment;
 
 if (! function_exists('payment')) {

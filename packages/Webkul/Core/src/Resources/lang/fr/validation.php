@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'Le champ :attribute ne peut accepter que des caractères alpha, numériques, des espaces, des virgules et des tirets.',
     'alpha-numeric-space' => 'Le champ :attribute ne peut accepter que des caractères alpha, numériques et des espaces.',

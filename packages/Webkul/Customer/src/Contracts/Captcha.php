@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Contracts;
 
 interface Captcha
 {
-    const CLIENT_ENDPOINT = 'https://www.google.com/recaptcha/api.js';
+    public const CLIENT_ENDPOINT = 'https://www.google.com/recaptcha/api.js';
 
-    const SITE_VERIFY_ENDPOINT = 'https://google.com/recaptcha/api/siteverify';
+    public const SITE_VERIFY_ENDPOINT = 'https://google.com/recaptcha/api/siteverify';
 }

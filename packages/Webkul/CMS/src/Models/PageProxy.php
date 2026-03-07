@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CMS\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class PageProxy extends ModelProxy {}
+class PageProxy extends ModelProxy
+{
+}

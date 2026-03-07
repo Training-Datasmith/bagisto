@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -54,13 +56,13 @@ class CartAddressRequest extends FormRequest
             "{$addressType}.city" => ['required'],
             "{$addressType}.country" => core()->isCountryRequired() ? ['required'] : ['nullable'],
             "{$addressType}.state" => core()->isStateRequired() ? ['required'] : ['nullable'],
-            "{$addressType}.postcode" => core()->isPostCodeRequired() ? ['required', new PostCode] : [new PostCode],
-            "{$addressType}.phone" => ['required', new PhoneNumber],
+            "{$addressType}.postcode" => core()->isPostCodeRequired() ? ['required', new PostCode()] : [new PostCode()],
+            "{$addressType}.phone" => ['required', new PhoneNumber()],
         ]);
 
         if ($addressType == 'billing') {
             $this->mergeWithRules([
-                "{$addressType}.vat_id" => [(new VatIdRule)->setCountry($this->input('billing.country'))],
+                "{$addressType}.vat_id" => [(new VatIdRule())->setCountry($this->input('billing.country'))],
             ]);
         }
     }

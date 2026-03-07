@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Helpers;
 
 use Carbon\Carbon;
@@ -15,7 +17,8 @@ class CatalogRuleProductPrice
     public function __construct(
         protected CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository,
         protected CatalogRuleProduct $catalogRuleProductHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Collect discount on cart

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\SystemConfig;
 
 use Illuminate\Support\Collection;
@@ -19,7 +21,8 @@ class Item
         public string $name,
         public ?string $route = null,
         public ?int $sort = null
-    ) {}
+    ) {
+    }
 
     /**
      * Get name of config item.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Traits;
 
 use enshrined\svgSanitize\Sanitizer as MainSanitizer;
@@ -24,7 +26,7 @@ trait Sanitizer
     public function sanitizeSVG($path, $mimeType)
     {
         if ($this->checkMimeType($mimeType)) {
-            $sanitizer = new MainSanitizer;
+            $sanitizer = new MainSanitizer();
 
             $sanitizer->removeRemoteReferences(true);
 

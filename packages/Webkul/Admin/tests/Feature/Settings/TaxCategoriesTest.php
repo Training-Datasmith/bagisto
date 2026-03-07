@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
-use Webkul\Tax\Models\TaxCategory;
-use Webkul\Tax\Models\TaxRate;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
+
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Tax\Models\TaxCategory;
+use Webkul\Tax\Models\TaxRate;
 
 it('should returns the tax category index page', function () {
     // Act and Assert.

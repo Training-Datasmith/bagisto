@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Marketing\Helpers;
 
 use Carbon\Carbon;
@@ -20,7 +22,8 @@ class Campaign
     public function __construct(
         protected EventRepository $eventRepository,
         protected CampaignRepository $campaignRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Process the email.

@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Mail;
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\postJson;
+
 use Webkul\Admin\Mail\Order\CanceledNotification as AdminOrderCanceledNotification;
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
@@ -16,11 +22,9 @@ use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderComment;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderPayment;
+
 use Webkul\Shop\Mail\Order\CanceledNotification as ShopOrderCanceledNotification;
 use Webkul\Shop\Mail\Order\CommentedNotification;
-
-use function Pest\Laravel\get;
-use function Pest\Laravel\postJson;
 
 it('should return the index page of Orders page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -12,7 +14,10 @@ use Webkul\Product\Repositories\ProductRepository;
 
 class DeleteCatalogRuleIndex implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Default batch size

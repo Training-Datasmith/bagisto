@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Repositories;
 
 use Illuminate\Support\Facades\Storage;
@@ -117,8 +119,7 @@ class ProductAttributeValueRepository extends Repository
                     /**
                      * If $data[$attribute->code] is not equal to the previous one, that means someone has
                      * updated the file or image. In that case, we will remove the previous file.
-                     */
-                    elseif (
+                     */ elseif (
                         ! empty($previousTextValue)
                         && $data[$attribute->code] != $previousTextValue
                     ) {

@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\User\Models\Role;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\User\Models\Role;
 
 it('should returns the role index page', function () {
     // Act and Assert.

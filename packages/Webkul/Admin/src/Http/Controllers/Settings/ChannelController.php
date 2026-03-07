@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
@@ -15,7 +17,9 @@ class ChannelController extends Controller
      *
      * @return void
      */
-    public function __construct(protected ChannelRepository $channelRepository) {}
+    public function __construct(protected ChannelRepository $channelRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -50,7 +54,7 @@ class ChannelController extends Controller
     {
         $data = $this->validate(request(), [
             /* general */
-            'code' => ['required', 'unique:channels,code', new \Webkul\Core\Rules\Code],
+            'code' => ['required', 'unique:channels,code', new \Webkul\Core\Rules\Code()],
             'name' => 'required',
             'description' => 'nullable',
             'inventory_sources' => 'required|array|min:1',
@@ -121,7 +125,7 @@ class ChannelController extends Controller
 
         $data = $this->validate(request(), [
             /* general */
-            'code' => ['required', 'unique:channels,code,'.$id, new \Webkul\Core\Rules\Code],
+            'code' => ['required', 'unique:channels,code,'.$id, new \Webkul\Core\Rules\Code()],
             $locale.'.name' => 'required',
             $locale.'.description' => 'nullable',
             'inventory_sources' => 'required|array|min:1',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Repositories;
 
 use Webkul\Core\Eloquent\Repository;

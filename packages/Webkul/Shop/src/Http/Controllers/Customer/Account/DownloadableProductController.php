@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\Customer\Account;
 
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +16,9 @@ class DownloadableProductController extends Controller
      *
      * @return void
      */
-    public function __construct(protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository) {}
+    public function __construct(protected DownloadableLinkPurchasedRepository $downloadableLinkPurchasedRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

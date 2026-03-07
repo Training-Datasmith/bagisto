@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
@@ -14,7 +16,9 @@ class LocaleController extends Controller
      *
      * @return void
      */
-    public function __construct(protected LocaleRepository $localeRepository) {}
+    public function __construct(protected LocaleRepository $localeRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -36,7 +40,7 @@ class LocaleController extends Controller
     public function store(): JsonResponse
     {
         $this->validate(request(), [
-            'code' => ['required', 'unique:locales,code', new \Webkul\Core\Rules\Code],
+            'code' => ['required', 'unique:locales,code', new \Webkul\Core\Rules\Code()],
             'name' => 'required',
             'direction' => 'required|in:ltr,rtl',
             'logo_path' => 'array',

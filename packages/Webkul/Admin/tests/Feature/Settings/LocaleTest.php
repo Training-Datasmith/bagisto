@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Webkul\Core\Models\Locale;
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Core\Models\Locale;
 
 it('should returns the locale index page', function () {
     // Act and Assert.

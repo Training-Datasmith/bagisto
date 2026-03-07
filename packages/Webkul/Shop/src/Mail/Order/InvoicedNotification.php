@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Mail\Order;
 
 use Illuminate\Mail\Mailables\Address;
@@ -22,7 +24,8 @@ class InvoicedNotification extends Mailable
     public function __construct(
         public Invoice $invoice,
         public ?string $duplicateInvoiceEmail = null
-    ) {}
+    ) {
+    }
 
     /**
      * Get the message envelope.

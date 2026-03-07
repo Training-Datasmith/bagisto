@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class CustomerGroupController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CustomerGroupRepository $customerGroupRepository) {}
+    public function __construct(protected CustomerGroupRepository $customerGroupRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -38,7 +42,7 @@ class CustomerGroupController extends Controller
     public function store(): JsonResponse
     {
         $this->validate(request(), [
-            'code' => ['required', 'unique:customer_groups,code', new Code],
+            'code' => ['required', 'unique:customer_groups,code', new Code()],
             'name' => 'required',
         ]);
 
@@ -68,7 +72,7 @@ class CustomerGroupController extends Controller
         $id = request()->input('id');
 
         $this->validate(request(), [
-            'code' => ['required', 'unique:customer_groups,code,'.$id, new Code],
+            'code' => ['required', 'unique:customer_groups,code,'.$id, new Code()],
             'name' => 'required',
         ]);
 

@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+
 use Webkul\CartRule\Models\CartRule;
 use Webkul\CartRule\Models\CartRuleCoupon;
 use Webkul\CatalogRule\Models\CatalogRule;
@@ -11,11 +16,9 @@ use Webkul\Customer\Models\CustomerAddress;
 use Webkul\Faker\Helpers\Product as ProductFaker;
 use Webkul\Product\Models\ProductCustomerGroupPrice;
 use Webkul\Tax\Models\TaxCategory;
+
 use Webkul\Tax\Models\TaxMap;
 use Webkul\Tax\Models\TaxRate;
-
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
 
 it('should fails the validation error when certain inputs not provided when add a virtual product to the cart with a cart rule of the no coupon type for all customer group type', function () {
     // Arrange.

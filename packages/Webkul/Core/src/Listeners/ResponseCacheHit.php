@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Listeners;
 
 use Spatie\ResponseCache\Events\ResponseCacheHit as ResponseCacheHitEvent;

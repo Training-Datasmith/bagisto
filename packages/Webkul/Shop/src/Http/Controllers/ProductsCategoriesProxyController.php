@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -15,7 +17,7 @@ class ProductsCategoriesProxyController extends Controller
      *
      * @var int Status
      */
-    const STATUS = 1;
+    public const STATUS = 1;
 
     /**
      * Create a new controller instance.
@@ -27,7 +29,8 @@ class ProductsCategoriesProxyController extends Controller
         protected ProductRepository $productRepository,
         protected ThemeCustomizationRepository $themeCustomizationRepository,
         protected URLRewriteRepository $urlRewriteRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Show product or category view. If neither category nor product matches, abort with code 404.

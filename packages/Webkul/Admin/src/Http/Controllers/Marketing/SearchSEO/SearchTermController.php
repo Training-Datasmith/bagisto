@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\SearchSEO;
 
 use Illuminate\Http\JsonResponse;
@@ -17,7 +19,9 @@ class SearchTermController extends Controller
      *
      * @return void
      */
-    public function __construct(public SearchTermRepository $searchTermRepository) {}
+    public function __construct(public SearchTermRepository $searchTermRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

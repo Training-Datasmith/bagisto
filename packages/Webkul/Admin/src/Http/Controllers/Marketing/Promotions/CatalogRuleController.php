@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\Promotions;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class CatalogRuleController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CatalogRuleRepository $catalogRuleRepository) {}
+    public function __construct(protected CatalogRuleRepository $catalogRuleRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

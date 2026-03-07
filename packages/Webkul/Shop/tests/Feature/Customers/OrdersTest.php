@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
+
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\CartItem;
@@ -10,13 +16,10 @@ use Webkul\Faker\Helpers\Product as ProductFaker;
 use Webkul\Sales\Models\Invoice;
 use Webkul\Sales\Models\InvoiceItem;
 use Webkul\Sales\Models\Order;
+
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderPayment;
-
-use function Pest\Laravel\get;
-use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
 
 it('should returns the index page customers orders', function () {
     // Act and Assert.

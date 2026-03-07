@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Category\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,7 +18,9 @@ use Webkul\Product\Models\ProductProxy;
 
 class Category extends TranslatableModel implements CategoryContract
 {
-    use HasFactory, NodeTrait, Visitable;
+    use HasFactory;
+    use NodeTrait;
+    use Visitable;
 
     /**
      * Translated attributes.

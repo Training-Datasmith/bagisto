@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\MagicAI\Services;
 
 use GuzzleHttp\Client;
@@ -15,14 +17,15 @@ class Ollama
         protected float $temperature,
         protected bool $stream,
         protected bool $raw,
-    ) {}
+    ) {
+    }
 
     /**
      * Set LLM prompt text.
      */
     public function ask(): string
     {
-        $httpClient = new Client;
+        $httpClient = new Client();
 
         $endpoint = core()->getConfigData('general.magic_ai.settings.api_domain').'/api/generate';
 

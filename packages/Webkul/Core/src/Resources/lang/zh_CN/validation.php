@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => '这个 :attribute 只能接受字母、数字、空格、逗号和破折号.',
     'alpha-numeric-space' => '这个 :attribute 只能接受字母、数字和空格.',

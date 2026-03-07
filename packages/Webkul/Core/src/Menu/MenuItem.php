@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Menu;
 
 use Illuminate\Support\Collection;
@@ -18,7 +20,8 @@ class MenuItem
         public int $sort,
         public string $icon,
         public Collection $children,
-    ) {}
+    ) {
+    }
 
     /**
      * Get name of menu item.

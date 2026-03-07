@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -71,12 +73,12 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->app->extend(
             \Illuminate\Foundation\Console\UpCommand::class,
-            fn () => new \Webkul\Core\Console\Commands\UpCommand
+            fn () => new \Webkul\Core\Console\Commands\UpCommand()
         );
 
         $this->app->extend(
             \Illuminate\Foundation\Console\DownCommand::class,
-            fn () => new \Webkul\Core\Console\Commands\DownCommand
+            fn () => new \Webkul\Core\Console\Commands\DownCommand()
         );
 
         $this->app->bind(

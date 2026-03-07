@@ -1,10 +1,13 @@
 <?php
 
-use Webkul\Core\Models\SubscribersList;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\putJson;
+
+use Webkul\Core\Models\SubscribersList;
 
 it('should return the subscription index page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\CMS;
 
 use Illuminate\Http\JsonResponse;
@@ -17,7 +19,9 @@ class PageController extends Controller
      *
      * @return void
      */
-    public function __construct(protected PageRepository $pageRepository) {}
+    public function __construct(protected PageRepository $pageRepository)
+    {
+    }
 
     /**
      * Loads the index page showing the static pages resources.
@@ -51,7 +55,7 @@ class PageController extends Controller
     public function store()
     {
         $this->validate(request(), [
-            'url_key' => ['required', 'unique:cms_page_translations,url_key', new \Webkul\Core\Rules\Slug],
+            'url_key' => ['required', 'unique:cms_page_translations,url_key', new \Webkul\Core\Rules\Slug()],
             'page_title' => 'required',
             'html_content' => 'required',
             'channels' => 'required|array|min:1',
@@ -102,7 +106,7 @@ class PageController extends Controller
         $locale = core()->getRequestedLocaleCode();
 
         $this->validate(request(), [
-            $locale.'.url_key' => ['required', new Slug, function ($attribute, $value, $fail) use ($id) {
+            $locale.'.url_key' => ['required', new Slug(), function ($attribute, $value, $fail) use ($id) {
                 if (! $this->pageRepository->isUrlKeyUnique($id, $value)) {
                     $fail(trans('admin::app.cms.index.already-taken', ['name' => 'Page']));
                 }

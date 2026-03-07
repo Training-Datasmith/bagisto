@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Validations;
 
 use Closure;
@@ -15,7 +17,8 @@ class ConfigurableUniqueSku implements ValidationRule
      */
     public function __construct(
         protected $currentIds = null,
-    ) {}
+    ) {
+    }
 
     /**
      * Run the validation rule.

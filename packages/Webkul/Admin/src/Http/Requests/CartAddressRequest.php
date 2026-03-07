@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -55,8 +57,8 @@ class CartAddressRequest extends FormRequest
             "{$addressType}.city" => ['required'],
             "{$addressType}.country" => ['required'],
             "{$addressType}.state" => ['required'],
-            "{$addressType}.postcode" => ['required', new PostCode],
-            "{$addressType}.phone" => ['required', new PhoneNumber],
+            "{$addressType}.postcode" => ['required', new PostCode()],
+            "{$addressType}.phone" => ['required', new PhoneNumber()],
         ]);
     }
 

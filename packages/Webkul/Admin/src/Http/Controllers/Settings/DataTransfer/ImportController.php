@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings\DataTransfer;
 
 use Illuminate\Http\JsonResponse;
@@ -25,7 +27,8 @@ class ImportController extends Controller
     public function __construct(
         protected ImportRepository $importRepository,
         protected Import $importHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

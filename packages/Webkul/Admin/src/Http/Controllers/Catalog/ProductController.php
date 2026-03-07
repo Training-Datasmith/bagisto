@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Catalog;
 
 use Illuminate\Http\JsonResponse;
@@ -29,7 +31,7 @@ class ProductController extends Controller
     /**
      * Using const variable for status.
      */
-    const ACTIVE_STATUS = 1;
+    public const ACTIVE_STATUS = 1;
 
     /**
      * Create a new controller instance.
@@ -44,7 +46,8 @@ class ProductController extends Controller
         protected ProductInventoryRepository $productInventoryRepository,
         protected ProductRepository $productRepository,
         protected CustomerRepository $customerRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -90,7 +93,7 @@ class ProductController extends Controller
         $this->validate(request(), [
             'type' => 'required',
             'attribute_family_id' => 'required',
-            'sku' => ['required', 'unique:products,sku', new Slug],
+            'sku' => ['required', 'unique:products,sku', new Slug()],
             'super_attributes' => 'array|min:1',
             'super_attributes.*' => 'array|min:1',
         ]);

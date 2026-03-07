@@ -1,21 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use Webkul\Customer\Models\Customer;
-use Webkul\Customer\Models\CustomerAddress;
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Models\ProductReview;
-use Webkul\Shop\Mail\Customer\ResetPasswordNotification;
-use Webkul\Shop\Mail\Customer\UpdatePasswordNotification;
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patchJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Customer\Models\Customer;
+
+use Webkul\Customer\Models\CustomerAddress;
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Models\ProductReview;
+use Webkul\Shop\Mail\Customer\ResetPasswordNotification;
+use Webkul\Shop\Mail\Customer\UpdatePasswordNotification;
 
 it('should returns the profile page', function () {
     // Act and Assert.

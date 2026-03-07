@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\CartRule\Models\CartRule;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\CartRule\Models\CartRule;
 
 it('should returns the cart rule page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Sitemap\Models;
 
 use Illuminate\Support\Carbon;

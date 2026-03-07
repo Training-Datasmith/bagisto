@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Pest\Expectation;
-use Webkul\Faker\Helpers\Product as ProductFaker;
 
 use function Pest\Laravel\getJson;
+
+use Webkul\Faker\Helpers\Product as ProductFaker;
 
 it('returns a new products listing', function () {
     // Arrange.
@@ -65,7 +68,7 @@ it('returns a featured products listing', function () {
 
 it('returns all products listing', function () {
     // Arrange.
-    $product = (new ProductFaker)
+    $product = (new ProductFaker())
         ->getSimpleProductFactory()
         ->create();
 

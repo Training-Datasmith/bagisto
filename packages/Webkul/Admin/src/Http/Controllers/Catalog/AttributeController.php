@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Catalog;
 
 use Illuminate\Http\JsonResponse;
@@ -24,7 +26,8 @@ class AttributeController extends Controller
     public function __construct(
         protected AttributeRepository $attributeRepository,
         protected ProductRepository $productRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -66,7 +69,7 @@ class AttributeController extends Controller
     public function store()
     {
         $rules = [
-            'code' => ['required', 'not_in:type,attribute_family_id', 'unique:attributes,code', new Code],
+            'code' => ['required', 'not_in:type,attribute_family_id', 'unique:attributes,code', new Code()],
             'admin_name' => 'required',
             'type' => 'required',
         ];
@@ -132,7 +135,7 @@ class AttributeController extends Controller
     public function update(int $id)
     {
         $rules = [
-            'code' => ['required', 'unique:attributes,code,'.$id, new Code],
+            'code' => ['required', 'unique:attributes,code,'.$id, new Code()],
             'admin_name' => 'required',
             'type' => 'required',
         ];

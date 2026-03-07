@@ -1,7 +1,7 @@
 <?php
-    $searchTitle = $suggestion ?? $query;
-    $title = $searchTitle ? trans('shop::app.search.title', ['query' => $searchTitle]) : trans('shop::app.search.results');
-    $searchInstead = $suggestion ? $query : null;
+$searchTitle = $suggestion ?? $query;
+$title = $searchTitle ? trans('shop::app.search.title', ['query' => $searchTitle]) : trans('shop::app.search.results');
+$searchInstead = $suggestion ? $query : null;
 ?>
 <!-- SEO Meta Content -->
 @push('meta')

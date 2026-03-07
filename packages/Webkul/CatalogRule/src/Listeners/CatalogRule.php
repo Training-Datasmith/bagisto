@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CatalogRule\Listeners;
 
 use Webkul\CatalogRule\Jobs\DeleteCatalogRuleIndex as DeleteCatalogRuleIndexJob;
@@ -17,7 +19,8 @@ class CatalogRule
     public function __construct(
         protected CatalogRuleRepository $catalogRuleRepository,
         protected CatalogRuleProductPriceRepository $catalogRuleProductPriceRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param  \Webkul\CatalogRule\Contracts\CatalogRule  $catalogRule

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\BookingProduct\Listeners;
 
 use Webkul\BookingProduct\Repositories\BookingRepository;
@@ -11,7 +13,9 @@ class Order
      *
      * @return void
      */
-    public function __construct(protected BookingRepository $bookingRepository) {}
+    public function __construct(protected BookingRepository $bookingRepository)
+    {
+    }
 
     /**
      * After sales order creation, add entry to bookings table

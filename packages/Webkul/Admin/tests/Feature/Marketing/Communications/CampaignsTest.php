@@ -1,13 +1,16 @@
 <?php
 
-use Webkul\Marketing\Models\Campaign;
-use Webkul\Marketing\Models\Event;
-use Webkul\Marketing\Models\Template;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
+
 use function Pest\Laravel\putJson;
+
+use Webkul\Marketing\Models\Campaign;
+use Webkul\Marketing\Models\Event;
+use Webkul\Marketing\Models\Template;
 
 it('should return the campaign index page', function () {
     // Act and Assert.

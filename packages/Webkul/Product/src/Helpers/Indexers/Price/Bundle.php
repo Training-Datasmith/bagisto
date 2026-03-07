@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Helpers\Indexers\Price;
 
 class Bundle extends AbstractType
@@ -223,7 +225,8 @@ class Bundle extends AbstractType
                 ->setProduct($variant);
 
             $optionPrices[] = $bundleOptionProduct->qty
-                * ($minPrice
+                * (
+                    $minPrice
                     ? $variantIndexer->getMinimalPrice()
                     : $variant->price
                 );

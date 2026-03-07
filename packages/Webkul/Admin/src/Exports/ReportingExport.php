@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Exports;
 
 use Illuminate\Support\Arr;
@@ -13,7 +15,9 @@ class ReportingExport implements FromCollection
      * @param mixed records
      * @return void
      */
-    public function __construct(protected $records = []) {}
+    public function __construct(protected $records = [])
+    {
+    }
 
     /**
      * function to create a blade view for export.

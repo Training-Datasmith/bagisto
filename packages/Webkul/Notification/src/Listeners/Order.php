@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Notification\Listeners;
 
 use Webkul\Notification\Events\CreateOrderNotification;
@@ -13,7 +15,9 @@ class Order
      *
      * @return void
      */
-    public function __construct(protected NotificationRepository $notificationRepository) {}
+    public function __construct(protected NotificationRepository $notificationRepository)
+    {
+    }
 
     /**
      * Create a new resource.
@@ -24,7 +28,7 @@ class Order
     {
         $this->notificationRepository->create(['type' => 'order', 'order_id' => $order->id]);
 
-        event(new CreateOrderNotification);
+        event(new CreateOrderNotification());
     }
 
     /**

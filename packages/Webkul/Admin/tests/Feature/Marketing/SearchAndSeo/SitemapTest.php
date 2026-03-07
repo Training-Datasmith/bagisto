@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Sitemap\Models\Sitemap;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Sitemap\Models\Sitemap;
 
 it('should show the sitemap index page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Helpers;
 
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -22,7 +24,8 @@ class Dashboard
         protected Product $productReporting,
         protected Customer $customerReporting,
         protected Visitor $visitorReporting
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the overall statistics.

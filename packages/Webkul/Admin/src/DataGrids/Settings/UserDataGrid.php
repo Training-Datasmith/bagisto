@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\Settings;
 
 use Illuminate\Support\Facades\DB;
@@ -21,7 +23,9 @@ class UserDataGrid extends DataGrid
      *
      * @return void
      */
-    public function __construct(protected RoleRepository $roleRepository) {}
+    public function __construct(protected RoleRepository $roleRepository)
+    {
+    }
 
     /**
      * Prepare query builder.

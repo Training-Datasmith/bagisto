@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
-use Webkul\Core\Models\Currency;
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Core\Models\Currency;
 
 it('should returns the currencies index page', function () {
     // Act and Assert.

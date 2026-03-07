@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\FPC\Listeners;
 
 use Spatie\ResponseCache\Facades\ResponseCache;
@@ -12,7 +14,9 @@ class Review
      *
      * @return void
      */
-    public function __construct(protected ProductReviewRepository $productReviewRepository) {}
+    public function __construct(protected ProductReviewRepository $productReviewRepository)
+    {
+    }
 
     /**
      * After review is updated

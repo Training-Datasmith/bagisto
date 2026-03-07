@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\CatalogRule\Models\CatalogRule;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\CatalogRule\Models\CatalogRule;
 
 it('should returns the catalog rule page', function () {
     // Act and Assert.

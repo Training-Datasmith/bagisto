@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\API;
 
 use Illuminate\Http\JsonResponse;
@@ -24,7 +26,8 @@ class CategoryController extends APIController
         protected AttributeRepository $attributeRepository,
         protected CategoryRepository $categoryRepository,
         protected ProductRepository $productRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Get all categories.

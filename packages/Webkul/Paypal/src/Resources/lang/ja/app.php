@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'errors' => [
         'invalid-configs' => 'PayPal決済方法の設定に問題があるようです。サポートについては店舗オーナーにお問い合わせください。',

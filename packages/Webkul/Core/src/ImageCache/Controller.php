@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\ImageCache;
 
 use Closure;
@@ -21,7 +23,7 @@ class Controller extends ImageCacheController
      *
      * @var string
      */
-    const BAGISTO_LOGO = 'https://updates.bagisto.com/bagisto.png';
+    public const BAGISTO_LOGO = 'https://updates.bagisto.com/bagisto.png';
 
     /**
      * Get HTTP response of either original image file or

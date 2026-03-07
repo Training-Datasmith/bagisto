@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\Product;
 
 use Illuminate\Support\Arr;
@@ -32,7 +34,9 @@ class SKUStorage
      *
      * @return void
      */
-    public function __construct(protected ProductRepository $productRepository) {}
+    public function __construct(protected ProductRepository $productRepository)
+    {
+    }
 
     /**
      * Initialize storage

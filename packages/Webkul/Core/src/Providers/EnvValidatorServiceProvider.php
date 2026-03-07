@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Providers;
 
 use Dotenv\Exception\InvalidFileException;
@@ -79,7 +81,7 @@ class EnvValidatorServiceProvider extends ServiceProvider
      */
     private function writeErrorAndDie(InvalidFileException $e)
     {
-        $output = (new ConsoleOutput)->getErrorOutput();
+        $output = (new ConsoleOutput())->getErrorOutput();
 
         $output->writeln('The environment file is invalid!');
         $output->writeln($e->getMessage());

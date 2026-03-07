@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Listeners;
 
 use Illuminate\Support\Facades\Bus;
@@ -24,7 +26,8 @@ class Product
         protected ProductBundleOptionProductRepository $productBundleOptionProductRepository,
         protected ProductGroupedProductRepository $productGroupedProductRepository,
         protected FlatIndexer $flatIndexer
-    ) {}
+    ) {
+    }
 
     /**
      * Update or create product indices

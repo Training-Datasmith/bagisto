@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
@@ -23,7 +25,8 @@ class UserController extends Controller
     public function __construct(
         protected AdminRepository $adminRepository,
         protected RoleRepository $roleRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -260,7 +263,8 @@ class UserController extends Controller
 
         if (
             $isStatusChangedToInactive
-            && (auth()->guard('admin')->user()->id === (int) $id
+            && (
+                auth()->guard('admin')->user()->id === (int) $id
                 && $this->adminRepository->countAdminsWithAllAccessAndActiveStatus() === 1
             )
         ) {

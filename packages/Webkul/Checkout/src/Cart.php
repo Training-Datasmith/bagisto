@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Checkout;
 
 use Illuminate\Support\Facades\Event;
@@ -32,17 +34,17 @@ class Cart
     /**
      * Constant for tax calculation based on shipping origin.
      */
-    const TAX_CALCULATION_BASED_ON_SHIPPING_ORIGIN = 'shipping_origin';
+    public const TAX_CALCULATION_BASED_ON_SHIPPING_ORIGIN = 'shipping_origin';
 
     /**
      * Constant for tax calculation based on billing address.
      */
-    const TAX_CALCULATION_BASED_ON_BILLING_ADDRESS = 'billing_address';
+    public const TAX_CALCULATION_BASED_ON_BILLING_ADDRESS = 'billing_address';
 
     /**
      * Constant for tax calculation based on shipping address.
      */
-    const TAX_CALCULATION_BASED_ON_SHIPPING_ADDRESS = 'shipping_address';
+    public const TAX_CALCULATION_BASED_ON_SHIPPING_ADDRESS = 'shipping_address';
 
     /**
      * Create a new class instance.
@@ -103,7 +105,7 @@ class Cart
             return;
         }
 
-        $cartTemp = new \stdClass;
+        $cartTemp = new \stdClass();
         $cartTemp->id = $this->cart->id;
 
         session()->put('cart', $cartTemp);
@@ -485,7 +487,7 @@ class Cart
         }
 
         if (! $this->cart->billing_address) {
-            throw new BillingAddressNotFoundException;
+            throw new BillingAddressNotFoundException();
         }
 
         $fillableFields = [
@@ -602,7 +604,7 @@ class Cart
             $cartPayment->delete();
         }
 
-        $cartPayment = new CartPayment;
+        $cartPayment = new CartPayment();
 
         $cartPayment->method = $params['method'];
         $cartPayment->method_title = core()->getConfigData('sales.payment_methods.'.$params['method'].'.title');

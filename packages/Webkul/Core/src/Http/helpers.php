@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Stevebauman\Purify\Facades\Purify;
 use Webkul\Core\Facades\Acl;
 use Webkul\Core\Facades\Core;

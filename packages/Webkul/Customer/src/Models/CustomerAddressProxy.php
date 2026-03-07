@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class CustomerAddressProxy extends ModelProxy {}
+class CustomerAddressProxy extends ModelProxy
+{
+}

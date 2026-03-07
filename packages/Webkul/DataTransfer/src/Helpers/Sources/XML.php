@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Sources;
 
 use Illuminate\Support\Arr;
@@ -15,7 +17,7 @@ class XML extends AbstractSource
      */
     public function initialize(): void
     {
-        $this->reader = new XMLReader;
+        $this->reader = new XMLReader();
 
         $this->reader->open(Storage::disk('private')->path($this->filePath));
 

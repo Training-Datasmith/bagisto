@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Listeners;
 
 use Webkul\Admin\Mail\Order\RefundedNotification;
@@ -40,7 +42,7 @@ class Refund extends Base
 
         if ($order->payment->method === 'paypal_smart_button') {
             /* getting smart button instance */
-            $smartButton = new SmartButton;
+            $smartButton = new SmartButton();
 
             /* getting paypal oder id */
             $paypalOrderID = $order->payment->additional['orderID'];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,9 +36,9 @@ class AddressRequest extends FormRequest
             'country' => ['required'],
             'state' => ['required'],
             'city' => ['required'],
-            'postcode' => ['required', new PostCode],
-            'phone' => ['required', new PhoneNumber],
-            'vat_id' => [(new VatIdRule)->setCountry($this->input('country'))],
+            'postcode' => ['required', new PostCode()],
+            'phone' => ['required', new PhoneNumber()],
+            'vat_id' => [(new VatIdRule())->setCountry($this->input('country'))],
             'email' => ['required'],
             'default_address' => ['sometimes', 'required', 'in:0,1'],
         ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'השדה :attribute יכול לקבל רק תווים אלפאנומריים, מספרים, רווחים, פסיקים ומקפים.',
     'alpha-numeric-space' => 'השדה :attribute יכול לקבל רק תווים אלפאנומריים ומספרים ורווחים.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Middleware;
 
 use Closure;
@@ -12,7 +14,9 @@ class Locale
      *
      * @return void
      */
-    public function __construct(protected LocaleRepository $localeRepository) {}
+    public function __construct(protected LocaleRepository $localeRepository)
+    {
+    }
 
     /**
      * Handle an incoming request.

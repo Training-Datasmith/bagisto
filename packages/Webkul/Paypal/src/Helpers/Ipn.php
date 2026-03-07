@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Paypal\Helpers;
 
 use Webkul\Paypal\Payment\Standard;
@@ -31,7 +33,8 @@ class Ipn
         protected Standard $paypalStandard,
         protected OrderRepository $orderRepository,
         protected InvoiceRepository $invoiceRepository
-    ) {}
+    ) {
+    }
 
     /**
      * This function process the IPN sent from paypal end.

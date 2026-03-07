@@ -1,13 +1,16 @@
 <?php
 
-use Webkul\Faker\Helpers\Product as ProductFaker;
-use Webkul\Product\Models\Product as ProductModel;
-use Webkul\Product\Models\ProductFlat;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
+
 use function Pest\Laravel\putJson;
+
+use Webkul\Faker\Helpers\Product as ProductFaker;
+use Webkul\Product\Models\Product as ProductModel;
+use Webkul\Product\Models\ProductFlat;
 
 it('should fail the validation with errors when certain inputs are not provided when store in bundle product', function () {
     // Act and Assert.
@@ -22,7 +25,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should return the create page of bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getSimpleProductFactory()->create();
+    $product = (new ProductFaker())->getSimpleProductFactory()->create();
 
     $productId = $product->id + 1;
 
@@ -50,7 +53,7 @@ it('should return the create page of bundle product', function () {
 
 it('should return the edit page of bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getBundleProductFactory()->create();
+    $product = (new ProductFaker())->getBundleProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -67,7 +70,7 @@ it('should return the edit page of bundle product', function () {
 
 it('should fail the validation with errors when certain inputs are not provided when update in bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getBundleProductFactory()->create();
+    $product = (new ProductFaker())->getBundleProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -83,7 +86,7 @@ it('should fail the validation with errors when certain inputs are not provided 
 
 it('should fail the validation with errors if certain data is not provided correctly in bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getBundleProductFactory()->create();
+    $product = (new ProductFaker())->getBundleProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();
@@ -110,7 +113,7 @@ it('should fail the validation with errors if certain data is not provided corre
 
 it('should update the bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getBundleProductFactory()->create();
+    $product = (new ProductFaker())->getBundleProductFactory()->create();
 
     $options = [];
 
@@ -211,7 +214,7 @@ it('should update the bundle product', function () {
 
 it('should delete a bundle product', function () {
     // Arrange.
-    $product = (new ProductFaker)->getBundleProductFactory()->create();
+    $product = (new ProductFaker())->getBundleProductFactory()->create();
 
     // Act and Assert.
     $this->loginAsAdmin();

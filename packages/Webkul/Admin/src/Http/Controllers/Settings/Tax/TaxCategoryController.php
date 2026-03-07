@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings\Tax;
 
 use Illuminate\Http\JsonResponse;
@@ -20,7 +22,8 @@ class TaxCategoryController extends Controller
     public function __construct(
         protected TaxCategoryRepository $taxCategoryRepository,
         protected TaxRateRepository $taxRateRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

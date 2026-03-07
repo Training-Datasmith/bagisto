@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers;
 
 use Webkul\Notification\Repositories\NotificationRepository;
@@ -11,7 +13,9 @@ class NotificationController extends Controller
      *
      * @return void
      */
-    public function __construct(protected NotificationRepository $notificationRepository) {}
+    public function __construct(protected NotificationRepository $notificationRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

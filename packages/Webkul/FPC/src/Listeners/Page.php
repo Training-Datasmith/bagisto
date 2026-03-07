@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\FPC\Listeners;
 
 use Spatie\ResponseCache\Facades\ResponseCache;
@@ -12,7 +14,9 @@ class Page
      *
      * @return void
      */
-    public function __construct(protected PageRepository $pageRepository) {}
+    public function __construct(protected PageRepository $pageRepository)
+    {
+    }
 
     /**
      * After page update

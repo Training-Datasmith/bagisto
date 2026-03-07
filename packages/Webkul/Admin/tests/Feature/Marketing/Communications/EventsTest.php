@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Marketing\Models\Event;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Marketing\Models\Event;
 
 it('should return the events index page', function () {
     // Act and Assert.

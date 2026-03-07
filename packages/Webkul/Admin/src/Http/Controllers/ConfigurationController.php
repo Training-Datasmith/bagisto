@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
@@ -15,7 +17,9 @@ class ConfigurationController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(protected CoreConfigRepository $coreConfigRepository) {}
+    public function __construct(protected CoreConfigRepository $coreConfigRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Marketing\Models\URLRewrite;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Marketing\Models\URLRewrite;
 
 it('should show the url rewrite index page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Listeners;
 
 use Webkul\Admin\Mail\Order\InvoicedNotification;
@@ -14,7 +16,8 @@ class Invoice extends Base
      */
     public function __construct(
         protected OrderTransactionRepository $orderTransactionRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * After order is created

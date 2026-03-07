@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\FPC\Replacers;
 
 use Spatie\ResponseCache\Replacers\Replacer;

@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Inventory\Models\InventorySource;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Inventory\Models\InventorySource;
 
 it('should returns the inventory sources index page', function () {
     // Act and Assert.

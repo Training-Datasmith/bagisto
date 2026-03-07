@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers;
 
 use Illuminate\Http\JsonResponse;
@@ -19,7 +21,8 @@ class GDPRController extends Controller
     public function __construct(
         protected CustomerRepository $customerRepository,
         protected GDPRDataRequestRepository $gdprDataRequestRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

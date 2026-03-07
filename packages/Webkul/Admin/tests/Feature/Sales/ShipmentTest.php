@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\postJson;
+
 use Webkul\Admin\Mail\Order\InventorySourceNotification;
 use Webkul\Admin\Mail\Order\ShippedNotification as AdminShippedNotification;
 use Webkul\Checkout\Models\Cart;
@@ -17,11 +23,9 @@ use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
 use Webkul\Sales\Models\OrderPayment;
+
 use Webkul\Sales\Models\Shipment;
 use Webkul\Shop\Mail\Order\ShippedNotification as ShopShippedNotification;
-
-use function Pest\Laravel\get;
-use function Pest\Laravel\postJson;
 
 it('should returns the shipment page', function () {
     // Act and Assert.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -54,9 +56,9 @@ class ConfigurationForm extends FormRequest
 
         return array_map(function ($rule) {
             return match ($rule) {
-                'phone' => new PhoneNumber,
-                'postcode' => new PostCode,
-                'decimal' => new Decimal,
+                'phone' => new PhoneNumber(),
+                'postcode' => new PostCode(),
+                'decimal' => new Decimal(),
                 default => $rule,
             };
         }, $validations);

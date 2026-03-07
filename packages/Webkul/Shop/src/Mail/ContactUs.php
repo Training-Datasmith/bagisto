@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Mail;
 
 use Illuminate\Mail\Mailables\Address;
@@ -13,7 +15,9 @@ class ContactUs extends Mailable
      *
      * @return void
      */
-    public function __construct(public $contactUs) {}
+    public function __construct(public $contactUs)
+    {
+    }
 
     /**
      * Get the message envelope.

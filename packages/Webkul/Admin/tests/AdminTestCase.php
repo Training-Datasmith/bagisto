@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Tests;
 
 use Tests\TestCase;
@@ -8,5 +10,6 @@ use Webkul\Core\Tests\Concerns\CoreAssertions;
 
 class AdminTestCase extends TestCase
 {
-    use AdminTestBench, CoreAssertions;
+    use AdminTestBench;
+    use CoreAssertions;
 }

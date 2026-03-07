@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\DataGrid;
 
 use Illuminate\Support\Facades\Crypt;

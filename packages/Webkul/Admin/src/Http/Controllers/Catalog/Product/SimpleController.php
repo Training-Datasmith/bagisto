@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Catalog\Product;
 
 use Illuminate\Http\JsonResponse;
@@ -13,7 +15,8 @@ class SimpleController extends Controller
      */
     public function __construct(
         protected ProductRepository $productRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the customizable options of the product.

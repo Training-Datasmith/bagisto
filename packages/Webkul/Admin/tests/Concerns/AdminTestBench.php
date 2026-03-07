@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Tests\Concerns;
 
 use Webkul\User\Contracts\Admin as AdminContract;

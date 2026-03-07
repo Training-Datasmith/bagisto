@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\MagicAI\Services;
 
 use GuzzleHttp\Client;
@@ -14,14 +16,15 @@ class Gemini
         protected string $prompt,
         protected bool $stream,
         protected bool $raw,
-    ) {}
+    ) {
+    }
 
     /**
      * Send request to Gemini AI.
      */
     public function ask(): string
     {
-        $httpClient = new Client;
+        $httpClient = new Client();
 
         $apiKey = core()->getConfigData('general.magic_ai.settings.api_key');
 

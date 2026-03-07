@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'El :attribute sólo puede aceptar caracteres alfabéticos, numéricos, espacios, coma y guiones.',
     'alpha-numeric-space' => 'El :attribute sólo puede aceptar caracteres alfabéticos, numéricos y espacios.',

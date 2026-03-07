@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer\Notifications;
 
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -19,7 +21,7 @@ class CustomerResetPassword extends ResetPassword
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
             ->subject(trans('shop::app.mail.forget-password.subject'))
             ->view('shop::emails.customers.forget-password', [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\API;
 
 use Illuminate\Http\JsonResponse;
@@ -22,17 +24,18 @@ class ReviewController extends APIController
         protected ProductRepository $productRepository,
         protected ProductReviewRepository $productReviewRepository,
         protected ProductReviewAttachmentRepository $productReviewAttachmentRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Pending review status.
      */
-    const STATUS_PENDING = 'pending';
+    public const STATUS_PENDING = 'pending';
 
     /**
      * Approved review status.
      */
-    const STATUS_APPROVED = 'approved';
+    public const STATUS_APPROVED = 'approved';
 
     /**
      * Product listings.

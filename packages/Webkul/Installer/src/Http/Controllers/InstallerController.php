@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
@@ -21,14 +23,14 @@ class InstallerController extends Controller
      *
      * @var string
      */
-    const MIN_PHP_VERSION = '8.2.0';
+    public const MIN_PHP_VERSION = '8.2.0';
 
     /**
      * Const Variable for Static Customer Id
      *
      * @var int
      */
-    const USER_ID = 1;
+    public const USER_ID = 1;
 
     /**
      * Create a new controller instance
@@ -39,7 +41,8 @@ class InstallerController extends Controller
         protected ServerRequirements $serverRequirements,
         protected EnvironmentManager $environmentManager,
         protected DatabaseManager $databaseManager
-    ) {}
+    ) {
+    }
 
     /**
      * Installer View Root Page

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CMS\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;

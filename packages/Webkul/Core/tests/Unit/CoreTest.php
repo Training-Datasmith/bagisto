@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Core\Enums\CurrencyPositionEnum;
 use Webkul\Core\Models\Channel;
 use Webkul\Core\Models\Currency;

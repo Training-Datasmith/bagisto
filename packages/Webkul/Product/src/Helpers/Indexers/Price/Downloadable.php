@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Helpers\Indexers\Price;
 
-class Downloadable extends AbstractType {}
+class Downloadable extends AbstractType
+{
+}

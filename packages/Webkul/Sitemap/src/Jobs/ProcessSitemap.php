@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Sitemap\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -19,7 +21,10 @@ use Webkul\Sitemap\Models\Product;
 
 class ProcessSitemap implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Batch processed.
@@ -41,7 +46,8 @@ class ProcessSitemap implements ShouldQueue
      */
     public function __construct(
         public SitemapContract $sitemap
-    ) {}
+    ) {
+    }
 
     /**
      * Execute the job.

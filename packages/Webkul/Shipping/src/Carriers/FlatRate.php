@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shipping\Carriers;
 
 use Webkul\Checkout\Facades\Cart;
@@ -42,7 +44,7 @@ class FlatRate extends AbstractShipping
     {
         $cart = Cart::getCart();
 
-        $cartShippingRate = new CartShippingRate;
+        $cartShippingRate = new CartShippingRate();
 
         $cartShippingRate->carrier = $this->getCode();
         $cartShippingRate->carrier_title = $this->getConfigData('title');

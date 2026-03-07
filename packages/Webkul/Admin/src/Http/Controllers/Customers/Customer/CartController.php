@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers\Customer;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,7 +19,8 @@ class CartController extends Controller
     public function __construct(
         protected CustomerRepository $customerRepository,
         protected CartItemRepository $cartItemRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Create cart

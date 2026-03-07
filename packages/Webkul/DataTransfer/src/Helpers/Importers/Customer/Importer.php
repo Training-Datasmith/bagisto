@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\Customer;
 
 use Illuminate\Support\Arr;
@@ -20,28 +22,28 @@ class Importer extends AbstractImporter
      *
      * @var string
      */
-    const ERROR_EMAIL_NOT_FOUND_FOR_DELETE = 'email_not_found_to_delete';
+    public const ERROR_EMAIL_NOT_FOUND_FOR_DELETE = 'email_not_found_to_delete';
 
     /**
      * Error code for duplicated email.
      *
      * @var string
      */
-    const ERROR_DUPLICATE_EMAIL = 'duplicated_email';
+    public const ERROR_DUPLICATE_EMAIL = 'duplicated_email';
 
     /**
      * Error code for duplicated phone.
      *
      * @var string
      */
-    const ERROR_DUPLICATE_PHONE = 'duplicated_phone';
+    public const ERROR_DUPLICATE_PHONE = 'duplicated_phone';
 
     /**
      * Error code for invalid attribute family code.
      *
      * @var string
      */
-    const ERROR_INVALID_CUSTOMER_GROUP_CODE = 'customer_group_code_not_found';
+    public const ERROR_INVALID_CUSTOMER_GROUP_CODE = 'customer_group_code_not_found';
 
     /**
      * Permanent entity columns.
@@ -194,7 +196,7 @@ class Importer extends AbstractImporter
                 'before:today',
                 'regex:/^\d{4}-\d{2}-\d{2}$/',
             ],
-            'phone' => ['nullable', new PhoneNumber],
+            'phone' => ['nullable', new PhoneNumber()],
         ]);
 
         if ($validator->fails()) {

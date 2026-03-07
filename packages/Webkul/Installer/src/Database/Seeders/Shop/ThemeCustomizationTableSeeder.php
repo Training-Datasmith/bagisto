@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Database\Seeders\Shop;
 
 use Carbon\Carbon;
@@ -13,7 +15,7 @@ class ThemeCustomizationTableSeeder extends Seeder
     /**
      * Base path for the images.
      */
-    const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/theme/';
+    public const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/theme/';
 
     /**
      * Seed the application's database.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\DataGrids;
 
 use Illuminate\Support\Facades\DB;
@@ -10,17 +12,17 @@ class DownloadableProductDataGrid extends DataGrid
     /**
      * Downloadable Product status Expired.
      */
-    const STATUS_EXPIRED = 'expired';
+    public const STATUS_EXPIRED = 'expired';
 
     /**
      * Downloadable Product status Pending.
      */
-    const STATUS_PENDING = 'pending';
+    public const STATUS_PENDING = 'pending';
 
     /**
      * Downloadable Product status Available
      */
-    const STATUS_AVAILABLE = 'available';
+    public const STATUS_AVAILABLE = 'available';
 
     /**
      * Prepare query builder.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Notification\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -10,14 +12,18 @@ use Illuminate\Queue\SerializesModels;
 
 class UpdateOrderNotification implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(protected $data) {}
+    public function __construct(protected $data)
+    {
+    }
 
     /**
      * Get the channels the event should broadcast on.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -12,7 +14,10 @@ use Webkul\Product\Repositories\ProductRepository;
 
 class UpdateCreatePriceIndex implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.

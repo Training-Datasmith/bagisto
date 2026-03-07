@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers;
 
 use Illuminate\Support\Facades\Event;
@@ -12,7 +14,9 @@ class SubscriptionController extends Controller
      *
      * @return void
      */
-    public function __construct(protected SubscribersListRepository $subscriptionRepository) {}
+    public function __construct(protected SubscribersListRepository $subscriptionRepository)
+    {
+    }
 
     /**
      * Subscribes email to the email subscription list.

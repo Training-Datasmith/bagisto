@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'products' => [
         'title' => 'data_transfer::app.importers.products.title',

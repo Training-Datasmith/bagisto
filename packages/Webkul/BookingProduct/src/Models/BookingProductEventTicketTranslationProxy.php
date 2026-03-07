@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\BookingProduct\Models;
 
 use Konekt\Concord\Proxies\ModelProxy;
 
-class BookingProductEventTicketTranslationProxy extends ModelProxy {}
+class BookingProductEventTicketTranslationProxy extends ModelProxy
+{
+}

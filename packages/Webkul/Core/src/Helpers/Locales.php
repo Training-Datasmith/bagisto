@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Helpers;
 
 use Astrotomic\Translatable\Locales as BaseLocales;

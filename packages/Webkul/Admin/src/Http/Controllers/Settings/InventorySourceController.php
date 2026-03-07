@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class InventorySourceController extends Controller
      *
      * @return void
      */
-    public function __construct(protected InventorySourceRepository $inventorySourceRepository) {}
+    public function __construct(protected InventorySourceRepository $inventorySourceRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

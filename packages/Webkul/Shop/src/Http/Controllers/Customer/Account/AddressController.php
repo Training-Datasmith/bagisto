@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Http\Controllers\Customer\Account;
 
 use Illuminate\Support\Facades\Event;
@@ -14,7 +16,9 @@ class AddressController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CustomerAddressRepository $customerAddressRepository) {}
+    public function __construct(protected CustomerAddressRepository $customerAddressRepository)
+    {
+    }
 
     /**
      * Address route index page.

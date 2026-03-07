@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'Поле :attribute може містити тільки букви, цифри, пробіли, коми та тире.',
     'alpha-numeric-space' => 'Поле :attribute може містити тільки букви, цифри та пробіли.',

@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
-use Webkul\Core\Models\Channel;
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Core\Models\Channel;
 
 it('should returns the channel index page', function () {
     // Act and Assert.

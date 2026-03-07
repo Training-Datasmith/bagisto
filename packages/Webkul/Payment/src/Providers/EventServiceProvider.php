@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Payment\Providers;
 
 use Illuminate\Support\Facades\Event;

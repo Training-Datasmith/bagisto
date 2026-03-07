@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\Customers\View;
 
 use Illuminate\Support\Facades\DB;
@@ -17,17 +19,17 @@ class ReviewDataGrid extends DataGrid
     /**
      * Review status "approved".
      */
-    const STATUS_APPROVED = 'approved';
+    public const STATUS_APPROVED = 'approved';
 
     /**
      * Review status "pending", indicating awaiting approval or processing.
      */
-    const STATUS_PENDING = 'pending';
+    public const STATUS_PENDING = 'pending';
 
     /**
      * Review status "disapproved", indicating rejection or denial.
      */
-    const STATUS_DISAPPROVED = 'disapproved';
+    public const STATUS_DISAPPROVED = 'disapproved';
 
     /**
      * Prepare query builder.
@@ -152,13 +154,15 @@ class ReviewDataGrid extends DataGrid
             'searchable' => true,
             'filterable' => true,
             'filterable_type' => 'dropdown',
-            'filterable_options' => array_map(function ($value) {
-                return [
-                    'label' => $value,
-                    'value' => (string) $value,
-                ];
-            },
-                range(1, 5)),
+            'filterable_options' => array_map(
+                function ($value) {
+                    return [
+                        'label' => $value,
+                        'value' => (string) $value,
+                    ];
+                },
+                range(1, 5)
+            ),
             'sortable' => true,
         ]);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Repositories;
 
 use Webkul\Attribute\Enums\AttributeTypeEnum;
@@ -20,7 +22,8 @@ class ElasticSearchRepository
         protected CustomerRepository $customerRepository,
         protected AttributeRepository $attributeRepository,
         protected SearchSynonymRepository $searchSynonymRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Return elastic search index name.
@@ -55,7 +58,7 @@ class ElasticSearchRepository
                 'size' => $options['limit'],
                 'stored_fields' => [],
                 'query' => [
-                    'bool' => $filters ?: new \stdClass,
+                    'bool' => $filters ?: new \stdClass(),
                 ],
                 'sort' => $this->getSortOptions($options),
             ],
@@ -250,7 +253,7 @@ class ElasticSearchRepository
             'body' => [
                 'size' => 0,
                 'query' => [
-                    'bool' => $filters ?: new \stdClass,
+                    'bool' => $filters ?: new \stdClass(),
                 ],
                 'aggs' => [
                     'max_price' => [
@@ -287,7 +290,7 @@ class ElasticSearchRepository
             'body' => [
                 'size' => 0,
                 'query' => [
-                    'bool' => $filters ?: new \stdClass,
+                    'bool' => $filters ?: new \stdClass(),
                 ],
                 'aggs' => [
                     'min_price' => [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shipping\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +28,8 @@ class ShippingServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/Config/carriers.php', 'carriers'
+            dirname(__DIR__).'/Config/carriers.php',
+            'carriers'
         );
     }
 }

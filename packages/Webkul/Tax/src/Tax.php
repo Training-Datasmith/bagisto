@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Tax;
 
 class Tax
@@ -79,8 +81,7 @@ class Tax
      */
     public function getShippingOriginAddress(): object
     {
-        return new class
-        {
+        return new class () {
             public $country;
 
             public $state;
@@ -105,8 +106,7 @@ class Tax
      */
     public function getDefaultAddress(): object
     {
-        return new class
-        {
+        return new class () {
             public $country;
 
             public $state;

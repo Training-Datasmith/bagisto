@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DebugBar\Providers;
 
 use Barryvdh\Debugbar\Facades\Debugbar;

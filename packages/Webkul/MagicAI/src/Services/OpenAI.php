@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\MagicAI\Services;
 
 use OpenAI\Laravel\Facades\OpenAI as BaseOpenAI;

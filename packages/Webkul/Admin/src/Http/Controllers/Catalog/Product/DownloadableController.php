@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Catalog\Product;
 
 use Illuminate\Http\JsonResponse;
@@ -11,7 +13,9 @@ class DownloadableController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(protected ProductRepository $productRepository) {}
+    public function __construct(protected ProductRepository $productRepository)
+    {
+    }
 
     /**
      * Returns the compare items of the customer.

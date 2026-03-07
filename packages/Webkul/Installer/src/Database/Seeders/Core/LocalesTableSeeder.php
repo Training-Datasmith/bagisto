@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Database\Seeders\Core;
 
 use Illuminate\Database\Seeder;
@@ -12,7 +14,7 @@ class LocalesTableSeeder extends Seeder
     /**
      * Base path for the images.
      */
-    const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/locales/';
+    public const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/locales/';
 
     /**
      * Seed the application's database.

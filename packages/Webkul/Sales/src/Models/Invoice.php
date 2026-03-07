@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Sales\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,7 +17,9 @@ use Webkul\Sales\Traits\PaymentTerm;
 
 class Invoice extends Model implements InvoiceContract
 {
-    use HasFactory, InvoiceReminder, PaymentTerm;
+    use HasFactory;
+    use InvoiceReminder;
+    use PaymentTerm;
 
     /**
      * Pending invoice.

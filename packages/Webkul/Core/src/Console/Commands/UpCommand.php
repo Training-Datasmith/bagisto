@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Console\Commands;
 
 use Illuminate\Foundation\Console\UpCommand as BaseUpCommand;

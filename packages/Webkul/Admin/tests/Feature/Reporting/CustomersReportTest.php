@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use function Pest\Laravel\get;
+
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\CartItem;
@@ -13,9 +17,8 @@ use Webkul\Sales\Models\InvoiceItem;
 use Webkul\Sales\Models\Order;
 use Webkul\Sales\Models\OrderAddress;
 use Webkul\Sales\Models\OrderItem;
-use Webkul\Sales\Models\OrderPayment;
 
-use function Pest\Laravel\get;
+use Webkul\Sales\Models\OrderPayment;
 
 it('should return the index page of customers reporting', function () {
     // Act and Assert.

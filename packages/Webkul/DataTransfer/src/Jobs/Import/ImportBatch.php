@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Jobs\Import;
 
 use Illuminate\Bus\Batchable;
@@ -12,7 +14,11 @@ use Webkul\DataTransfer\Helpers\Import as ImportHelper;
 
 class ImportBatch implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.

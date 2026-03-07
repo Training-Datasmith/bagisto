@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\FPC\Listeners;
 
 use Spatie\ResponseCache\Facades\ResponseCache;
@@ -12,7 +14,9 @@ class ThemeCustomization
      *
      * @return void
      */
-    public function __construct(protected ThemeCustomizationRepository $themeCustomizationRepository) {}
+    public function __construct(protected ThemeCustomizationRepository $themeCustomizationRepository)
+    {
+    }
 
     /**
      * After theme customization create

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CartRule\Listeners;
 
 use Webkul\CartRule\Repositories\CartRuleCouponRepository;
@@ -19,7 +21,8 @@ class Order
         protected CartRuleCustomerRepository $cartRuleCustomerRepository,
         protected CartRuleCouponRepository $cartRuleCouponRepository,
         protected CartRuleCouponUsageRepository $cartRuleCouponUsageRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Save cart rule and cart rule coupon properties after place order

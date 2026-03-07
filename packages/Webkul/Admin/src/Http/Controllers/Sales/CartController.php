@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Illuminate\Http\JsonResponse;
@@ -28,7 +30,8 @@ class CartController extends Controller
         protected CustomerRepository $customerRepository,
         protected ProductRepository $productRepository,
         protected CartRuleCouponRepository $cartRuleCouponRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Cart.

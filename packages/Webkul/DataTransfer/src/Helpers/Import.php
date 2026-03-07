@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers;
 
 use Illuminate\Support\Facades\DB;
@@ -130,7 +132,8 @@ class Import
         protected ImportRepository $importRepository,
         protected ImportBatchRepository $importBatchRepository,
         protected Error $errorHelper
-    ) {}
+    ) {
+    }
 
     /**
      * Set import instance.

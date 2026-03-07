@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Helpers\Exchange;
 
 use Webkul\Core\Repositories\CurrencyRepository;
@@ -42,7 +44,7 @@ class FixerExchange extends ExchangeRate
      */
     public function updateRates()
     {
-        $client = new \GuzzleHttp\Client;
+        $client = new \GuzzleHttp\Client();
 
         foreach ($this->currencyRepository->all() as $currency) {
             if ($currency->code == config('app.currency')) {

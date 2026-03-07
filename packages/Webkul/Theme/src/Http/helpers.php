@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Theme\Facades\Themes;
 use Webkul\Theme\ViewRenderEventManager;
 

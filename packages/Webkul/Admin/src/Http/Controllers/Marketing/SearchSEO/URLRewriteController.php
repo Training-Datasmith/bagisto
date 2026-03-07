@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\SearchSEO;
 
 use Illuminate\Http\JsonResponse;
@@ -17,7 +19,9 @@ class URLRewriteController extends Controller
      *
      * @return void
      */
-    public function __construct(public URLRewriteRepository $urlRewriteRepository) {}
+    public function __construct(public URLRewriteRepository $urlRewriteRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Reporting;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,7 +23,9 @@ class Controller extends BaseController
      *
      * @return void
      */
-    public function __construct(protected ReportingHelper $reportingHelper) {}
+    public function __construct(protected ReportingHelper $reportingHelper)
+    {
+    }
 
     /**
      * Display a listing of the resource.

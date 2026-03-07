@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Checkout\Facades\Cart;
 
 if (! function_exists('cart')) {

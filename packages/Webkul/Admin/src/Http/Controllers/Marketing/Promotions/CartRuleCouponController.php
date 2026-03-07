@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\Promotions;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class CartRuleCouponController extends Controller
      *
      * @return void
      */
-    public function __construct(protected CartRuleCouponRepository $cartRuleCouponRepository) {}
+    public function __construct(protected CartRuleCouponRepository $cartRuleCouponRepository)
+    {
+    }
 
     /**
      * Index.
@@ -57,7 +61,8 @@ class CartRuleCouponController extends Controller
 
         return new JsonResponse([
             'message' => trans(
-                'admin::app.marketing.promotions.cart-rules-coupons.success', ['name' => 'Cart rule coupons']
+                'admin::app.marketing.promotions.cart-rules-coupons.success',
+                ['name' => 'Cart rule coupons']
             ),
         ]);
     }

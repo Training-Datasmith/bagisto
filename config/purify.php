@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Webkul\Core\Purifier\Definitions\ExtendedHtml5Definition;
 
 return [

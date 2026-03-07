@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core;
 
 use Illuminate\Support\Arr;
@@ -26,12 +28,12 @@ class Menu
     /**
      * Menu area for admin.
      */
-    const ADMIN = 'admin';
+    public const ADMIN = 'admin';
 
     /**
      * Menu area for customer.
      */
-    const CUSTOMER = 'customer';
+    public const CUSTOMER = 'customer';
 
     /**
      * Add a new menu item.

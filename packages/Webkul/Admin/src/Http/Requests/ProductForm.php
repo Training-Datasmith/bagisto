@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -73,7 +75,7 @@ class ProductForm extends FormRequest
         $this->product = $this->productRepository->find($this->id);
 
         $this->rules = array_merge($this->product->getTypeInstance()->getTypeValidationRules(), [
-            'sku' => ['required', 'unique:products,sku,'.$this->id, new Slug],
+            'sku' => ['required', 'unique:products,sku,'.$this->id, new Slug()],
             'url_key' => ['required', new ProductCategoryUniqueSlug('products', $this->id)],
             'images.files.*' => ['nullable', 'mimes:bmp,jpeg,jpg,png,webp'],
             'images.positions.*' => ['nullable', 'integer'],
@@ -81,7 +83,7 @@ class ProductForm extends FormRequest
             'videos.positions.*' => ['nullable', 'integer'],
             'special_price_from' => ['nullable', 'date'],
             'special_price_to' => ['nullable', 'date', 'after_or_equal:special_price_from'],
-            'special_price' => ['nullable', new Decimal, 'lt:price'],
+            'special_price' => ['nullable', new Decimal(), 'lt:price'],
             'visible_individually' => ['sometimes', 'required', 'in:0,1'],
             'status' => ['sometimes', 'required', 'in:0,1'],
             'guest_checkout' => ['sometimes', 'required', 'in:0,1'],
@@ -122,7 +124,7 @@ class ProductForm extends FormRequest
                 && $attribute->validation
             ) {
                 if ($attribute->validation === 'decimal') {
-                    $validations[] = new Decimal;
+                    $validations[] = new Decimal();
                 } elseif ($attribute->validation === 'regex') {
                     $validations[] = 'regex:'.$attribute->regex;
                 } else {
@@ -131,7 +133,7 @@ class ProductForm extends FormRequest
             }
 
             if ($attribute->type == AttributeTypeEnum::PRICE->value) {
-                $validations[] = new Decimal;
+                $validations[] = new Decimal();
             }
 
             if ($attribute->is_unique) {

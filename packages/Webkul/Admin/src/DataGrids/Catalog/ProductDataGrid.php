@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\Catalog;
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,7 +27,9 @@ class ProductDataGrid extends DataGrid
      *
      * @return void
      */
-    public function __construct(protected AttributeFamilyRepository $attributeFamilyRepository) {}
+    public function __construct(protected AttributeFamilyRepository $attributeFamilyRepository)
+    {
+    }
 
     /**
      * Prepare query builder.
@@ -326,7 +330,7 @@ class ProductDataGrid extends DataGrid
                 'size' => $pagination['per_page'],
                 'stored_fields' => [],
                 'query' => [
-                    'bool' => $this->getElasticFilters($params['filters'] ?? []) ?: new \stdClass,
+                    'bool' => $this->getElasticFilters($params['filters'] ?? []) ?: new \stdClass(),
                 ],
                 'sort' => $this->getElasticSort($params['sort'] ?? []),
                 'track_total_hits' => true,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core\Models;
 
 use Webkul\Core\Contracts\Country as CountryContract;

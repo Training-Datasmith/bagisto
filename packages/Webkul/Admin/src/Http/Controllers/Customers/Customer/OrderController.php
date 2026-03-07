@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers\Customer;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -12,7 +14,9 @@ class OrderController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(protected OrderItemRepository $orderItemRepository) {}
+    public function __construct(protected OrderItemRepository $orderItemRepository)
+    {
+    }
 
     /**
      * Returns the compare items of the customer.

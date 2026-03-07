@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Models;
 
 use Webkul\Core\Eloquent\TranslatableModel;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Shop\Mail\Order;
 
 use Illuminate\Mail\Mailables\Address;
@@ -15,7 +17,9 @@ class CreatedNotification extends Mailable
      *
      * @return void
      */
-    public function __construct(public Order $order) {}
+    public function __construct(public Order $order)
+    {
+    }
 
     /**
      * Get the message envelope.

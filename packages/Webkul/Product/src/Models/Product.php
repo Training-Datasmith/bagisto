@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Models;
 
 use Exception;
@@ -25,7 +27,8 @@ use Webkul\Product\Type\AbstractType;
 
 class Product extends Model implements ProductContract
 {
-    use HasFactory, Visitable;
+    use HasFactory;
+    use Visitable;
 
     /**
      * The attributes that are mass assignable.

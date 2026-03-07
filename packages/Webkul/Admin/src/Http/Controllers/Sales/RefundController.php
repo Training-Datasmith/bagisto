@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Webkul\Admin\DataGrids\Sales\OrderRefundDataGrid;
@@ -20,7 +22,8 @@ class RefundController extends Controller
         protected OrderRepository $orderRepository,
         protected OrderItemRepository $orderItemRepository,
         protected RefundRepository $refundRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

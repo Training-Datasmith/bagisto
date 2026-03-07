@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Webkul\Admin\DataGrids\Sales\OrderShipmentDataGrid;
@@ -19,7 +21,8 @@ class ShipmentController extends Controller
         protected OrderRepository $orderRepository,
         protected OrderItemRepository $orderItemRepository,
         protected ShipmentRepository $shipmentRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

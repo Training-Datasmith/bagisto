@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Customers;
 
 use Illuminate\Http\JsonResponse;
@@ -50,7 +52,8 @@ class CustomerController extends Controller
         protected CustomerRepository $customerRepository,
         protected CustomerGroupRepository $customerGroupRepository,
         protected CustomerNoteRepository $customerNoteRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -82,7 +85,7 @@ class CustomerController extends Controller
             'channel_id' => 'required|integer',
             'email' => 'required|unique:customers,email,NULL,id,channel_id,'.request('channel_id'),
             'date_of_birth' => 'date|before:today',
-            'phone' => ['unique:customers,phone', new PhoneNumber],
+            'phone' => ['unique:customers,phone', new PhoneNumber()],
         ]);
 
         $password = rand(100000, 10000000);
@@ -142,7 +145,7 @@ class CustomerController extends Controller
             'gender' => 'required',
             'email' => 'required|unique:customers,email,'.$id,
             'date_of_birth' => 'date|before:today',
-            'phone' => ['unique:customers,phone,'.$id, new PhoneNumber],
+            'phone' => ['unique:customers,phone,'.$id, new PhoneNumber()],
         ]);
 
         $data = request()->only([

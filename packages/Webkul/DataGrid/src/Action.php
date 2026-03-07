@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataGrid;
 
 /**
@@ -16,7 +18,8 @@ class Action
         public string $title,
         public string $method,
         public mixed $url,
-    ) {}
+    ) {
+    }
 
     /**
      * Convert to an array.

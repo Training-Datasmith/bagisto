@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Jobs\Import;
 
 use Illuminate\Bus\Queueable;
@@ -11,7 +13,10 @@ use Webkul\DataTransfer\Helpers\Import as ImportHelper;
 
 class Linking implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.

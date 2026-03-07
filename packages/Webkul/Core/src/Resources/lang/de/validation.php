@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'Das :Attribut kann nur Buchstaben, Zahlen, Leerzeichen, Kommas und Bindestriche akzeptieren.',
     'alpha-numeric-space' => 'Das :Attribut kann nur Buchstaben, Zahlen und Leerzeichen akzeptieren.',

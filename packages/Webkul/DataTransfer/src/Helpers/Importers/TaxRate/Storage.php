@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\DataTransfer\Helpers\Importers\TaxRate;
 
 use Webkul\Tax\Repositories\TaxRateRepository;
@@ -24,7 +26,9 @@ class Storage
      *
      * @return void
      */
-    public function __construct(protected TaxRateRepository $taxRateRepository) {}
+    public function __construct(protected TaxRateRepository $taxRateRepository)
+    {
+    }
 
     /**
      * Initialize storage

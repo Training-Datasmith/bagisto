@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Checkout\Providers;
 
 use Illuminate\Support\ServiceProvider;

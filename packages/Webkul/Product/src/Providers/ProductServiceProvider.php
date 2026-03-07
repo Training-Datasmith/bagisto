@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Product\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;

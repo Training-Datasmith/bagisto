@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => ':attribute yalnızca alfa, sayısal, boşluk, virgül ve tire karakterlerini kabul edebilir.',
     'alpha-numeric-space' => ':attribute yalnızca alfa, sayısal ve boşlukları kabul edebilir.',

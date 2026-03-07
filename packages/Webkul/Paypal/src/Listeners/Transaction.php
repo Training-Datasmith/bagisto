@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Paypal\Listeners;
 
 use Webkul\Paypal\Payment\SmartButton;
@@ -15,7 +17,8 @@ class Transaction
     public function __construct(
         protected SmartButton $smartButton,
         protected OrderTransactionRepository $orderTransactionRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Save the transaction data for online payment.

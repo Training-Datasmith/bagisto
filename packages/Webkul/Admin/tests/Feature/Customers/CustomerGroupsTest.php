@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Customer\Models\CustomerGroup;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Customer\Models\CustomerGroup;
 
 it('should return the listing page of customer groups', function () {
     // Act and Assert.

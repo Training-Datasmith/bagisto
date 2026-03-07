@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'paypal_smart_button' => [
         'code' => 'paypal_smart_button',

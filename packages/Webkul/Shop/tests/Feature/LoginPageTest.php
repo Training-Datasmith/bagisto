@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Hash;
-use Webkul\Faker\Helpers\Customer as CustomerFaker;
 
 use function Pest\Laravel\get;
+
 use function Pest\Laravel\post;
 use function Pest\Laravel\postJson;
+
+use Webkul\Faker\Helpers\Customer as CustomerFaker;
 
 it('returns a successful response', function () {
     // Act and Assert.
@@ -44,7 +48,7 @@ it('should fails validation errors when password length not valid', function () 
 
 it('successfully logins a customer', function () {
     // Arrange.
-    $customer = (new CustomerFaker)->factory()->create([
+    $customer = (new CustomerFaker())->factory()->create([
         'password' => Hash::make($password = 'admin123'),
     ]);
 
@@ -61,7 +65,7 @@ it('successfully logins a customer', function () {
 
 it('fails to log in a customer if the email is invalid', function () {
     // Arrange.
-    (new CustomerFaker)->factory()->create([
+    (new CustomerFaker())->factory()->create([
         'password' => Hash::make($password = 'admin123'),
     ]);
 
@@ -76,7 +80,7 @@ it('fails to log in a customer if the email is invalid', function () {
 
 it('fails to log in a customer if the password is invalid', function () {
     // Arrange.
-    $customer = (new CustomerFaker)->factory()->create();
+    $customer = (new CustomerFaker())->factory()->create();
 
     // Act and Assert.
     post(route('shop.customer.session.create'), [

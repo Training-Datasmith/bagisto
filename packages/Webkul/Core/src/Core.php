@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Core;
 
 use Carbon\Carbon;
@@ -24,7 +26,7 @@ class Core
      *
      * @var string
      */
-    const BAGISTO_VERSION = '2.3.13';
+    public const BAGISTO_VERSION = '2.3.13';
 
     /**
      * Current Channel.
@@ -103,7 +105,8 @@ class Core
         protected LocaleRepository $localeRepository,
         protected CustomerGroupRepository $customerGroupRepository,
         protected TaxCategoryRepository $taxCategoryRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Get the version number of the Bagisto.

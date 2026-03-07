@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Installer\Database\Seeders;
 
 use Carbon\Carbon;
@@ -34,7 +36,7 @@ class ProductTableSeeder extends Seeder
     /**
      * Base path for the images.
      */
-    const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/products/';
+    public const BASE_PATH = 'packages/Webkul/Installer/src/Resources/assets/images/seeders/products/';
 
     /**
      * Seed the application's database.
@@ -59,7 +61,7 @@ class ProductTableSeeder extends Seeder
         });
 
         // Category seeder.
-        $seeder = new CategoryTableSeeder;
+        $seeder = new CategoryTableSeeder();
 
         $seeder->sampleCategories($parameters);
 

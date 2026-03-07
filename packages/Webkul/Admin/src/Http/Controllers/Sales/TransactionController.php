@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Illuminate\Http\JsonResponse;
@@ -27,7 +29,8 @@ class TransactionController extends Controller
         protected InvoiceRepository $invoiceRepository,
         protected ShipmentRepository $shipmentRepository,
         protected OrderTransactionRepository $orderTransactionRepository
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.

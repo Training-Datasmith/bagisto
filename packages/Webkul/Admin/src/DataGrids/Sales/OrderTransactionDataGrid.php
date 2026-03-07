@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\Sales;
 
 use Illuminate\Support\Facades\DB;
@@ -10,17 +12,17 @@ class OrderTransactionDataGrid extends DataGrid
     /**
      * Transaction status Paid.
      */
-    const STATUS_PAID = 'paid';
+    public const STATUS_PAID = 'paid';
 
     /**
      * Transaction status Pending.
      */
-    const STATUS_PENDING = 'pending';
+    public const STATUS_PENDING = 'pending';
 
     /**
      * Transaction status Completed
      */
-    const STATUS_COMPLETED = 'COMPLETED';
+    public const STATUS_COMPLETED = 'COMPLETED';
 
     /**
      * Prepare query builder.

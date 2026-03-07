@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Webkul\Paypal\Http\Controllers\SmartButtonController;
 use Webkul\Paypal\Http\Controllers\StandardController;

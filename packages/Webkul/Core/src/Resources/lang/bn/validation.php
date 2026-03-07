@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => ':attribute শুধুমাত্র আলফা, সংখ্যাসূচক, স্পেস, কমা এবং ড্যাশ গ্রহণ করতে পারে।',
     'alpha-numeric-space' => ':attribute শুধুমাত্র আলফা, সংখ্যাসূচক এবং স্পেস গ্রহণ করতে পারে।',

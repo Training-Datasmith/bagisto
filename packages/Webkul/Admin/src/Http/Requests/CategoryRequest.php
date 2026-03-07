@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -38,7 +40,7 @@ class CategoryRequest extends FormRequest
         ];
 
         if ($id = $this->id) {
-            $rules[$locale.'.slug'] = ['required', new Slug, new ProductCategoryUniqueSlug('category_translations', $id)];
+            $rules[$locale.'.slug'] = ['required', new Slug(), new ProductCategoryUniqueSlug('category_translations', $id)];
             $rules[$locale.'.name'] = ['required'];
             $rules[$locale.'.description'] = 'required_if:display_mode,==,description_only,products_and_description';
 

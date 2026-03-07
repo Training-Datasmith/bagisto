@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'address' => 'attribute : فقط می تواند آلفا، عدد، فاصله، کاما و خط تیره را بپذیرد.',
     'alpha-numeric-space' => 'attribute : فقط می تواند آلفا، عدد و فاصله را بپذیرد.',

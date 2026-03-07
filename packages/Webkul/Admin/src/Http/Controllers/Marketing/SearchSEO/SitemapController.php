@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\Http\Controllers\Marketing\SearchSEO;
 
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class SitemapController extends Controller
      *
      * @return void
      */
-    public function __construct(public SitemapRepository $sitemapRepository) {}
+    public function __construct(public SitemapRepository $sitemapRepository)
+    {
+    }
 
     /**
      * Display a listing of the resource.

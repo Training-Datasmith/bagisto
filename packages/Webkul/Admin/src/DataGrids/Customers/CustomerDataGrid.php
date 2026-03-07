@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Admin\DataGrids\Customers;
 
 use Illuminate\Support\Facades\DB;
@@ -22,7 +24,9 @@ class CustomerDataGrid extends DataGrid
      *
      * @return void
      */
-    public function __construct(protected CustomerGroupRepository $customerGroupRepository) {}
+    public function __construct(protected CustomerGroupRepository $customerGroupRepository)
+    {
+    }
 
     /**
      * Prepare query builder.

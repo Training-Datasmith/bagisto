@@ -1,12 +1,15 @@
 <?php
 
-use Webkul\Core\Models\Currency;
-use Webkul\Core\Models\CurrencyExchangeRate;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\get;
+
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Core\Models\Currency;
+use Webkul\Core\Models\CurrencyExchangeRate;
 
 it('should returns the exchange rate index page', function () {
     // Act and Assert.

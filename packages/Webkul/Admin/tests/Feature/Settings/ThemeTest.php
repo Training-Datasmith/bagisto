@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Http\UploadedFile;
-use Webkul\Theme\Models\ThemeCustomization;
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
+
+use Webkul\Theme\Models\ThemeCustomization;
 
 it('should returns the theme index page', function () {
     // Act and Assert.

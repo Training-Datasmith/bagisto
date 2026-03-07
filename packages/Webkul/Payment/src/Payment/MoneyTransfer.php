@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Payment\Payment;
 
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +20,9 @@ class MoneyTransfer extends Payment
      *
      * @return string
      */
-    public function getRedirectUrl() {}
+    public function getRedirectUrl()
+    {
+    }
 
     /**
      * Returns payment method additional information.

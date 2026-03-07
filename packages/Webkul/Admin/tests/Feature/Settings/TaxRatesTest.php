@@ -1,11 +1,14 @@
 <?php
 
-use Webkul\Tax\Models\TaxRate;
+declare(strict_types=1);
 
 use function Pest\Laravel\deleteJson;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
+
+use Webkul\Tax\Models\TaxRate;
 
 it('should returns the tax rate index page', function () {
     // Act and Assert.

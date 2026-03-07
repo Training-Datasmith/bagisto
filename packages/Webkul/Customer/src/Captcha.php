@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\Customer;
 
 use Webkul\Customer\Contracts\Captcha as CaptchaContract;
@@ -97,7 +99,7 @@ class Captcha implements CaptchaContract
      */
     public function validateResponse($response): bool
     {
-        $client = new \GuzzleHttp\Client;
+        $client = new \GuzzleHttp\Client();
 
         $response = $client->post($this->getSiteVerifyEndpoint(), [
             'query' => [

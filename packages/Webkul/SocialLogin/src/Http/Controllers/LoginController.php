@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\SocialLogin\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -11,14 +13,17 @@ use Webkul\SocialLogin\Repositories\CustomerSocialAccountRepository;
 
 class LoginController extends Controller
 {
-    use DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(protected CustomerSocialAccountRepository $customerSocialAccountRepository) {}
+    public function __construct(protected CustomerSocialAccountRepository $customerSocialAccountRepository)
+    {
+    }
 
     /**
      * Redirects to the social provider

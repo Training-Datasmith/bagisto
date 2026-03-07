@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Webkul\CartRule\Helpers;
 
 use Carbon\Carbon;
@@ -43,7 +45,8 @@ class CartRule
         protected CartRuleCustomerRepository $cartRuleCustomerRepository,
         protected CartRuleCouponUsageRepository $cartRuleCouponUsageRepository,
         protected Validator $validator
-    ) {}
+    ) {
+    }
 
     /**
      * Collect discount on cart
@@ -539,8 +542,12 @@ class CartRule
         $customerGroup = $this->customerRepository->getCurrentGroup();
 
         return $this->cartRuleRepository
-            ->leftJoin('cart_rule_customer_groups', 'cart_rules.id', '=',
-                'cart_rule_customer_groups.cart_rule_id')
+            ->leftJoin(
+                'cart_rule_customer_groups',
+                'cart_rules.id',
+                '=',
+                'cart_rule_customer_groups.cart_rule_id'
+            )
             ->leftJoin('cart_rule_channels', 'cart_rules.id', '=', 'cart_rule_channels.cart_rule_id')
             ->where('cart_rule_customer_groups.customer_group_id', $customerGroup->id)
             ->where('cart_rule_channels.channel_id', core()->getCurrentChannel()->id)
