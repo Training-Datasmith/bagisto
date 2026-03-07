@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $allowedIPs = array_map('trim', explode(',', config('app.debug_allowed_ips')));
+        $allowedIPs = array_map(trim(...), explode(',', config('app.debug_allowed_ips')));
 
         $allowedIPs = array_filter($allowedIPs);
 
@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
+        ParallelTesting::setUpTestDatabase(function (string $database, int $token): void {
             Artisan::call('db:seed');
         });
     }
