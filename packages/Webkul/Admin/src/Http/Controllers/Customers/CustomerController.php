@@ -88,7 +88,7 @@ class CustomerController extends Controller
             'phone' => ['unique:customers,phone', new PhoneNumber()],
         ]);
 
-        $password = rand(100000, 10000000);
+        $password = bin2hex(random_bytes(12));
 
         Event::dispatch('customer.registration.before');
 

@@ -52,7 +52,7 @@ class CartRuleCouponRepository extends Repository
         $couponCode = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $couponCode .= $this->charset[$format][rand(0, strlen($this->charset[$format]) - 1)];
+            $couponCode .= $this->charset[$format][random_int(0, strlen($this->charset[$format]) - 1)];
         }
 
         return $couponCode;

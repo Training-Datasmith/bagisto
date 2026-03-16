@@ -43,7 +43,7 @@ class URLRewriteController extends Controller
     public function store(): JsonResponse
     {
         $this->validate(request(), [
-            'entity_type' => 'required:in:category,product,cms_page',
+            'entity_type' => 'required|in:category,product,cms_page',
             'request_path' => 'required',
             'target_path' => 'required',
             'redirect_type' => 'required|in:301,302',
@@ -77,7 +77,7 @@ class URLRewriteController extends Controller
         $id = request()->id;
 
         $this->validate(request(), [
-            'entity_type' => 'required:in:category,product,cms_page',
+            'entity_type' => 'required|in:category,product,cms_page',
             'request_path' => 'required',
             'target_path' => 'required',
             'redirect_type' => 'required|in:301,302',
