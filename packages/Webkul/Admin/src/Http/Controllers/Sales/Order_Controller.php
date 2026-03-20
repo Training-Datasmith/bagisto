@@ -28,9 +28,10 @@ class Order_Controller extends Controller
     {
     }
     /**
-     * Display a listing of the resource.
+     * Display a paginated listing of orders, or return a DataGrid JSON response for AJAX requests.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\JsonResponse
+     *         View with channels and customer groups for filters, or processed DataGrid payload
      */
     public function index()
     {
@@ -42,9 +43,15 @@ class Order_Controller extends Controller
         return view('admin::sales.orders.index', compact('channels', 'groups'));
     }
     /**
-     * Show the form for creating a new resource.
+     * Displays the admin order creation form for a given cart.
      *
-     * @return \Illuminate\View\View
+     * Loads the cart, resolves the customer's saved addresses for pre-filling,
+     * and passes a CartResource representation to the view.
+     *
+     * @param int $cart_id The ID of the cart to convert into an order
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     *         Order creation view, or redirect to index if cart is not found
      */
     public function create(int $cart_id)
     {
@@ -57,7 +64,16 @@ class Order_Controller extends Controller
         return view('admin::sales.orders.create', compact('cart', 'addresses'));
     }
     /**
-     * Store order
+     * Validates the cart, collects totals, and persists a new order from the given cart.
+     *
+     * Only cash-on-delivery and money-transfer payment methods are supported for
+     * admin-created orders. Fires `sales.order.created.before` / `.after` events.
+     *
+     * @param int $cart_id The cart ID to convert into a confirmed order
+     *
+     * @return \Illuminate\Http\JsonResponse JSON with redirect URL on success, or error message
+     *
+     * @throws \Exception If cart validation fails (minimum order amount, missing addresses, etc.)
      */
     public function store(int $cart_id)
     {
@@ -83,19 +99,26 @@ class Order_Controller extends Controller
         return new Json_Resource(['redirect' => true, 'redirect_url' => route('admin.sales.orders.view', $order->id)]);
     }
     /**
-     * Show the view for the specified resource.
+     * Displays the admin detail view for a single order.
      *
-     * @return \Illuminate\View\View
+     * @param int $id The order's primary key
+     *
+     * @return \Illuminate\View\View The order detail view with the order model
      */
-    public function view(int $id)
+    public function view(int $id): \Illuminate\View\View
     {
         $order = $this->order_repository->find_or_fail($id);
         return view('admin::sales.orders.view', compact('order'));
     }
     /**
-     * Reorder action for the specified resource.
+     * Creates a new draft cart pre-populated with items from an existing order.
      *
-     * @return \Illuminate\Http\Response
+     * Products that are no longer available or throw exceptions are silently skipped.
+     * Redirects to the order creation form with the newly created cart.
+     *
+     * @param int $id The ID of the source order to reorder from
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirect to admin.sales.orders.create with new cart ID
      */
     public function reorder(int $id)
     {
@@ -112,9 +135,14 @@ class Order_Controller extends Controller
         return redirect()->route('admin.sales.orders.create', $cart->id);
     }
     /**
-     * Cancel action for the specified resource.
+     * Cancels an order and flashes a success or error message to the session.
      *
-     * @return \Illuminate\Http\Response
+     * Delegates actual cancellation logic to the OrderRepository. Cancellation is only
+     * possible when the order is in a cancellable state (not already completed/cancelled).
+     *
+     * @param int $id The ID of the order to cancel
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirect back to the order view
      */
     public function cancel(int $id)
     {
@@ -127,11 +155,15 @@ class Order_Controller extends Controller
         return redirect()->route('admin.sales.orders.view', $id);
     }
     /**
-     * Add comment to the order
+     * Saves a new comment on an order and optionally notifies the customer.
      *
-     * @return \Illuminate\Http\Response
+     * Fires `sales.order.comment.create.before` and `.after` events for extensibility.
+     *
+     * @param int $id The order's primary key
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirect back to the order view with success flash
      */
-    public function comment(int $id)
+    public function comment(int $id): \Illuminate\Http\RedirectResponse
     {
         $validated_data = $this->validate(request(), ['comment' => 'required', 'customer_notified' => 'sometimes|sometimes']);
         $validated_data['order_id'] = $id;
@@ -142,9 +174,15 @@ class Order_Controller extends Controller
         return redirect()->route('admin.sales.orders.view', $id);
     }
     /**
-     * Result of search product.
+     * Searches orders by customer email, status, customer name, or increment ID.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * Returns a paginated JSON response suitable for autocomplete/search widgets.
+     * The query parameter is URL-decoded before matching.
+     *
+     * @return \Illuminate\Http\JsonResponse Paginated order records with formatted dates and status labels
+     *
+     * @complexity O(n log n) for DB index scan + sort; performance degrades on large datasets
+     *             without an index on customer_email and increment_id columns
      */
     public function search()
     {
@@ -159,11 +197,16 @@ class Order_Controller extends Controller
         return response()->json($orders);
     }
     /**
-     * Validate order before creation.
+     * Validates the cart state before an admin-created order is committed.
      *
-     * @return void|\Exception
+     * Checks minimum order amount, shipping address presence (for stockable items),
+     * billing address presence, shipping method selection, and payment method presence.
+     *
+     * @return void
+     *
+     * @throws \Exception With a translated message when any validation condition fails
      */
-    public function validate_order()
+    public function validate_order(): void
     {
         $cart = Cart::get_cart();
         if (!Cart::have_minimum_order_amount()) {

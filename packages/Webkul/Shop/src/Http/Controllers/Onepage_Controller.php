@@ -7,14 +7,23 @@ namespace Webkul\Shop\Http\Controllers;
 use Illuminate\Support\Facades\Event;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\MagicAI\Facades\MagicAI;
+use Webkul\Sales\Contracts\Order as OrderContract;
 use Webkul\Sales\Repositories\OrderRepository;
 
 class OnepageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Displays the one-page checkout view after validating cart and customer eligibility.
      *
-     * @return \Illuminate\View\View
+     * Performs the following pre-flight checks before rendering the checkout:
+     * - Cart page must be enabled in store configuration
+     * - Guest checkout must be allowed, or customer must be authenticated
+     * - Customer account must not be suspended
+     * - Cart must have no validation errors
+     * - Downloadable-only carts require an authenticated customer
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     *         Checkout view, or redirect to cart/login page if any check fails
      */
     public function index()
     {
@@ -70,9 +79,17 @@ class OnepageController extends Controller
     }
 
     /**
-     * Order success page.
+     * Renders the post-checkout order success page.
+     *
+     * Reads the order ID from the session (`order_id` key). If MagicAI checkout
+     * messaging is enabled, generates a personalised message via the configured LLM
+     * and attaches it to the order DTO for display. Exceptions from the AI service
+     * are swallowed so a failure never blocks the success page.
+     *
+     * @param OrderRepository $orderRepository Repository used to load the placed order
      *
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     *         Success view with order data, or redirect to cart if session order ID is missing
      */
     public function success(OrderRepository $orderRepository)
     {
@@ -103,12 +120,16 @@ class OnepageController extends Controller
     }
 
     /**
-     * Order success page.
+     * Builds the MagicAI prompt string for the post-checkout personalised message.
      *
-     * @param  \Webkul\Sales\Contracts\Order  $order
-     * @return string
+     * Appends ordered product details (name, quantity, price), customer full name,
+     * current locale, and store name to the admin-configured base prompt.
+     *
+     * @param \Webkul\Sales\Contracts\Order $order The just-placed order, with items relation loaded
+     *
+     * @return string Assembled prompt ready to be sent to the LLM
      */
-    public function getCheckoutPrompt($order)
+    public function getCheckoutPrompt(OrderContract $order): string
     {
         $prompt = core()->getConfigData('general.magic_ai.checkout_message.prompt');
 

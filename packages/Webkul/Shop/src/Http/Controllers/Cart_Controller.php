@@ -7,11 +7,14 @@ namespace Webkul\Shop\Http\Controllers;
 class CartController extends Controller
 {
     /**
-     * Cart page.
+     * Renders the shopping cart page.
      *
-     * @return \Illuminate\View\View
+     * Aborts with a 404 response if the cart page feature is disabled in store
+     * configuration (sales.checkout.shopping_cart.cart_page).
+     *
+     * @return \Illuminate\View\View The cart index view
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         if (! core()->getConfigData('sales.checkout.shopping_cart.cart_page')) {
             abort(404);
