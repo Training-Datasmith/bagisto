@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Models;
 
-namespace Webkul\CartRule\Models;
-
-use Konekt\Concord\Proxies\ModelProxy;
-
-class CartRuleCouponUsageProxy extends ModelProxy
+use Konekt\Concord\Proxies\Model_Proxy;
+class Cart_Rule_Coupon_Usage_Proxy extends Model_Proxy
 {
 }

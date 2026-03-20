@@ -1,26 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Eloquent;
 
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Webkul\Core\Helpers\Locales;
-
-class TranslatableModel extends Model
+class Translatable_Model extends Model
 {
     use Translatable;
-
     /**
      * Get locales helper.
      */
-    protected function getLocalesHelper(): Locales
+    protected function get_locales_helper(): Locales
     {
         return app(Locales::class);
     }
-
     /**
      * Locale. This method is being overridden to address the
      * performance issues caused by the existing implementation
@@ -30,34 +26,30 @@ class TranslatableModel extends Model
      */
     protected function locale()
     {
-        if ($this->isChannelBased()) {
-            return core()->getDefaultLocaleCodeFromDefaultChannel();
+        if ($this->is_channel_based()) {
+            return core()->get_default_locale_code_from_default_channel();
         } else {
-            if ($this->defaultLocale) {
-                return $this->defaultLocale;
+            if ($this->default_locale) {
+                return $this->default_locale;
             }
-
-            return config('translatable.locale') ?: app()->make('translator')->getLocale();
+            return config('translatable.locale') ?: app()->make('translator')->get_locale();
         }
     }
-
     /**
      * Is channel based.
      *
      * @return bool
      */
-    protected function isChannelBased()
+    protected function is_channel_based()
     {
         return false;
     }
-
-    public function scopeWhereTranslationIn(Builder $query, string $translationField, $value, ?string $locale = null, string $method = 'whereHas')
+    public function scope_where_translation_in(Builder $query, string $translation_field, $value, ?string $locale = null, string $method = 'whereHas')
     {
-        return $query->$method('translations', function (Builder $query) use ($translationField, $value, $locale) {
-            $query->whereIn($this->getTranslationsTable().'.'.$translationField, $value);
-
+        return $query->{$method}('translations', function (Builder $query) use ($translation_field, $value, $locale) {
+            $query->where_in($this->get_translations_table() . '.' . $translation_field, $value);
             if ($locale) {
-                $query->whereIn($this->getTranslationsTable().'.'.$this->getLocaleKey(), $locale);
+                $query->where_in($this->get_translations_table() . '.' . $this->get_locale_key(), $locale);
             }
         });
     }

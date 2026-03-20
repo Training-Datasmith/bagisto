@@ -1,117 +1,81 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Validations;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validation_Rule;
 use Illuminate\Support\Facades\DB;
-use Webkul\Category\Models\CategoryTranslationProxy;
-use Webkul\Product\Repositories\ProductRepository;
-
-class ProductCategoryUniqueSlug implements ValidationRule
+use Webkul\Category\Models\Category_Translation_Proxy;
+use Webkul\Product\Repositories\Product_Repository;
+class Product_Category_Unique_Slug implements Validation_Rule
 {
     /**
      * Reserved slugs.
      *
      * @var array
      */
-    protected $reservedSlugs = [
-        'categories',
-    ];
-
+    protected $reserved_slugs = ['categories'];
     /**
      * Constructor.
      *
      * @param  string  $tableName
      * @param  string  $id
      */
-    public function __construct(
-        protected $tableName = null,
-        protected $id = null
-    ) {
+    public function __construct(protected $table_name = null, protected $id = null)
+    {
     }
-
     /**
      * Run the validation rule.
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (in_array($value, $this->reservedSlugs)) {
+        if (in_array($value, $this->reserved_slugs)) {
             $fail('admin::app.validations.slug-reserved')->translate();
-
             return;
         }
-
-        if (! $this->isSlugUnique($value)) {
+        if (!$this->is_slug_unique($value)) {
             $fail('admin::app.validations.slug-being-used')->translate();
         }
     }
-
     /**
      * Checks slug is unique or not.
      *
      * @param  string  $slug
      * @return bool
      */
-    protected function isSlugUnique($slug)
+    protected function is_slug_unique($slug)
     {
-        return ! $this->isSlugExistsInCategories($slug) && ! $this->isSlugExistsInProducts($slug);
+        return !$this->is_slug_exists_in_categories($slug) && !$this->is_slug_exists_in_products($slug);
     }
-
     /**
      * Is slug is exists in categories.
      *
      * @param  string  $slug
      * @return bool
      */
-    protected function isSlugExistsInCategories($slug)
+    protected function is_slug_exists_in_categories($slug)
     {
-        if (
-            $this->tableName
-            && $this->id
-            && $this->tableName === 'category_translations'
-        ) {
-            return CategoryTranslationProxy::modelClass()::where('category_id', '<>', $this->id)
-                ->where('slug', $slug)
-                ->limit(1)
-                ->select(DB::raw(1))
-                ->exists();
+        if ($this->table_name && $this->id && $this->table_name === 'category_translations') {
+            return Category_Translation_Proxy::model_class()::where('category_id', '<>', $this->id)->where('slug', $slug)->limit(1)->select(DB::raw(1))->exists();
         }
-
-        return CategoryTranslationProxy::modelClass()::where('slug', $slug)
-            ->limit(1)
-            ->select(DB::raw(1))
-            ->exists();
+        return Category_Translation_Proxy::model_class()::where('slug', $slug)->limit(1)->select(DB::raw(1))->exists();
     }
-
     /**
      * Is slug is exists in products.
      *
      * @param  string  $slug
      * @return bool
      */
-    protected function isSlugExistsInProducts($slug)
+    protected function is_slug_exists_in_products($slug)
     {
-        if (core()->getConfigData('catalog.products.search.engine') == 'elastic') {
-            $searchEngine = core()->getConfigData('catalog.products.search.storefront_mode');
+        if (core()->get_config_data('catalog.products.search.engine') == 'elastic') {
+            $search_engine = core()->get_config_data('catalog.products.search.storefront_mode');
         }
-
-        $product = app(ProductRepository::class)
-            ->setSearchEngine($searchEngine ?? 'database')
-            ->findBySlug($slug);
-
-        if (
-            $product
-            && $this->tableName
-            && $this->id
-            && $this->tableName === 'products'
-            && $this->id == $product->id
-        ) {
+        $product = app(Product_Repository::class)->set_search_engine($search_engine ?? 'database')->find_by_slug($slug);
+        if ($product && $this->table_name && $this->id && $this->table_name === 'products' && $this->id == $product->id) {
             $product = null;
         }
-
         return (bool) $product;
     }
 }

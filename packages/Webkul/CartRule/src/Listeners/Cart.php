@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Listeners;
 
-namespace Webkul\CartRule\Listeners;
-
-use Webkul\CartRule\Helpers\CartRule;
-
+use Webkul\Cart_Rule\Helpers\Cart_Rule;
 class Cart
 {
     /**
@@ -14,18 +12,17 @@ class Cart
      * @param  \Webkul\CartRule\Repositories\CartRule  $cartRuleHelper
      * @return void
      */
-    public function __construct(protected CartRule $cartRuleHelper)
+    public function __construct(protected Cart_Rule $cart_rule_helper)
     {
     }
-
     /**
      * Apply valid cart rules to cart
      *
      * @param  \Webkul\Checkout\Contracts\Cart  $cart
      * @return void
      */
-    public function applyCartRules($cart)
+    public function apply_cart_rules($cart)
     {
-        $this->cartRuleHelper->collect($cart);
+        $this->cart_rule_helper->collect($cart);
     }
 }

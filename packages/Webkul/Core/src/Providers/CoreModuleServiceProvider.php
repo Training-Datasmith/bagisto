@@ -1,37 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Providers;
 
-use Konekt\Concord\BaseModuleServiceProvider;
-
+use Konekt\Concord\Base_Module_Service_Provider;
 /**
  * This is the overridden `CoreModuleServiceProvider` class from the `konekt/concord` package.
  */
-class CoreModuleServiceProvider extends BaseModuleServiceProvider
+class Core_Module_Service_Provider extends Base_Module_Service_Provider
 {
     /**
      * Bootstrap services.
      */
     public function boot(): void
     {
-        if ($this->areMigrationsEnabled()) {
-            $this->registerMigrations();
+        if ($this->are_migrations_enabled()) {
+            $this->register_migrations();
         }
-
-        if ($this->areModelsEnabled()) {
-            $this->registerModels();
-            $this->registerEnums();
-            $this->registerRequestTypes();
+        if ($this->are_models_enabled()) {
+            $this->register_models();
+            $this->register_enums();
+            $this->register_request_types();
         }
-
-        if ($this->areViewsEnabled()) {
-            $this->registerViews();
+        if ($this->are_views_enabled()) {
+            $this->register_views();
         }
-
         if ($routes = $this->config('routes', true)) {
-            $this->registerRoutes($routes);
+            $this->register_routes($routes);
         }
     }
 }

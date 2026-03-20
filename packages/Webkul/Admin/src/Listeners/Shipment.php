@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Listeners;
 
-use Webkul\Admin\Mail\Order\InventorySourceNotification;
-use Webkul\Admin\Mail\Order\ShippedNotification;
+use Webkul\Admin\Mail\Order\Inventory_Source_Notification;
+use Webkul\Admin\Mail\Order\Shipped_Notification;
 use Webkul\Sales\Contracts\Shipment as ShipmentContract;
-
 class Shipment extends Base
 {
     /**
@@ -15,15 +13,14 @@ class Shipment extends Base
      *
      * @return void
      */
-    public function afterCreated(ShipmentContract $shipment)
+    public function after_created(Shipment_Contract $shipment)
     {
         try {
-            if (core()->getConfigData('emails.general.notifications.emails.general.notifications.new_shipment_mail_to_admin')) {
-                $this->prepareMail($shipment, new ShippedNotification($shipment));
+            if (core()->get_config_data('emails.general.notifications.emails.general.notifications.new_shipment_mail_to_admin')) {
+                $this->prepare_mail($shipment, new Shipped_Notification($shipment));
             }
-
-            if (core()->getConfigData('emails.general.notifications.emails.general.notifications.new_inventory_source')) {
-                $this->prepareMail($shipment, new InventorySourceNotification($shipment));
+            if (core()->get_config_data('emails.general.notifications.emails.general.notifications.new_inventory_source')) {
+                $this->prepare_mail($shipment, new Inventory_Source_Notification($shipment));
             }
         } catch (\Exception $e) {
             report($e);

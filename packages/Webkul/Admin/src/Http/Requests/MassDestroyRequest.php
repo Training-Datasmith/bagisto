@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class MassDestroyRequest extends FormRequest
+use Illuminate\Foundation\Http\Form_Request;
+class Mass_Destroy_Request extends Form_Request
 {
     /**
      * Determine if the request is authorized or not.
@@ -17,7 +15,6 @@ class MassDestroyRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,9 +22,6 @@ class MassDestroyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'indices' => ['required', 'array'],
-            'indices.*' => ['integer'],
-        ];
+        return ['indices' => ['required', 'array'], 'indices.*' => ['integer']];
     }
 }

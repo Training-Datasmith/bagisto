@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Webkul\Admin\Validations\ProductCategoryUniqueSlug;
+use Illuminate\Foundation\Http\Form_Request;
+use Webkul\Admin\Validations\Product_Category_Unique_Slug;
 use Webkul\Core\Rules\Slug;
-
-class CategoryRequest extends FormRequest
+class Category_Request extends Form_Request
 {
     /**
      * Determine if the Configuration is authorized to make this request.
@@ -19,7 +17,6 @@ class CategoryRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,30 +24,17 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        $locale = core()->getRequestedLocaleCode();
-
-        $rules = [
-            'position' => 'required|integer',
-            'logo_path' => 'array',
-            'logo_path.*' => 'mimes:bmp,jpeg,jpg,png,webp',
-            'banner_path' => 'array',
-            'banner_path.*' => 'mimes:bmp,jpeg,jpg,png,webp',
-            'attributes' => 'required|array',
-            'attributes.*' => 'required',
-        ];
-
+        $locale = core()->get_requested_locale_code();
+        $rules = ['position' => 'required|integer', 'logo_path' => 'array', 'logo_path.*' => 'mimes:bmp,jpeg,jpg,png,webp', 'banner_path' => 'array', 'banner_path.*' => 'mimes:bmp,jpeg,jpg,png,webp', 'attributes' => 'required|array', 'attributes.*' => 'required'];
         if ($id = $this->id) {
-            $rules[$locale.'.slug'] = ['required', new Slug(), new ProductCategoryUniqueSlug('category_translations', $id)];
-            $rules[$locale.'.name'] = ['required'];
-            $rules[$locale.'.description'] = 'required_if:display_mode,==,description_only,products_and_description';
-
+            $rules[$locale . '.slug'] = ['required', new Slug(), new Product_Category_Unique_Slug('category_translations', $id)];
+            $rules[$locale . '.name'] = ['required'];
+            $rules[$locale . '.description'] = 'required_if:display_mode,==,description_only,products_and_description';
             return $rules;
         }
-
-        $rules['slug'] = ['required', new ProductCategoryUniqueSlug('category_translations')];
+        $rules['slug'] = ['required', new Product_Category_Unique_Slug('category_translations')];
         $rules['name'] = 'required';
         $rules['description'] = 'required_if:display_mode,==,description_only,products_and_description';
-
         return $rules;
     }
 }

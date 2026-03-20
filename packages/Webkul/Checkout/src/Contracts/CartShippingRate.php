@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Contracts;
 
-interface CartShippingRate
+interface Cart_Shipping_Rate
 {
 }

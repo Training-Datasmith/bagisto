@@ -1,31 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Enums;
 
-enum CurrencyPositionEnum: string
+enum Currency_Position_Enum : string
 {
     /**
      * Left.
      */
     case LEFT = 'left';
-
     /**
      * Left with space.
      */
     case LEFT_WITH_SPACE = 'left_with_space';
-
     /**
      * Right.
      */
     case RIGHT = 'right';
-
     /**
      * Right with space.
      */
     case RIGHT_WITH_SPACE = 'right_with_space';
-
     /**
      * Options.
      *
@@ -33,11 +28,6 @@ enum CurrencyPositionEnum: string
      */
     public static function options()
     {
-        return [
-            CurrencyPositionEnum::LEFT->value => trans('core::app.currency-position.options.left'),
-            CurrencyPositionEnum::LEFT_WITH_SPACE->value => trans('core::app.currency-position.options.left-with-space'),
-            CurrencyPositionEnum::RIGHT->value => trans('core::app.currency-position.options.right'),
-            CurrencyPositionEnum::RIGHT_WITH_SPACE->value => trans('core::app.currency-position.options.right-with-space'),
-        ];
+        return [Currency_Position_Enum::LEFT->value => trans('core::app.currency-position.options.left'), Currency_Position_Enum::LEFT_WITH_SPACE->value => trans('core::app.currency-position.options.left-with-space'), Currency_Position_Enum::RIGHT->value => trans('core::app.currency-position.options.right'), Currency_Position_Enum::RIGHT_WITH_SPACE->value => trans('core::app.currency-position.options.right-with-space')];
     }
 }

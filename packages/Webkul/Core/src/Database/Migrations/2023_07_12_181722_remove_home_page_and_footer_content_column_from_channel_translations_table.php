@@ -1,22 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('channel_translations', function (Blueprint $table) {
-            $table->dropColumn(['home_page_content', 'footer_content']);
+            $table->drop_column(['home_page_content', 'footer_content']);
         });
     }
-
     /**
      * Reverse the migrations.
      */

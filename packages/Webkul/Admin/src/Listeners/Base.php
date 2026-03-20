@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Listeners;
 
 use Illuminate\Support\Facades\Mail;
-use Webkul\Sales\Contracts\OrderComment;
-
+use Webkul\Sales\Contracts\Order_Comment;
 class Base
 {
     /**
@@ -15,36 +13,29 @@ class Base
      * @param object \Webkul\Sales\Contracts\Order|\Webkul\Sales\Contracts\Invoice|\Webkul\Sales\Contracts\Refund|\Webkul\Sales\Contracts\Shipment|\Webkul\Sales\Contracts\OrderComment
      * @return string
      */
-    protected function getLocale($object)
+    protected function get_locale($object)
     {
-        if ($object instanceof OrderComment) {
+        if ($object instanceof Order_Comment) {
             $object = $object->order;
         }
-
-        $objectFirstItem = $object->items->first();
-
-        return $objectFirstItem->additional['locale'] ?? 'en';
+        $object_first_item = $object->items->first();
+        return $object_first_item->additional['locale'] ?? 'en';
     }
-
     /**
      * Prepare mail.
      *
      * @return void
      */
-    protected function prepareMail($entity, $notification)
+    protected function prepare_mail($entity, $notification)
     {
-        $customerLocale = $this->getLocale($entity);
-
-        $previousLocale = core()->getCurrentLocale()->code;
-
-        app()->setLocale($customerLocale);
-
+        $customer_locale = $this->get_locale($entity);
+        $previous_locale = core()->get_current_locale()->code;
+        app()->set_locale($customer_locale);
         try {
             Mail::queue($notification);
         } catch (\Exception $e) {
-            \Log::error('Error in Sending Email'.$e->getMessage());
+            \Log::error('Error in Sending Email' . $e->get_message());
         }
-
-        app()->setLocale($previousLocale);
+        app()->set_locale($previous_locale);
     }
 }

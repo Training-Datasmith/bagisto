@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -25,12 +24,10 @@ return new class () extends Migration {
             $table->text('maintenance_mode_text')->nullable();
             $table->json('home_seo')->nullable();
             $table->timestamps();
-
             $table->unique(['channel_id', 'locale']);
-            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+            $table->foreign('channel_id')->references('id')->on('channels')->on_delete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -38,6 +35,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('channel_translations');
+        Schema::drop_if_exists('channel_translations');
     }
 };

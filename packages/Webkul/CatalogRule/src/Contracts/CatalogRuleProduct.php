@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Contracts;
 
-namespace Webkul\CatalogRule\Contracts;
-
-interface CatalogRuleProduct
+interface Catalog_Rule_Product
 {
 }

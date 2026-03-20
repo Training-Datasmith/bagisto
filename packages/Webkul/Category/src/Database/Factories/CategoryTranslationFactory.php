@@ -1,32 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Webkul\Category\Models\CategoryTranslation;
-
-class CategoryTranslationFactory extends Factory
+use Webkul\Category\Models\Category_Translation;
+class Category_Translation_Factory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = CategoryTranslation::class;
-
+    protected $model = Category_Translation::class;
     /**
      * Define the model's default state.
      */
     public function definition(): array
     {
-        return [
-            'name' => $this->faker->word,
-            'slug' => $this->faker->unique()->slug,
-            'description' => $this->faker->sentence(),
-            'locale' => 'en',
-            'locale_id' => 1,
-        ];
+        return ['name' => $this->faker->word, 'slug' => $this->faker->unique()->slug, 'description' => $this->faker->sentence(), 'locale' => 'en', 'locale_id' => 1];
     }
 }

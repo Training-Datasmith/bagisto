@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Listeners;
 
-namespace Webkul\CatalogRule\Listeners;
-
-use Webkul\CatalogRule\Jobs\UpdateCreateProductIndex as UpdateCreateProductIndexJob;
-
+use Webkul\Catalog_Rule\Jobs\Update_Create_Product_Index as UpdateCreateProductIndexJob;
 class Product
 {
     /**
      * @param  \Webkul\Product\Contracts\Product  $product
      * @return void
      */
-    public function afterUpdate($product)
+    public function after_update($product)
     {
-        UpdateCreateProductIndexJob::dispatch($product);
+        Update_Create_Product_Index_Job::dispatch($product);
     }
 }

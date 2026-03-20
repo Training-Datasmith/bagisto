@@ -1,158 +1,122 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
+use Illuminate\Database\Eloquent\Relations\Belongs_To_Many;
 use Illuminate\Support\Facades\Storage;
-use Kalnoy\Nestedset\NodeTrait;
+use Kalnoy\Nestedset\Node_Trait;
 use Shetabit\Visitor\Traits\Visitable;
-use Webkul\Attribute\Models\AttributeProxy;
+use Webkul\Attribute\Models\Attribute_Proxy;
 use Webkul\Category\Contracts\Category as CategoryContract;
-use Webkul\Category\Database\Factories\CategoryFactory;
-use Webkul\Core\Eloquent\TranslatableModel;
-use Webkul\Product\Models\ProductProxy;
-
-class Category extends TranslatableModel implements CategoryContract
+use Webkul\Category\Database\Factories\Category_Factory;
+use Webkul\Core\Eloquent\Translatable_Model;
+use Webkul\Product\Models\Product_Proxy;
+class Category extends Translatable_Model implements Category_Contract
 {
-    use HasFactory;
-    use NodeTrait;
+    use Has_Factory;
+    use Node_Trait;
     use Visitable;
-
     /**
      * Translated attributes.
      *
      * @var array
      */
-    public $translatedAttributes = [
-        'name',
-        'description',
-        'slug',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-    ];
-
+    public $translated_attributes = ['name', 'description', 'slug', 'meta_title', 'meta_description', 'meta_keywords'];
     /**
      * Fillable.
      *
      * @var array
      */
-    protected $fillable = [
-        'position',
-        'status',
-        'display_mode',
-        'parent_id',
-        'additional',
-    ];
-
+    protected $fillable = ['position', 'status', 'display_mode', 'parent_id', 'additional'];
     /**
      * Eager loading.
      *
      * @var array
      */
     protected $with = ['translations'];
-
     /**
      * Appends.
      *
      * @var array
      */
     protected $appends = ['logo_url', 'banner_url', 'url'];
-
     /**
      * The products that belong to the category.
      */
-    public function products(): BelongsToMany
+    public function products(): Belongs_To_Many
     {
-        return $this->belongsToMany(ProductProxy::modelClass(), 'product_categories');
+        return $this->belongs_to_many(Product_Proxy::model_class(), 'product_categories');
     }
-
     /**
      * The filterable attributes that belong to the category.
      */
-    public function filterableAttributes(): BelongsToMany
+    public function filterable_attributes(): Belongs_To_Many
     {
-        return $this->belongsToMany(AttributeProxy::modelClass(), 'category_filterable_attributes')
-            ->with([
-                'options' => function ($query) {
-                    $query->orderBy('sort_order');
-                },
-                'translations',
-                'options.translations',
-            ]);
+        return $this->belongs_to_many(Attribute_Proxy::model_class(), 'category_filterable_attributes')->with(['options' => function ($query) {
+            $query->order_by('sort_order');
+        }, 'translations', 'options.translations']);
     }
-
     /**
      * Get url attribute.
      *
      * @return string
      */
-    public function getUrlAttribute()
+    public function get_url_attribute()
     {
-        if ($categoryTranslation = $this->translate(core()->getCurrentLocale()->code)) {
-            return url($categoryTranslation->slug);
+        if ($category_translation = $this->translate(core()->get_current_locale()->code)) {
+            return url($category_translation->slug);
         }
-
-        return url($this->translate(core()->getDefaultLocaleCodeFromDefaultChannel())?->slug);
+        return url($this->translate(core()->get_default_locale_code_from_default_channel())?->slug);
     }
-
     /**
      * Get image url for the category image.
      *
      * @return string
      */
-    public function getLogoUrlAttribute()
+    public function get_logo_url_attribute()
     {
-        if (! $this->logo_path) {
+        if (!$this->logo_path) {
             return;
         }
-
         return Storage::url($this->logo_path);
     }
-
     /**
      * Get banner url attribute.
      *
      * @return string
      */
-    public function getBannerUrlAttribute()
+    public function get_banner_url_attribute()
     {
-        if (! $this->banner_path) {
+        if (!$this->banner_path) {
             return;
         }
-
         return Storage::url($this->banner_path);
     }
-
     /**
      * Use fallback for category.
      */
-    protected function useFallback(): bool
+    protected function use_fallback(): bool
     {
         return true;
     }
-
     /**
      * Get fallback locale for category.
      */
-    protected function getFallbackLocale(?string $locale = null): ?string
+    protected function get_fallback_locale(?string $locale = null): ?string
     {
-        if ($fallback = core()->getDefaultLocaleCodeFromDefaultChannel()) {
+        if ($fallback = core()->get_default_locale_code_from_default_channel()) {
             return $fallback;
         }
-
-        return parent::getFallbackLocale();
+        return parent::get_fallback_locale();
     }
-
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return CategoryFactory::new();
+        return Category_Factory::new();
     }
 }

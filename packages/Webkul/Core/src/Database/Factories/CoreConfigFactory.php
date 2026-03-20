@@ -1,21 +1,18 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Webkul\Core\Models\CoreConfig;
-
-class CoreConfigFactory extends Factory
+use Webkul\Core\Models\Core_Config;
+class Core_Config_Factory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = CoreConfig::class;
-
+    protected $model = Core_Config::class;
     /**
      * Define the model's default state.
      *
@@ -23,8 +20,6 @@ class CoreConfigFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'channel_code' => core()->getCurrentChannelCode(),
-        ];
+        return ['channel_code' => core()->get_current_channel_code()];
     }
 }

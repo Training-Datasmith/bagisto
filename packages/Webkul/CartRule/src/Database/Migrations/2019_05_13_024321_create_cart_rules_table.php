@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -18,8 +17,8 @@ return new class () extends Migration {
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->dateTime('starts_from')->nullable();
-            $table->dateTime('ends_till')->nullable();
+            $table->date_time('starts_from')->nullable();
+            $table->date_time('ends_till')->nullable();
             $table->boolean('status')->default(0);
             $table->integer('coupon_type')->default(1);
             $table->boolean('use_auto_generation')->default(0);
@@ -40,7 +39,6 @@ return new class () extends Migration {
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -48,6 +46,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('cart_rules');
+        Schema::drop_if_exists('cart_rules');
     }
 };

@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Console\Commands;
 
 use Illuminate\Console\Command;
 use Webkul\Sales\Models\Invoice;
-
-class InvoiceOverdueCron extends Command
+class Invoice_Overdue_Cron extends Command
 {
     /**
      * The name and signature of the console command.
@@ -15,14 +13,12 @@ class InvoiceOverdueCron extends Command
      * @var string
      */
     protected $signature = 'invoice:cron';
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Invoice overdue reminders';
-
     /**
      * Create a new command instance.
      *
@@ -32,7 +28,6 @@ class InvoiceOverdueCron extends Command
     {
         parent::__construct();
     }
-
     /**
      * Execute the console command.
      *
@@ -40,10 +35,8 @@ class InvoiceOverdueCron extends Command
      */
     public function handle()
     {
-        Invoice::inOverdueAndRemindersLimit()
-            ->get()
-            ->each(function (Invoice $invoice) {
-                $invoice->sendInvoiceReminder();
-            });
+        Invoice::in_overdue_and_reminders_limit()->get()->each(function (Invoice $invoice) {
+            $invoice->send_invoice_reminder();
+        });
     }
 }

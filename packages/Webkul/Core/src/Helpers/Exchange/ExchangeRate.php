@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Helpers\Exchange;
 
-abstract class ExchangeRate
+abstract class Exchange_Rate
 {
-    abstract public function updateRates();
+    abstract public function update_rates();
 }

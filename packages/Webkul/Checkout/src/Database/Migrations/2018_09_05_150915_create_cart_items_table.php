@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -42,14 +41,12 @@ return new class () extends Migration {
             $table->string('applied_cart_rule_ids')->nullable();
             $table->json('additional')->nullable();
             $table->timestamps();
-
-            $table->foreign('parent_id')->references('id')->on('cart_items')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('cart_id')->references('id')->on('cart')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('cart_items')->on_delete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->on_delete('cascade');
+            $table->foreign('cart_id')->references('id')->on('cart')->on_delete('cascade');
             $table->foreign('tax_category_id')->references('id')->on('tax_categories');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -57,6 +54,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('cart_items');
+        Schema::drop_if_exists('cart_items');
     }
 };

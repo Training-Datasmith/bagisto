@@ -1,51 +1,41 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Webkul\Customer\Contracts\CustomerGroup as CustomerGroupContract;
-use Webkul\Customer\Database\Factories\CustomerGroupFactory;
-
-class CustomerGroup extends Model implements CustomerGroupContract
+use Illuminate\Database\Eloquent\Relations\Has_Many;
+use Webkul\Customer\Contracts\Customer_Group as CustomerGroupContract;
+use Webkul\Customer\Database\Factories\Customer_Group_Factory;
+class Customer_Group extends Model implements Customer_Group_Contract
 {
-    use HasFactory;
-
+    use Has_Factory;
     /**
      * Deinfine model table name.
      *
      * @var string
      */
     protected $table = 'customer_groups';
-
     /**
      * Fillable property for the model.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'code',
-        'is_user_defined',
-    ];
-
+    protected $fillable = ['name', 'code', 'is_user_defined'];
     /**
      * Get the customers for this group.
      */
-    public function customers(): HasMany
+    public function customers(): Has_Many
     {
-        return $this->hasMany(CustomerProxy::modelClass());
+        return $this->has_many(Customer_Proxy::model_class());
     }
-
     /**
      * Create a new factory instance for the model
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return CustomerGroupFactory::new();
+        return Customer_Group_Factory::new();
     }
 }

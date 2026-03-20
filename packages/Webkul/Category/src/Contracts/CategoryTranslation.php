@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Contracts;
 
-interface CategoryTranslation
+interface Category_Translation
 {
 }

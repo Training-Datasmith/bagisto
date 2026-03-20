@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Attribute\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class AttributeGroupRepository extends Repository
+class Attribute_Group_Repository extends Repository
 {
     /**
      * Specify Model class name

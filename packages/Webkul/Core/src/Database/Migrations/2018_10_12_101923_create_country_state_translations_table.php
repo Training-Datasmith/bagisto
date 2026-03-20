@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -19,11 +18,9 @@ return new class () extends Migration {
             $table->integer('country_state_id')->unsigned();
             $table->string('locale');
             $table->text('default_name')->nullable();
-
-            $table->foreign('country_state_id')->references('id')->on('country_states')->onDelete('cascade');
+            $table->foreign('country_state_id')->references('id')->on('country_states')->on_delete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -31,6 +28,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('country_state_translations');
+        Schema::drop_if_exists('country_state_translations');
     }
 };

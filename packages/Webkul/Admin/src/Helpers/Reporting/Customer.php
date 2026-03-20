@@ -1,221 +1,124 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Helpers\Reporting;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Webkul\Customer\Repositories\CustomerRepository;
-use Webkul\Product\Repositories\ProductReviewRepository;
-use Webkul\Sales\Repositories\OrderRepository;
-
-class Customer extends AbstractReporting
+use Webkul\Customer\Repositories\Customer_Repository;
+use Webkul\Product\Repositories\Product_Review_Repository;
+use Webkul\Sales\Repositories\Order_Repository;
+class Customer extends Abstract_Reporting
 {
     /**
      * Create a helper instance.
      *
      * @return void
      */
-    public function __construct(
-        protected CustomerRepository $customerRepository,
-        protected OrderRepository $orderRepository,
-        protected ProductReviewRepository $reviewRepository
-    ) {
+    public function __construct(protected Customer_Repository $customer_repository, protected Order_Repository $order_repository, protected Product_Review_Repository $review_repository)
+    {
         parent::__construct();
     }
-
     /**
      * Retrieves total customers and their progress.
      */
-    public function getTotalCustomersProgress(): array
+    public function get_total_customers_progress(): array
     {
-        return [
-            'previous' => $previous = $this->getTotalCustomers($this->lastStartDate, $this->lastEndDate),
-            'current' => $current = $this->getTotalCustomers($this->startDate, $this->endDate),
-            'progress' => $this->getPercentageChange($previous, $current),
-        ];
+        return ['previous' => $previous = $this->get_total_customers($this->last_start_date, $this->last_end_date), 'current' => $current = $this->get_total_customers($this->start_date, $this->end_date), 'progress' => $this->get_percentage_change($previous, $current)];
     }
-
     /**
      * Returns previous customers over time
      *
      * @param  string  $period
      * @param  bool  $includeEmpty
      */
-    public function getPreviousTotalCustomersOverTime($period = 'auto', $includeEmpty = true): array
+    public function get_previous_total_customers_over_time($period = 'auto', $include_empty = true): array
     {
-        return $this->getTotalCustomersOverTime($this->lastStartDate, $this->lastEndDate, $period);
+        return $this->get_total_customers_over_time($this->last_start_date, $this->last_end_date, $period);
     }
-
     /**
      * Returns current customers over time
      *
      * @param  string  $period
      * @param  bool  $includeEmpty
      */
-    public function getCurrentTotalCustomersOverTime($period = 'auto', $includeEmpty = true): array
+    public function get_current_total_customers_over_time($period = 'auto', $include_empty = true): array
     {
-        return $this->getTotalCustomersOverTime($this->startDate, $this->endDate, $period);
+        return $this->get_total_customers_over_time($this->start_date, $this->end_date, $period);
     }
-
     /**
      * Retrieves today customers and their progress.
      */
-    public function getTodayCustomersProgress(): array
+    public function get_today_customers_progress(): array
     {
-        return [
-            'previous' => $previous = $this->getTotalCustomers(now()->subDay()->startOfDay(), now()->subDay()->endOfDay()),
-            'current' => $current = $this->getTotalCustomers(now()->today(), now()->endOfDay()),
-            'progress' => $this->getPercentageChange($previous, $current),
-        ];
+        return ['previous' => $previous = $this->get_total_customers(now()->sub_day()->start_of_day(), now()->sub_day()->end_of_day()), 'current' => $current = $this->get_total_customers(now()->today(), now()->end_of_day()), 'progress' => $this->get_percentage_change($previous, $current)];
     }
-
     /**
      * Retrieves total customers by date
      *
      * @param  \Carbon\Carbon  $startDate
      * @param  \Carbon\Carbon  $endDate
      */
-    public function getTotalCustomers($startDate, $endDate): int
+    public function get_total_customers($start_date, $end_date): int
     {
-        return $this->customerRepository
-            ->resetModel()
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->count();
+        return $this->customer_repository->reset_model()->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->count();
     }
-
     /**
      * Retrieves total reviews and their progress.
      */
-    public function getTotalReviewsProgress(): array
+    public function get_total_reviews_progress(): array
     {
-        return [
-            'previous' => $previous = $this->getTotalReviews($this->lastStartDate, $this->lastEndDate),
-            'current' => $current = $this->getTotalReviews($this->startDate, $this->endDate),
-            'progress' => $this->getPercentageChange($previous, $current),
-        ];
+        return ['previous' => $previous = $this->get_total_reviews($this->last_start_date, $this->last_end_date), 'current' => $current = $this->get_total_reviews($this->start_date, $this->end_date), 'progress' => $this->get_percentage_change($previous, $current)];
     }
-
     /**
      * Retrieves total reviews by date
      *
      * @param  \Carbon\Carbon  $startDate
      * @param  \Carbon\Carbon  $endDate
      */
-    public function getTotalReviews($startDate, $endDate): int
+    public function get_total_reviews($start_date, $end_date): int
     {
-        return $this->reviewRepository
-            ->resetModel()
-            ->leftJoin('product_channels', 'product_reviews.product_id', '=', 'product_channels.product_id')
-            ->where('status', 'approved')
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->count();
+        return $this->review_repository->reset_model()->left_join('product_channels', 'product_reviews.product_id', '=', 'product_channels.product_id')->where('status', 'approved')->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->count();
     }
-
     /**
      * Gets customer with most sales.
      *
      * @param  int  $limit
      */
-    public function getCustomersWithMostSales($limit = null): Collection
+    public function get_customers_with_most_sales($limit = null): Collection
     {
-        $tablePrefix = DB::getTablePrefix();
-
-        return $this->orderRepository
-            ->resetModel()
-            ->addSelect(
-                'orders.customer_id as id',
-                'orders.customer_email as email',
-                DB::raw('CONCAT('.$tablePrefix.'orders.customer_first_name, " ", '.$tablePrefix.'orders.customer_last_name) as full_name'),
-                DB::raw('SUM(base_grand_total_invoiced - base_grand_total_refunded) as total'),
-                DB::raw('COUNT(*) as orders')
-            )
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->groupBy(DB::raw('CONCAT(customer_email, "-", customer_id)'))
-            ->orderByDesc('total')
-            ->limit($limit)
-            ->get();
+        $table_prefix = DB::get_table_prefix();
+        return $this->order_repository->reset_model()->add_select('orders.customer_id as id', 'orders.customer_email as email', DB::raw('CONCAT(' . $table_prefix . 'orders.customer_first_name, " ", ' . $table_prefix . 'orders.customer_last_name) as full_name'), DB::raw('SUM(base_grand_total_invoiced - base_grand_total_refunded) as total'), DB::raw('COUNT(*) as orders'))->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$this->start_date, $this->end_date])->group_by(DB::raw('CONCAT(customer_email, "-", customer_id)'))->order_by_desc('total')->limit($limit)->get();
     }
-
     /**
      * Gets customer with most orders.
      *
      * @param  int  $limit
      */
-    public function getCustomersWithMostOrders($limit = null): Collection
+    public function get_customers_with_most_orders($limit = null): Collection
     {
-        $tablePrefix = DB::getTablePrefix();
-
-        return $this->orderRepository
-            ->resetModel()
-            ->addSelect(
-                'orders.customer_id as id',
-                'orders.customer_email as email',
-                DB::raw('CONCAT('.$tablePrefix.'orders.customer_first_name, " ", '.$tablePrefix.'orders.customer_last_name) as full_name'),
-                DB::raw('COUNT(*) as orders')
-            )
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->groupBy(DB::raw('CONCAT(customer_email, "-", customer_id)'))
-            ->orderByDesc('orders')
-            ->limit($limit)
-            ->get();
+        $table_prefix = DB::get_table_prefix();
+        return $this->order_repository->reset_model()->add_select('orders.customer_id as id', 'orders.customer_email as email', DB::raw('CONCAT(' . $table_prefix . 'orders.customer_first_name, " ", ' . $table_prefix . 'orders.customer_last_name) as full_name'), DB::raw('COUNT(*) as orders'))->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$this->start_date, $this->end_date])->group_by(DB::raw('CONCAT(customer_email, "-", customer_id)'))->order_by_desc('orders')->limit($limit)->get();
     }
-
     /**
      * Gets customer with most orders.
      *
      * @param  int  $limit
      */
-    public function getCustomersWithMostReviews($limit = null): Collection
+    public function get_customers_with_most_reviews($limit = null): Collection
     {
-        $tablePrefix = DB::getTablePrefix();
-
-        return $this->reviewRepository
-            ->resetModel()
-            ->leftJoin('customers', 'product_reviews.customer_id', '=', 'customers.id')
-            ->leftJoin('product_channels', 'product_reviews.product_id', '=', 'product_channels.product_id')
-            ->addSelect(
-                'customers.id as id',
-                'customers.email as email',
-                DB::raw('CONCAT('.$tablePrefix.'customers.first_name, " ", '.$tablePrefix.'customers.last_name) as full_name'),
-                DB::raw('COUNT(*) as reviews')
-            )
-            ->whereIn('customers.channel_id', $this->channelIds)
-            ->whereIn('product_channels.channel_id', $this->channelIds)
-            ->whereBetween('product_reviews.created_at', [$this->startDate, $this->endDate])
-            ->where('product_reviews.status', 'approved')
-            ->whereNotNull('customer_id')
-            ->groupBy(DB::raw('CONCAT(email, "-", '.$tablePrefix.'customers.id)'))
-            ->orderByDesc('reviews')
-            ->limit($limit)
-            ->get();
+        $table_prefix = DB::get_table_prefix();
+        return $this->review_repository->reset_model()->left_join('customers', 'product_reviews.customer_id', '=', 'customers.id')->left_join('product_channels', 'product_reviews.product_id', '=', 'product_channels.product_id')->add_select('customers.id as id', 'customers.email as email', DB::raw('CONCAT(' . $table_prefix . 'customers.first_name, " ", ' . $table_prefix . 'customers.last_name) as full_name'), DB::raw('COUNT(*) as reviews'))->where_in('customers.channel_id', $this->channel_ids)->where_in('product_channels.channel_id', $this->channel_ids)->where_between('product_reviews.created_at', [$this->start_date, $this->end_date])->where('product_reviews.status', 'approved')->where_not_null('customer_id')->group_by(DB::raw('CONCAT(email, "-", ' . $table_prefix . 'customers.id)'))->order_by_desc('reviews')->limit($limit)->get();
     }
-
     /**
      * Gets customer with most sales.
      *
      * @param  int  $limit
      */
-    public function getGroupsWithMostCustomers($limit = null): Collection
+    public function get_groups_with_most_customers($limit = null): Collection
     {
-        return $this->customerRepository
-            ->resetModel()
-            ->leftJoin('customer_groups', 'customers.customer_group_id', '=', 'customer_groups.id')
-            ->select('customers.id as id', 'customer_groups.name as group_name')
-            ->addSelect(DB::raw('COUNT(*) as total'))
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('customers.created_at', [$this->startDate, $this->endDate])
-            ->groupBy('customer_group_id')
-            ->orderByDesc('total')
-            ->limit($limit)
-            ->get();
+        return $this->customer_repository->reset_model()->left_join('customer_groups', 'customers.customer_group_id', '=', 'customer_groups.id')->select('customers.id as id', 'customer_groups.name as group_name')->add_select(DB::raw('COUNT(*) as total'))->where_in('channel_id', $this->channel_ids)->where_between('customers.created_at', [$this->start_date, $this->end_date])->group_by('customer_group_id')->order_by_desc('total')->limit($limit)->get();
     }
-
     /**
      * Returns over time stats.
      *
@@ -223,34 +126,16 @@ class Customer extends AbstractReporting
      * @param  \Carbon\Carbon  $endDate
      * @param  string  $period
      */
-    public function getTotalCustomersOverTime($startDate, $endDate, $period = 'auto'): array
+    public function get_total_customers_over_time($start_date, $end_date, $period = 'auto'): array
     {
-        $config = $this->getTimeInterval($startDate, $endDate, $period);
-
-        $groupColumn = $config['group_column'];
-
-        $results = $this->customerRepository
-            ->resetModel()
-            ->select(
-                DB::raw("$groupColumn AS date"),
-                DB::raw('COUNT(*) AS total')
-            )
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy('date')
-            ->get();
-
+        $config = $this->get_time_interval($start_date, $end_date, $period);
+        $group_column = $config['group_column'];
+        $results = $this->customer_repository->reset_model()->select(DB::raw("{$group_column} AS date"), DB::raw('COUNT(*) AS total'))->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->group_by('date')->get();
         $stats = [];
-
         foreach ($config['intervals'] as $interval) {
             $total = $results->where('date', $interval['filter'])->first();
-
-            $stats[] = [
-                'label' => $interval['start'],
-                'total' => $total?->total ?? 0,
-            ];
+            $stats[] = ['label' => $interval['start'], 'total' => $total?->total ?? 0];
         }
-
         return $stats;
     }
 }

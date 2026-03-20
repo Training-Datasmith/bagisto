@@ -1,18 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
+use Intervention\Image\Image_Manager;
 use Webkul\Category\Contracts\Category;
-use Webkul\Category\Models\CategoryTranslationProxy;
+use Webkul\Category\Models\Category_Translation_Proxy;
 use Webkul\Core\Eloquent\Repository;
-
-class CategoryRepository extends Repository
+class Category_Repository extends Repository
 {
     /**
      * Specify model class name.
@@ -21,51 +19,39 @@ class CategoryRepository extends Repository
     {
         return Category::class;
     }
-
     /**
      * Get categories.
      *
      * @return void
      */
-    public function getAll(array $params = [])
+    public function get_all(array $params = [])
     {
-        $queryBuilder = $this->query()
-            ->select('categories.*')
-            ->leftJoin('category_translations', 'category_translations.category_id', '=', 'categories.id');
-
+        $query_builder = $this->query()->select('categories.*')->left_join('category_translations', 'category_translations.category_id', '=', 'categories.id');
         foreach ($params as $key => $value) {
             switch ($key) {
                 case 'name':
-                    $queryBuilder->where('category_translations.name', 'like', '%'.urldecode($value).'%');
-
+                    $query_builder->where('category_translations.name', 'like', '%' . urldecode($value) . '%');
                     break;
                 case 'description':
-                    $queryBuilder->where('category_translations.description', 'like', '%'.urldecode($value).'%');
-
+                    $query_builder->where('category_translations.description', 'like', '%' . urldecode($value) . '%');
                     break;
                 case 'status':
-                    $queryBuilder->where('categories.status', $value);
-
+                    $query_builder->where('categories.status', $value);
                     break;
                 case 'only_children':
-                    $queryBuilder->whereNotNull('categories.parent_id');
-
+                    $query_builder->where_not_null('categories.parent_id');
                     break;
                 case 'parent_id':
-                    $parentIds = array_filter(array_map('trim', explode(',', $value)));
-                    $queryBuilder->whereIn('categories.parent_id', $parentIds);
-
+                    $parent_ids = array_filter(array_map('trim', explode(',', $value)));
+                    $query_builder->where_in('categories.parent_id', $parent_ids);
                     break;
                 case 'locale':
-                    $queryBuilder->where('category_translations.locale', $value);
-
+                    $query_builder->where('category_translations.locale', $value);
                     break;
             }
         }
-
-        return $queryBuilder->paginate($params['limit'] ?? 10);
+        return $query_builder->paginate($params['limit'] ?? 10);
     }
-
     /**
      * Create category.
      *
@@ -73,36 +59,25 @@ class CategoryRepository extends Repository
      */
     public function create(array $data)
     {
-        if (
-            isset($data['locale'])
-            && $data['locale'] == 'all'
-        ) {
+        if (isset($data['locale']) && $data['locale'] == 'all') {
             $model = app()->make($this->model());
-
-            foreach (core()->getAllLocales() as $locale) {
-                foreach ($model->translatedAttributes as $attribute) {
+            foreach (core()->get_all_locales() as $locale) {
+                foreach ($model->translated_attributes as $attribute) {
                     if (isset($data[$attribute])) {
                         $data[$locale->code][$attribute] = $data[$attribute];
-
                         $data[$locale->code]['locale_id'] = $locale->id;
                     }
                 }
             }
         }
-
         $category = $this->model->create($data);
-
-        $this->uploadImages($data, $category);
-
-        $this->uploadImages($data, $category, 'banner_path');
-
+        $this->upload_images($data, $category);
+        $this->upload_images($data, $category, 'banner_path');
         if (isset($data['attributes'])) {
-            $category->filterableAttributes()->sync($data['attributes']);
+            $category->filterable_attributes()->sync($data['attributes']);
         }
-
         return $category;
     }
-
     /**
      * Update category.
      *
@@ -113,79 +88,61 @@ class CategoryRepository extends Repository
     public function update(array $data, $id)
     {
         $category = $this->find($id);
-
-        $data = $this->setSameAttributeValueToAllLocale($data, 'slug');
-
+        $data = $this->set_same_attribute_value_to_all_locale($data, 'slug');
         $category->update($data);
-
-        $this->uploadImages($data, $category);
-
-        $this->uploadImages($data, $category, 'banner_path');
-
+        $this->upload_images($data, $category);
+        $this->upload_images($data, $category, 'banner_path');
         if (isset($data['attributes'])) {
-            $category->filterableAttributes()->sync($data['attributes']);
+            $category->filterable_attributes()->sync($data['attributes']);
         }
-
         return $category;
     }
-
     /**
      * Specify category tree.
      *
      * @return \Webkul\Category\Contracts\Category
      */
-    public function getCategoryTree(?int $id = null)
+    public function get_category_tree(?int $id = null)
     {
-        return $id
-            ? $this->model::orderBy('position', 'ASC')->where('id', '!=', $id)->get()->toTree()
-            : $this->model::orderBy('position', 'ASC')->get()->toTree();
+        return $id ? $this->model::order_by('position', 'ASC')->where('id', '!=', $id)->get()->to_tree() : $this->model::order_by('position', 'ASC')->get()->to_tree();
     }
-
     /**
      * Specify category tree.
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getCategoryTreeWithoutDescendant(?int $id = null)
+    public function get_category_tree_without_descendant(?int $id = null)
     {
-        return $id
-            ? $this->model::orderBy('position', 'ASC')->where('id', '!=', $id)->whereNotDescendantOf($id)->get()->toTree()
-            : $this->model::orderBy('position', 'ASC')->get()->toTree();
+        return $id ? $this->model::order_by('position', 'ASC')->where('id', '!=', $id)->where_not_descendant_of($id)->get()->to_tree() : $this->model::order_by('position', 'ASC')->get()->to_tree();
     }
-
     /**
      * Get root categories.
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getRootCategories()
+    public function get_root_categories()
     {
-        return $this->getModel()->where('parent_id', null)->get();
+        return $this->get_model()->where('parent_id', null)->get();
     }
-
     /**
      * Get child categories.
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getChildCategories($parentId)
+    public function get_child_categories($parent_id)
     {
-        return $this->getModel()->where('parent_id', $parentId)->get();
+        return $this->get_model()->where('parent_id', $parent_id)->get();
     }
-
     /**
      * get visible category tree.
      *
      * @param  int  $id
      * @return \Illuminate\Support\Collection
      */
-    public function getVisibleCategoryTree($id = null)
+    public function get_visible_category_tree($id = null)
     {
-        return $id
-            ? $this->model::orderBy('position', 'ASC')->where('status', 1)->descendantsAndSelf($id)->toTree($id)
-            : $this->model::orderBy('position', 'ASC')->where('status', 1)->get()->toTree();
+        return $id ? $this->model::order_by('position', 'ASC')->where('status', 1)->descendants_and_self($id)->to_tree($id) : $this->model::order_by('position', 'ASC')->where('status', 1)->get()->to_tree();
     }
-
     /**
      * Checks slug is unique or not based on locale.
      *
@@ -193,41 +150,33 @@ class CategoryRepository extends Repository
      * @param  string  $slug
      * @return bool
      */
-    public function isSlugUnique($id, $slug)
+    public function is_slug_unique($id, $slug)
     {
-        $exists = CategoryTranslationProxy::modelClass()::where('category_id', '<>', $id)
-            ->where('slug', $slug)
-            ->limit(1)
-            ->select(DB::raw(1))
-            ->exists();
-
-        return ! $exists;
+        $exists = Category_Translation_Proxy::model_class()::where('category_id', '<>', $id)->where('slug', $slug)->limit(1)->select(DB::raw(1))->exists();
+        return !$exists;
     }
-
     /**
      * Retrieve category from slug.
      *
      * @param  string  $slug
      * @return \Webkul\Category\Contracts\Category
      */
-    public function findBySlug($slug)
+    public function find_by_slug($slug)
     {
-        if ($category = $this->model->whereTranslation('slug', $slug)->first()) {
+        if ($category = $this->model->where_translation('slug', $slug)->first()) {
             return $category;
         }
     }
-
     /**
      * Retrieve category from slug.
      *
      * @param  string  $slug
      * @return \Webkul\Category\Contracts\Category
      */
-    public function findBySlugOrFail($slug)
+    public function find_by_slug_or_fail($slug)
     {
-        return $this->model->whereTranslation('slug', $slug)->firstOrFail();
+        return $this->model->where_translation('slug', $slug)->first_or_fail();
     }
-
     /**
      * Upload category's images.
      *
@@ -236,25 +185,19 @@ class CategoryRepository extends Repository
      * @param  string  $type
      * @return void
      */
-    public function uploadImages($data, $category, $type = 'logo_path')
+    public function upload_images($data, $category, $type = 'logo_path')
     {
         if (isset($data[$type])) {
-            foreach ($data[$type] as $imageId => $image) {
-                $file = $type.'.'.$imageId;
-
-                if (request()->hasFile($file)) {
+            foreach ($data[$type] as $image_id => $image) {
+                $file = $type . '.' . $image_id;
+                if (request()->has_file($file)) {
                     if ($category->{$type}) {
                         Storage::delete($category->{$type});
                     }
-
-                    $manager = new ImageManager();
-
+                    $manager = new Image_Manager();
                     $image = $manager->make(request()->file($file))->encode('webp');
-
-                    $category->{$type} = 'category/'.$category->id.'/'.Str::random(40).'.webp';
-
+                    $category->{$type} = 'category/' . $category->id . '/' . Str::random(40) . '.webp';
                     Storage::put($category->{$type}, $image);
-
                     $category->save();
                 }
             }
@@ -262,38 +205,27 @@ class CategoryRepository extends Repository
             if ($category->{$type}) {
                 Storage::delete($category->{$type});
             }
-
             $category->{$type} = null;
-
             $category->save();
         }
     }
-
     /**
      * Get partials.
      *
      * @param  array|null  $columns
      * @return array
      */
-    public function getPartial($columns = null)
+    public function get_partial($columns = null)
     {
         $categories = $this->model->all();
-
         $trimmed = [];
-
         foreach ($categories as $key => $category) {
-            if (! empty($category->name)) {
-                $trimmed[$key] = [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'slug' => $category->slug,
-                ];
+            if (!empty($category->name)) {
+                $trimmed[$key] = ['id' => $category->id, 'name' => $category->name, 'slug' => $category->slug];
             }
         }
-
         return $trimmed;
     }
-
     /**
      * Set same value to all locales in category.
      *
@@ -303,24 +235,21 @@ class CategoryRepository extends Repository
      * @param  string  $attributeNames
      * @return array
      */
-    private function setSameAttributeValueToAllLocale(array $data, ...$attributeNames)
+    private function set_same_attribute_value_to_all_locale(array $data, ...$attribute_names)
     {
-        $requestedLocale = core()->getRequestedLocaleCode();
-
+        $requested_locale = core()->get_requested_locale_code();
         $model = app()->make($this->model());
-
-        foreach ($attributeNames as $attributeName) {
-            foreach (core()->getAllLocales() as $locale) {
-                if ($requestedLocale == $locale->code) {
-                    foreach ($model->translatedAttributes as $attribute) {
-                        if ($attribute === $attributeName) {
-                            $data[$locale->code][$attribute] = $data[$requestedLocale][$attribute] ?? $data[$data['locale']][$attribute];
+        foreach ($attribute_names as $attribute_name) {
+            foreach (core()->get_all_locales() as $locale) {
+                if ($requested_locale == $locale->code) {
+                    foreach ($model->translated_attributes as $attribute) {
+                        if ($attribute === $attribute_name) {
+                            $data[$locale->code][$attribute] = $data[$requested_locale][$attribute] ?? $data[$data['locale']][$attribute];
                         }
                     }
                 }
             }
         }
-
         return $data;
     }
 }

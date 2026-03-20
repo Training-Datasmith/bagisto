@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\User;
 
 use Hash;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Webkul\Admin\Http\Controllers\Controller;
-
-class AccountController extends Controller
+class Account_Controller extends Controller
 {
     /**
      * Show the form for creating a new resource.
@@ -19,10 +17,8 @@ class AccountController extends Controller
     public function edit()
     {
         $user = auth()->guard('admin')->user();
-
         return view('admin::account.edit', compact('user'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -31,62 +27,34 @@ class AccountController extends Controller
     public function update()
     {
         $user = auth()->guard('admin')->user();
-
-        $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'email|unique:admins,email,'.$user->id,
-            'password' => 'nullable|min:6|confirmed',
-            'current_password' => 'required|min:6',
-            'image.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
-        ]);
-
-        $data = request()->only([
-            'name',
-            'email',
-            'password',
-            'password_confirmation',
-            'current_password',
-            'image',
-        ]);
-
-        if (! Hash::check($data['current_password'], $user->password)) {
+        $this->validate(request(), ['name' => 'required', 'email' => 'email|unique:admins,email,' . $user->id, 'password' => 'nullable|min:6|confirmed', 'current_password' => 'required|min:6', 'image.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp']);
+        $data = request()->only(['name', 'email', 'password', 'password_confirmation', 'current_password', 'image']);
+        if (!Hash::check($data['current_password'], $user->password)) {
             session()->flash('warning', trans('admin::app.account.edit.invalid-password'));
-
             return redirect()->back();
         }
-
-        $isPasswordChanged = false;
-
-        if (! $data['password']) {
+        $is_password_changed = false;
+        if (!$data['password']) {
             unset($data['password']);
         } else {
-            $isPasswordChanged = true;
-
+            $is_password_changed = true;
             $data['password'] = bcrypt($data['password']);
         }
-
-        if (request()->hasFile('image')) {
-            $data['image'] = current(request()->file('image'))->store('admins/'.$user->id);
-        } else {
-            if (! isset($data['image'])) {
-                if (! empty($data['image'])) {
-                    Storage::delete($user->image);
-                }
-
-                $data['image'] = null;
-            } else {
-                $data['image'] = $user->image;
+        if (request()->has_file('image')) {
+            $data['image'] = current(request()->file('image'))->store('admins/' . $user->id);
+        } else if (!isset($data['image'])) {
+            if (!empty($data['image'])) {
+                Storage::delete($user->image);
             }
+            $data['image'] = null;
+        } else {
+            $data['image'] = $user->image;
         }
-
         $user->update($data);
-
-        if ($isPasswordChanged) {
+        if ($is_password_changed) {
             Event::dispatch('admin.password.update.after', $user);
         }
-
         session()->flash('success', trans('admin::app.account.edit.update-success'));
-
         return back();
     }
 }

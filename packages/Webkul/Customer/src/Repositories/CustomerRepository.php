@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Repositories;
 
 use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Sales\Models\Order;
-
-class CustomerRepository extends Repository
+class Customer_Repository extends Repository
 {
     /**
      * Specify model class name.
@@ -17,32 +15,28 @@ class CustomerRepository extends Repository
     {
         return 'Webkul\Customer\Contracts\Customer';
     }
-
     /**
      * Check if customer has order pending or processing.
      *
      * @param  \Webkul\Customer\Models\Customer
      * @return bool
      */
-    public function haveActiveOrders($customer)
+    public function have_active_orders($customer)
     {
         return $customer->orders->pluck('status')->contains(function ($val) {
             return $val === 'pending' || $val === 'processing';
         });
     }
-
     /**
      * Returns current customer group
      *
      * @return \Webkul\Customer\Models\CustomerGroup
      */
-    public function getCurrentGroup()
+    public function get_current_group()
     {
         $customer = auth()->guard()->user();
-
-        return $customer->group ?? core()->getGuestCustomerGroup();
+        return $customer->group ?? core()->get_guest_customer_group();
     }
-
     /**
      * Upload customer's images.
      *
@@ -51,20 +45,17 @@ class CustomerRepository extends Repository
      * @param  string  $type
      * @return void
      */
-    public function uploadImages($data, $customer, $type = 'image')
+    public function upload_images($data, $customer, $type = 'image')
     {
         if (isset($data[$type])) {
             $request = request();
-
-            foreach ($data[$type] as $imageId => $image) {
-                $file = $type.'.'.$imageId;
-                $dir = 'customer/'.$customer->id;
-
-                if ($request->hasFile($file)) {
+            foreach ($data[$type] as $image_id => $image) {
+                $file = $type . '.' . $image_id;
+                $dir = 'customer/' . $customer->id;
+                if ($request->has_file($file)) {
                     if ($customer->{$type}) {
                         Storage::delete($customer->{$type});
                     }
-
                     $customer->{$type} = $request->file($file)->store($dir);
                     $customer->save();
                 }
@@ -73,50 +64,33 @@ class CustomerRepository extends Repository
             if ($customer->{$type}) {
                 Storage::delete($customer->{$type});
             }
-
             $customer->{$type} = null;
             $customer->save();
         }
     }
-
     /**
      * Sync new registered customer data.
      *
      * @param  \Webkul\Customer\Contracts\Customer  $customer
      * @return mixed
      */
-    public function syncNewRegisteredCustomerInformation($customer)
+    public function sync_new_registered_customer_information($customer)
     {
         /**
          * Setting registered customer to orders.
          */
-        Order::where('customer_email', $customer->email)->update([
-            'is_guest' => 0,
-            'customer_id' => $customer->id,
-            'customer_type' => \Webkul\Customer\Models\Customer::class,
-        ]);
-
+        Order::where('customer_email', $customer->email)->update(['is_guest' => 0, 'customer_id' => $customer->id, 'customer_type' => \Webkul\Customer\Models\Customer::class]);
         /**
          * Grabbing orders by `customer_id`.
          */
         $orders = Order::where('customer_id', $customer->id)->get();
-
         /**
          * Setting registered customer to associated order's relations.
          */
         $orders->each(function ($order) use ($customer) {
-            $order->addresses()->update([
-                'customer_id' => $customer->id,
-            ]);
-
-            $order->shipments()->update([
-                'customer_id' => $customer->id,
-                'customer_type' => \Webkul\Customer\Models\Customer::class,
-            ]);
-
-            $order->downloadable_link_purchased()->update([
-                'customer_id' => $customer->id,
-            ]);
+            $order->addresses()->update(['customer_id' => $customer->id]);
+            $order->shipments()->update(['customer_id' => $customer->id, 'customer_type' => \Webkul\Customer\Models\Customer::class]);
+            $order->downloadable_link_purchased()->update(['customer_id' => $customer->id]);
         });
     }
 }

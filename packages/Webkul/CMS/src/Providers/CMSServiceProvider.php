@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\CMS\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
-class CMSServiceProvider extends ServiceProvider
+use Illuminate\Support\Service_Provider;
+class Cms_Service_Provider extends Service_Provider
 {
     /**
      * Bootstrap services.
@@ -15,6 +13,6 @@ class CMSServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->load_migrations_from(__DIR__ . '/../Database/Migrations');
     }
 }

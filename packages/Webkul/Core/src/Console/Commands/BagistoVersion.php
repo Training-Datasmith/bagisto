@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Console\Commands;
 
 use Illuminate\Console\Command;
-
-class BagistoVersion extends Command
+class Bagisto_Version extends Command
 {
     /**
      * The name and signature of the console command.
@@ -14,14 +12,12 @@ class BagistoVersion extends Command
      * @var string
      */
     protected $signature = 'bagisto:version';
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Displays current version of Bagisto installed';
-
     /**
      * Create a new command instance.
      *
@@ -31,7 +27,6 @@ class BagistoVersion extends Command
     {
         parent::__construct();
     }
-
     /**
      * Execute the console command.
      *
@@ -39,6 +34,6 @@ class BagistoVersion extends Command
      */
     public function handle()
     {
-        $this->comment('v'.core()->version());
+        $this->comment('v' . core()->version());
     }
 }

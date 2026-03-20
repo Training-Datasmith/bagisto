@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Helpers;
 
-namespace Webkul\BookingProduct\Helpers;
-
-class AppointmentSlot extends Booking
+class Appointment_Slot extends Booking
 {
     /**
      * @param  \Webkul\BookingProduct\Contracts\BookingProduct  $bookingProduct
      */
-    public function haveSufficientQuantity(int $qty, $bookingProduct): bool
+    public function have_sufficient_quantity(int $qty, $booking_product): bool
     {
         return true;
     }

@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Webkul\Customer\Models\Wishlist;
-
-class CustomerWishlistFactory extends Factory
+class Customer_Wishlist_Factory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -15,7 +13,6 @@ class CustomerWishlistFactory extends Factory
      * @var string
      */
     protected $model = Wishlist::class;
-
     /**
      * Define the model's default state.
      *

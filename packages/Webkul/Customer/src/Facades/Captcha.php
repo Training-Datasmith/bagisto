@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Webkul\Customer\Captcha as BaseCaptcha;
-
 class Captcha extends Facade
 {
     /**
@@ -14,8 +12,8 @@ class Captcha extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function get_facade_accessor()
     {
-        return BaseCaptcha::class;
+        return Base_Captcha::class;
     }
 }

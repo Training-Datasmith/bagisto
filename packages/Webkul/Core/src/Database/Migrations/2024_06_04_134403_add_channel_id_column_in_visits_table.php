@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -14,27 +13,22 @@ return new class () extends Migration {
     {
         Schema::table('visits', function (Blueprint $table) {
             $table->integer('channel_id')->unsigned()->nullable()->after('visitor_id');
-
-            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+            $table->foreign('channel_id')->references('id')->on('channels')->on_delete('cascade');
         });
-
-        $firstChannelId = DB::table('channels')->value('id');
-
-        if (! $firstChannelId) {
+        $first_channel_id = DB::table('channels')->value('id');
+        if (!$first_channel_id) {
             return;
         }
-
-        DB::table('visits')->update(['channel_id' => $firstChannelId]);
+        DB::table('visits')->update(['channel_id' => $first_channel_id]);
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::table('visits', function (Blueprint $table) {
-            $table->dropForeign(['channel_id']);
-            $table->dropColumn('channel_id');
+            $table->drop_foreign(['channel_id']);
+            $table->drop_column('channel_id');
         });
     }
 };

@@ -1,118 +1,81 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Webkul\Core\Acl\AclItem;
-
+use Webkul\Core\Acl\Acl_Item;
 class Acl
 {
     /**
      * acl items.
      */
     protected array $items = [];
-
     /**
      * Add a new acl item.
      */
-    public function addItem(AclItem $aclItem): void
+    public function add_item(Acl_Item $acl_item): void
     {
-        $this->items[] = $aclItem;
+        $this->items[] = $acl_item;
     }
-
     /**
      * Get all acl items.
      */
-    public function getItems(): Collection
+    public function get_items(): Collection
     {
-        if (! $this->items) {
-            $this->prepareAclItems();
+        if (!$this->items) {
+            $this->prepare_acl_items();
         }
-
-        return collect($this->items)
-            ->sortBy('sort');
+        return collect($this->items)->sort_by('sort');
     }
-
     /**
      * Acl Config.
      */
-    private function getAclConfig(): array
+    private function get_acl_config(): array
     {
-        static $aclConfig;
-
-        if ($aclConfig) {
-            return $aclConfig;
+        static $acl_config;
+        if ($acl_config) {
+            return $acl_config;
         }
-
-        $aclConfig = config('acl');
-
-        return $aclConfig;
+        $acl_config = config('acl');
+        return $acl_config;
     }
-
     /**
      * Get all roles.
      */
-    public function getRoles(): Collection
+    public function get_roles(): Collection
     {
         static $roles;
-
         if ($roles) {
             return $roles;
         }
-
-        $roles = collect($this->getAclConfig())
-            ->mapWithKeys(fn ($role) => [$role['route'] => $role['key']]);
-
+        $roles = collect($this->get_acl_config())->map_with_keys(fn($role) => [$role['route'] => $role['key']]);
         return $roles;
     }
-
     /**
      * Prepare acl items.
      */
-    private function prepareAclItems(): void
+    private function prepare_acl_items(): void
     {
-        $aclWithDotNotation = [];
-
-        foreach ($this->getAclConfig() as $item) {
-            $aclWithDotNotation[$item['key']] = $item;
+        $acl_with_dot_notation = [];
+        foreach ($this->get_acl_config() as $item) {
+            $acl_with_dot_notation[$item['key']] = $item;
         }
-
-        $acl = Arr::undot(Arr::dot($aclWithDotNotation));
-
-        foreach ($acl as $aclItemKey => $aclItem) {
-            $subAclItems = $this->processSubAclItems($aclItem);
-
-            $this->addItem(new AclItem(
-                key: $aclItemKey,
-                name: trans($aclItem['name']),
-                route: $aclItem['route'],
-                sort: $aclItem['sort'],
-                children: $subAclItems,
-            ));
+        $acl = Arr::undot(Arr::dot($acl_with_dot_notation));
+        foreach ($acl as $acl_item_key => $acl_item) {
+            $sub_acl_items = $this->process_sub_acl_items($acl_item);
+            $this->add_item(new Acl_Item(key: $acl_item_key, name: trans($acl_item['name']), route: $acl_item['route'], sort: $acl_item['sort'], children: $sub_acl_items));
         }
     }
-
     /**
      * Process sub acl items.
      */
-    private function processSubAclItems($aclItem): Collection
+    private function process_sub_acl_items($acl_item): Collection
     {
-        return collect($aclItem)
-            ->sortBy('sort')
-            ->filter(fn ($value) => is_array($value))
-            ->map(function ($subAclItem) {
-                $subSubAclItems = $this->processSubAclItems($subAclItem);
-
-                return new AclItem(
-                    key: $subAclItem['key'],
-                    name: trans($subAclItem['name']),
-                    route: $subAclItem['route'],
-                    sort: $subAclItem['sort'],
-                    children: $subSubAclItems,
-                );
-            });
+        return collect($acl_item)->sort_by('sort')->filter(fn($value) => is_array($value))->map(function ($sub_acl_item) {
+            $sub_sub_acl_items = $this->process_sub_acl_items($sub_acl_item);
+            return new Acl_Item(key: $sub_acl_item['key'], name: trans($sub_acl_item['name']), route: $sub_acl_item['route'], sort: $sub_acl_item['sort'], children: $sub_sub_acl_items);
+        });
     }
 }

@@ -1,84 +1,54 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Customers\Customer;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Json_Resource;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\Admin\Http\Resources\CartItemResource;
+use Webkul\Admin\Http\Resources\Cart_Item_Resource;
 use Webkul\Checkout\Facades\Cart;
-use Webkul\Checkout\Repositories\CartItemRepository;
-use Webkul\Customer\Repositories\CustomerRepository;
-
-class CartController extends Controller
+use Webkul\Checkout\Repositories\Cart_Item_Repository;
+use Webkul\Customer\Repositories\Customer_Repository;
+class Cart_Controller extends Controller
 {
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        protected CustomerRepository $customerRepository,
-        protected CartItemRepository $cartItemRepository
-    ) {
+    public function __construct(protected Customer_Repository $customer_repository, protected Cart_Item_Repository $cart_item_repository)
+    {
     }
-
     /**
      * Create cart
      */
     public function store(int $id)
     {
-        $customer = $this->customerRepository->findOrFail($id);
-
+        $customer = $this->customer_repository->find_or_fail($id);
         try {
-            $cart = Cart::createCart([
-                'customer' => $customer,
-                'is_active' => false,
-            ]);
-
+            $cart = Cart::create_cart(['customer' => $customer, 'is_active' => false]);
             return redirect()->route('admin.sales.orders.create', $cart->id);
         } catch (\Exception $exception) {
-            session()->flash('error', $exception->getMessage());
-
+            session()->flash('error', $exception->get_message());
             return redirect()->back();
         }
     }
-
     /**
      * Returns the compare items of the customer.
      */
-    public function items(int $id): JsonResource
+    public function items(int $id): Json_Resource
     {
-        $cartItems = $this->cartItemRepository
-            ->with('product')
-            ->select('cart_items.*')
-            ->leftJoin('cart', 'cart_items.cart_id', 'cart.id')
-            ->whereNull('cart_items.parent_id')
-            ->where('cart.customer_id', $id)
-            ->where('cart.is_active', 1)
-            ->get();
-
-        return CartItemResource::collection($cartItems);
+        $cart_items = $this->cart_item_repository->with('product')->select('cart_items.*')->left_join('cart', 'cart_items.cart_id', 'cart.id')->where_null('cart_items.parent_id')->where('cart.customer_id', $id)->where('cart.is_active', 1)->get();
+        return Cart_Item_Resource::collection($cart_items);
     }
-
     /**
      * Removes the item from the cart if it exists.
      */
-    public function destroy(int $id): JsonResource
+    public function destroy(int $id): Json_Resource
     {
-        $this->validate(request(), [
-            'item_id' => 'required|exists:cart_items,id',
-        ]);
-
-        $cartItem = $this->cartItemRepository->findOrFail(request()->input('item_id'));
-
-        Cart::setCart($cartItem->cart);
-
-        Cart::removeItem($cartItem->id);
-
-        Cart::collectTotals();
-
-        return new JsonResource([
-            'message' => trans('admin::app.customers.customers.view.cart.delete-success'),
-        ]);
+        $this->validate(request(), ['item_id' => 'required|exists:cart_items,id']);
+        $cart_item = $this->cart_item_repository->find_or_fail(request()->input('item_id'));
+        Cart::set_cart($cart_item->cart);
+        Cart::remove_item($cart_item->id);
+        Cart::collect_totals();
+        return new Json_Resource(['message' => trans('admin::app.customers.customers.view.cart.delete-success')]);
     }
 }

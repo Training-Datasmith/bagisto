@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Webkul\CatalogRule\Repositories;
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class CatalogRuleProductPriceRepository extends Repository
+class Catalog_Rule_Product_Price_Repository extends Repository
 {
     /**
      * Specify Model class name.

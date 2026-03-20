@@ -1,92 +1,67 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Attribute\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Webkul\Attribute\Contracts\AttributeFamily as AttributeFamilyContract;
-use Webkul\Attribute\Database\Factories\AttributeFamilyFactory;
-use Webkul\Product\Models\ProductProxy;
-
-class AttributeFamily extends Model implements AttributeFamilyContract
+use Illuminate\Database\Eloquent\Relations\Has_Many;
+use Webkul\Attribute\Contracts\Attribute_Family as AttributeFamilyContract;
+use Webkul\Attribute\Database\Factories\Attribute_Family_Factory;
+use Webkul\Product\Models\Product_Proxy;
+class Attribute_Family extends Model implements Attribute_Family_Contract
 {
-    use HasFactory;
-
+    use Has_Factory;
     public $timestamps = false;
-
-    protected $fillable = [
-        'code',
-        'name',
-    ];
-
+    protected $fillable = ['code', 'name'];
     /**
      * Get all the attributes for the attribute groups.
      */
     public function custom_attributes()
     {
-        return (AttributeProxy::modelClass())::join('attribute_group_mappings', 'attributes.id', '=', 'attribute_group_mappings.attribute_id')
-            ->join('attribute_groups', 'attribute_group_mappings.attribute_group_id', '=', 'attribute_groups.id')
-            ->join('attribute_families', 'attribute_groups.attribute_family_id', '=', 'attribute_families.id')
-            ->where('attribute_families.id', $this->id)
-            ->select('attributes.*');
+        return Attribute_Proxy::model_class()::join('attribute_group_mappings', 'attributes.id', '=', 'attribute_group_mappings.attribute_id')->join('attribute_groups', 'attribute_group_mappings.attribute_group_id', '=', 'attribute_groups.id')->join('attribute_families', 'attribute_groups.attribute_family_id', '=', 'attribute_families.id')->where('attribute_families.id', $this->id)->select('attributes.*');
     }
-
     /**
      * Get all the comparable attributes which belongs to attribute family.
      */
-    public function getComparableAttributesBelongsToFamily()
+    public function get_comparable_attributes_belongs_to_family()
     {
-        return (AttributeProxy::modelClass())::join('attribute_group_mappings', 'attribute_group_mappings.attribute_id', '=', 'attributes.id')
-            ->select('attributes.*')
-            ->where('attributes.is_comparable', 1)
-            ->distinct()
-            ->get();
+        return Attribute_Proxy::model_class()::join('attribute_group_mappings', 'attribute_group_mappings.attribute_id', '=', 'attributes.id')->select('attributes.*')->where('attributes.is_comparable', 1)->distinct()->get();
     }
-
     /**
      * Get all the attributes for the attribute groups.
      */
-    public function getCustomAttributesAttribute()
+    public function get_custom_attributes_attribute()
     {
         return $this->custom_attributes()->get();
     }
-
     /**
      * Get all the attribute groups.
      */
-    public function attribute_groups(): HasMany
+    public function attribute_groups(): Has_Many
     {
-        return $this->hasMany(AttributeGroupProxy::modelClass())->orderBy('position');
+        return $this->has_many(Attribute_Group_Proxy::model_class())->order_by('position');
     }
-
     /**
      * Get all the attributes for the attribute groups.
      */
-    public function getConfigurableAttributesAttribute()
+    public function get_configurable_attributes_attribute()
     {
-        return $this->custom_attributes()
-            ->where('attributes.is_configurable', 1)
-            ->where('attributes.type', 'select')
-            ->get();
+        return $this->custom_attributes()->where('attributes.is_configurable', 1)->where('attributes.type', 'select')->get();
     }
-
     /**
      * Get all the products.
      */
-    public function products(): HasMany
+    public function products(): Has_Many
     {
-        return $this->hasMany(ProductProxy::modelClass());
+        return $this->has_many(Product_Proxy::model_class());
     }
-
     /**
      * Create a new factory instance for the model
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return AttributeFamilyFactory::new();
+        return Attribute_Family_Factory::new();
     }
 }

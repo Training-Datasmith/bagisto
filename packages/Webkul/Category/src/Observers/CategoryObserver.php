@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Observers;
 
 use Illuminate\Support\Facades\Storage;
 use Webkul\Category\Models\Category;
-
-class CategoryObserver
+class Category_Observer
 {
     /**
      * Handle the Category "deleted" event.
@@ -17,9 +15,8 @@ class CategoryObserver
      */
     public function deleted($category)
     {
-        Storage::deleteDirectory('category/'.$category->id);
+        Storage::delete_directory('category/' . $category->id);
     }
-
     /**
      * Handle the Category "saved" event.
      *

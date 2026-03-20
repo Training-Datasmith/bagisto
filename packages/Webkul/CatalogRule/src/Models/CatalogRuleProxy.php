@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Models;
 
-namespace Webkul\CatalogRule\Models;
-
-use Konekt\Concord\Proxies\ModelProxy;
-
-class CatalogRuleProxy extends ModelProxy
+use Konekt\Concord\Proxies\Model_Proxy;
+class Catalog_Rule_Proxy extends Model_Proxy
 {
 }

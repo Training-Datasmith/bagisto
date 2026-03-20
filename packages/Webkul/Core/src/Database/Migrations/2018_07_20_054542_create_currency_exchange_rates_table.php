@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -18,11 +17,10 @@ return new class () extends Migration {
             $table->increments('id');
             $table->decimal('rate', 24, 12);
             $table->integer('target_currency')->unique()->unsigned();
-            $table->foreign('target_currency')->references('id')->on('currencies')->onDelete('cascade');
+            $table->foreign('target_currency')->references('id')->on('currencies')->on_delete('cascade');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -30,6 +28,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('currency_exchange_rates');
+        Schema::drop_if_exists('currency_exchange_rates');
     }
 };

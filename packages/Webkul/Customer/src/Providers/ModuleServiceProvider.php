@@ -1,24 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Providers;
 
-use Webkul\Core\Providers\CoreModuleServiceProvider;
-
-class ModuleServiceProvider extends CoreModuleServiceProvider
+use Webkul\Core\Providers\Core_Module_Service_Provider;
+class Module_Service_Provider extends Core_Module_Service_Provider
 {
     /**
      * Models.
      *
      * @var array
      */
-    protected $models = [
-        \Webkul\Customer\Models\CompareItem::class,
-        \Webkul\Customer\Models\Customer::class,
-        \Webkul\Customer\Models\CustomerAddress::class,
-        \Webkul\Customer\Models\CustomerGroup::class,
-        \Webkul\Customer\Models\CustomerNote::class,
-        \Webkul\Customer\Models\Wishlist::class,
-    ];
+    protected $models = [\Webkul\Customer\Models\Compare_Item::class, \Webkul\Customer\Models\Customer::class, \Webkul\Customer\Models\Customer_Address::class, \Webkul\Customer\Models\Customer_Group::class, \Webkul\Customer\Models\Customer_Note::class, \Webkul\Customer\Models\Wishlist::class];
 }

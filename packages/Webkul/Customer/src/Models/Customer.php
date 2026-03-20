@@ -1,118 +1,85 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\Has_Api_Tokens;
 use Shetabit\Visitor\Traits\Visitor;
-use Webkul\Checkout\Models\CartProxy;
-use Webkul\Core\Models\ChannelProxy;
-use Webkul\Core\Models\SubscribersListProxy;
+use Webkul\Checkout\Models\Cart_Proxy;
+use Webkul\Core\Models\Channel_Proxy;
+use Webkul\Core\Models\Subscribers_List_Proxy;
 use Webkul\Customer\Contracts\Customer as CustomerContract;
-use Webkul\Customer\Database\Factories\CustomerFactory;
-use Webkul\Product\Models\ProductReviewProxy;
-use Webkul\Sales\Models\InvoiceProxy;
-use Webkul\Sales\Models\OrderProxy;
-use Webkul\Shop\Mail\Customer\ResetPasswordNotification;
-
-class Customer extends Authenticatable implements CustomerContract
+use Webkul\Customer\Database\Factories\Customer_Factory;
+use Webkul\Product\Models\Product_Review_Proxy;
+use Webkul\Sales\Models\Invoice_Proxy;
+use Webkul\Sales\Models\Order_Proxy;
+use Webkul\Shop\Mail\Customer\Reset_Password_Notification;
+class Customer extends Authenticatable implements Customer_Contract
 {
-    use HasApiTokens;
-    use HasFactory;
+    use Has_Api_Tokens;
+    use Has_Factory;
     use Notifiable;
     use Visitor;
-
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'customers';
-
     /**
      * The attributes that should be cast.
      *
      * @var array
      */
-    protected $casts = [
-        'subscribed_to_news_letter' => 'boolean',
-    ];
-
+    protected $casts = ['subscribed_to_news_letter' => 'boolean'];
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'gender',
-        'date_of_birth',
-        'email',
-        'phone',
-        'password',
-        'api_token',
-        'token',
-        'customer_group_id',
-        'channel_id',
-        'subscribed_to_news_letter',
-        'status',
-        'is_verified',
-        'is_suspended',
-    ];
-
+    protected $fillable = ['first_name', 'last_name', 'gender', 'date_of_birth', 'email', 'phone', 'password', 'api_token', 'token', 'customer_group_id', 'channel_id', 'subscribed_to_news_letter', 'status', 'is_verified', 'is_suspended'];
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-        'api_token',
-        'remember_token',
-    ];
-
+    protected $hidden = ['password', 'api_token', 'remember_token'];
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
     protected $appends = ['image_url'];
-
     /**
      * Send the password reset notification.
      *
      * @param  string  $token
      */
-    public function sendPasswordResetNotification($token): void
+    public function send_password_reset_notification($token): void
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $this->notify(new Reset_Password_Notification($token));
     }
-
     /**
      * Get image url for the customer profile.
      *
      * @return string|null
      */
-    public function getImageUrlAttribute()
+    public function get_image_url_attribute()
     {
         return $this->image_url();
     }
-
     /**
      * Get the customer full name.
      */
-    public function getNameAttribute(): string
+    public function get_name_attribute(): string
     {
-        return ucfirst($this->first_name).' '.ucfirst($this->last_name);
+        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
     }
-
     /**
      * Get image url for the customer image.
      *
@@ -120,29 +87,24 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function image_url()
     {
-        if (! $this->image) {
+        if (!$this->image) {
             return;
         }
-
         return Storage::url($this->image);
     }
-
     /**
      * Is email exists or not.
      *
      * @param  string  $email
      */
-    public function emailExists($email): bool
+    public function email_exists($email): bool
     {
         $results = $this->where('email', $email);
-
         if ($results->count() === 0) {
             return false;
         }
-
         return true;
     }
-
     /**
      * Get the customer group that owns the customer.
      *
@@ -150,9 +112,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function group()
     {
-        return $this->belongsTo(CustomerGroupProxy::modelClass(), 'customer_group_id');
+        return $this->belongs_to(Customer_Group_Proxy::model_class(), 'customer_group_id');
     }
-
     /**
      * Get the customer address that owns the customer.
      *
@@ -160,9 +121,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function addresses()
     {
-        return $this->hasMany(CustomerAddressProxy::modelClass(), 'customer_id');
+        return $this->has_many(Customer_Address_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get default customer address that owns the customer.
      *
@@ -170,10 +130,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function default_address()
     {
-        return $this->hasOne(CustomerAddressProxy::modelClass(), 'customer_id')
-            ->where('default_address', 1);
+        return $this->has_one(Customer_Address_Proxy::model_class(), 'customer_id')->where('default_address', 1);
     }
-
     /**
      * Customer's relation with invoice .
      *
@@ -181,9 +139,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function invoices()
     {
-        return $this->hasManyThrough(InvoiceProxy::modelClass(), OrderProxy::modelClass());
+        return $this->has_many_through(Invoice_Proxy::model_class(), Order_Proxy::model_class());
     }
-
     /**
      * Customer's relation with wishlist items.
      *
@@ -191,29 +148,24 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function wishlist_items()
     {
-        return $this->hasMany(WishlistProxy::modelClass(), 'customer_id');
+        return $this->has_many(Wishlist_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Is wishlist shared by the customer.
      */
-    public function isWishlistShared(): bool
+    public function is_wishlist_shared(): bool
     {
         return (bool) $this->wishlist_items()->where('shared', 1)->first();
     }
-
     /**
      * Get wishlist shared link.
      *
      * @return string|null
      */
-    public function getWishlistSharedLink()
+    public function get_wishlist_shared_link()
     {
-        return $this->isWishlistShared()
-            ? URL::signedRoute('shop.customer.wishlist.shared', ['id' => $this->id])
-            : null;
+        return $this->is_wishlist_shared() ? URL::signed_route('shop.customer.wishlist.shared', ['id' => $this->id]) : null;
     }
-
     /**
      * Get all cart inactive cart instance of a customer.
      *
@@ -221,9 +173,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function all_carts()
     {
-        return $this->hasMany(CartProxy::modelClass(), 'customer_id');
+        return $this->has_many(Cart_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get inactive cart instance of a customer.
      *
@@ -231,10 +182,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function inactive_carts()
     {
-        return $this->hasMany(CartProxy::modelClass(), 'customer_id')
-            ->where('is_active', 0);
+        return $this->has_many(Cart_Proxy::model_class(), 'customer_id')->where('is_active', 0);
     }
-
     /**
      * Get active cart instance of a customer.
      *
@@ -242,10 +191,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function active_carts()
     {
-        return $this->hasMany(CartProxy::modelClass(), 'customer_id')
-            ->where('is_active', 1);
+        return $this->has_many(Cart_Proxy::model_class(), 'customer_id')->where('is_active', 1);
     }
-
     /**
      * Get all orders of a customer.
      *
@@ -253,9 +200,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function orders()
     {
-        return $this->hasMany(OrderProxy::modelClass(), 'customer_id');
+        return $this->has_many(Order_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get all reviews of a customer.
      *
@@ -263,9 +209,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function reviews()
     {
-        return $this->hasMany(ProductReviewProxy::modelClass(), 'customer_id');
+        return $this->has_many(Product_Review_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get all notes of a customer.
      *
@@ -273,9 +218,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function notes()
     {
-        return $this->hasMany(CustomerNoteProxy::modelClass(), 'customer_id');
+        return $this->has_many(Customer_Note_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get the customer's subscription.
      *
@@ -283,9 +227,8 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function subscription()
     {
-        return $this->hasOne(SubscribersListProxy::modelClass(), 'customer_id');
+        return $this->has_one(Subscribers_List_Proxy::model_class(), 'customer_id');
     }
-
     /**
      * Get the channel that owns the customer.
      *
@@ -293,16 +236,15 @@ class Customer extends Authenticatable implements CustomerContract
      */
     public function channel()
     {
-        return $this->belongsTo(ChannelProxy::modelClass(), 'channel_id');
+        return $this->belongs_to(Channel_Proxy::model_class(), 'channel_id');
     }
-
     /**
      * Create a new factory instance for the model.
      *
      * @return \Webkul\Customer\Database\Factories\CustomerFactory
      */
-    protected static function newFactory()
+    protected static function new_factory()
     {
-        return CustomerFactory::new();
+        return Customer_Factory::new();
     }
 }

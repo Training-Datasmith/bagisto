@@ -1,10 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Webkul\Checkout\Facades\Cart;
-
-if (! function_exists('cart')) {
+if (!function_exists('cart')) {
     /**
      * Cart helper.
      *
@@ -12,6 +10,6 @@ if (! function_exists('cart')) {
      */
     function cart()
     {
-        return Cart::getFacadeRoot();
+        return Cart::get_facade_root();
     }
 }

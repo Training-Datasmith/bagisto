@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Models;
 
-use Konekt\Concord\Proxies\ModelProxy;
-
-class CustomerGroupProxy extends ModelProxy
+use Konekt\Concord\Proxies\Model_Proxy;
+class Customer_Group_Proxy extends Model_Proxy
 {
 }

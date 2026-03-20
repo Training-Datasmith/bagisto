@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class CartAddressRepository extends Repository
+class Cart_Address_Repository extends Repository
 {
     /**
      * Specify Model class name

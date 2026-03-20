@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -16,14 +15,13 @@ return new class () extends Migration {
             $table->string('regex')->nullable()->after('validation');
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::table('attributes', function (Blueprint $table) {
-            $table->dropColumn('regex');
+            $table->drop_column('regex');
         });
     }
 };

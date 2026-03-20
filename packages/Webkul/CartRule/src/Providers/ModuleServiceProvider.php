@@ -1,23 +1,15 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Providers;
 
-namespace Webkul\CartRule\Providers;
-
-use Webkul\Core\Providers\CoreModuleServiceProvider;
-
-class ModuleServiceProvider extends CoreModuleServiceProvider
+use Webkul\Core\Providers\Core_Module_Service_Provider;
+class Module_Service_Provider extends Core_Module_Service_Provider
 {
     /**
      * Models.
      *
      * @var array
      */
-    protected $models = [
-        \Webkul\CartRule\Models\CartRule::class,
-        \Webkul\CartRule\Models\CartRuleCoupon::class,
-        \Webkul\CartRule\Models\CartRuleCouponUsage::class,
-        \Webkul\CartRule\Models\CartRuleCustomer::class,
-        \Webkul\CartRule\Models\CartRuleTranslation::class,
-    ];
+    protected $models = [\Webkul\Cart_Rule\Models\Cart_Rule::class, \Webkul\Cart_Rule\Models\Cart_Rule_Coupon::class, \Webkul\Cart_Rule\Models\Cart_Rule_Coupon_Usage::class, \Webkul\Cart_Rule\Models\Cart_Rule_Customer::class, \Webkul\Cart_Rule\Models\Cart_Rule_Translation::class];
 }

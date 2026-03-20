@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class SubscribersListRepository extends Repository
+class Subscribers_List_Repository extends Repository
 {
     /**
      * Specify Model class name
@@ -15,7 +13,6 @@ class SubscribersListRepository extends Repository
     {
         return 'Webkul\Core\Contracts\SubscribersList';
     }
-
     /**
      * Delete a slider item and delete the image from the disk or where ever it is
      *

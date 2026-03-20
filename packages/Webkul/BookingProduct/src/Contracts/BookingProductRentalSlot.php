@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Contracts;
 
-namespace Webkul\BookingProduct\Contracts;
-
-interface BookingProductRentalSlot
+interface Booking_Product_Rental_Slot
 {
 }

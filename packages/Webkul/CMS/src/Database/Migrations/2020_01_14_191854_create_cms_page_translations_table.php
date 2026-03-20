@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -24,12 +23,10 @@ return new class () extends Migration {
             $table->text('meta_keywords')->nullable();
             $table->string('locale');
             $table->integer('cms_page_id')->unsigned();
-
             $table->unique(['cms_page_id', 'url_key', 'locale']);
-            $table->foreign('cms_page_id')->references('id')->on('cms_pages')->onDelete('cascade');
+            $table->foreign('cms_page_id')->references('id')->on('cms_pages')->on_delete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -37,6 +34,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('cms_page_translations');
+        Schema::drop_if_exists('cms_page_translations');
     }
 };

@@ -1,60 +1,50 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Customers;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Json_Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
-use Webkul\Admin\DataGrids\Customers\CustomerDataGrid;
-use Webkul\Admin\DataGrids\Customers\View\InvoiceDataGrid;
-use Webkul\Admin\DataGrids\Customers\View\OrderDataGrid;
-use Webkul\Admin\DataGrids\Customers\View\ReviewDataGrid;
+use Webkul\Admin\Data_Grids\Customers\Customer_Data_Grid;
+use Webkul\Admin\Data_Grids\Customers\View\Invoice_Data_Grid;
+use Webkul\Admin\Data_Grids\Customers\View\Order_Data_Grid;
+use Webkul\Admin\Data_Grids\Customers\View\Review_Data_Grid;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\Admin\Http\Requests\MassDestroyRequest;
-use Webkul\Admin\Http\Requests\MassUpdateRequest;
-use Webkul\Admin\Mail\Customer\NewCustomerNotification;
-use Webkul\Core\Rules\PhoneNumber;
-use Webkul\Customer\Repositories\CustomerGroupRepository;
-use Webkul\Customer\Repositories\CustomerNoteRepository;
-use Webkul\Customer\Repositories\CustomerRepository;
-
-class CustomerController extends Controller
+use Webkul\Admin\Http\Requests\Mass_Destroy_Request;
+use Webkul\Admin\Http\Requests\Mass_Update_Request;
+use Webkul\Admin\Mail\Customer\New_Customer_Notification;
+use Webkul\Core\Rules\Phone_Number;
+use Webkul\Customer\Repositories\Customer_Group_Repository;
+use Webkul\Customer\Repositories\Customer_Note_Repository;
+use Webkul\Customer\Repositories\Customer_Repository;
+class Customer_Controller extends Controller
 {
     /**
      * Ajax request for orders.
      */
     public const ORDERS = 'orders';
-
     /**
      * Ajax request for invoices.
      */
     public const INVOICES = 'invoices';
-
     /**
      * Ajax request for reviews.
      */
     public const REVIEWS = 'reviews';
-
     /**
      * Static pagination count.
      *
      * @var int
      */
     public const COUNT = 10;
-
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        protected CustomerRepository $customerRepository,
-        protected CustomerGroupRepository $customerGroupRepository,
-        protected CustomerNoteRepository $customerNoteRepository
-    ) {
+    public function __construct(protected Customer_Repository $customer_repository, protected Customer_Group_Repository $customer_group_repository, protected Customer_Note_Repository $customer_note_repository)
+    {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -63,75 +53,37 @@ class CustomerController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(CustomerDataGrid::class)->process();
+            return datagrid(Customer_Data_Grid::class)->process();
         }
-
-        $channels = core()->getAllChannels();
-
-        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
-
+        $channels = core()->get_all_channels();
+        $groups = $this->customer_group_repository->find_where([['code', '<>', 'guest']]);
         return view('admin::customers.customers.index', compact('channels', 'groups'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(): JsonResponse
+    public function store(): Json_Response
     {
-        $this->validate(request(), [
-            'first_name' => 'string|required',
-            'last_name' => 'string|required',
-            'gender' => 'required',
-            'channel_id' => 'required|integer',
-            'email' => 'required|unique:customers,email,NULL,id,channel_id,'.request('channel_id'),
-            'date_of_birth' => 'date|before:today',
-            'phone' => ['unique:customers,phone', new PhoneNumber()],
-        ]);
-
+        $this->validate(request(), ['first_name' => 'string|required', 'last_name' => 'string|required', 'gender' => 'required', 'channel_id' => 'required|integer', 'email' => 'required|unique:customers,email,NULL,id,channel_id,' . request('channel_id'), 'date_of_birth' => 'date|before:today', 'phone' => ['unique:customers,phone', new Phone_Number()]]);
         $password = bin2hex(random_bytes(12));
-
         Event::dispatch('customer.registration.before');
-
-        $data = array_merge([
-            'password' => bcrypt($password),
-            'is_verified' => 1,
-        ], request()->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'date_of_birth',
-            'phone',
-            'customer_group_id',
-            'channel_id',
-        ]));
-
+        $data = array_merge(['password' => bcrypt($password), 'is_verified' => 1], request()->only(['first_name', 'last_name', 'gender', 'email', 'date_of_birth', 'phone', 'customer_group_id', 'channel_id']));
         if (empty($data['phone'])) {
             $data['phone'] = null;
         }
-
         Event::dispatch('customer.create.before');
-
-        $customer = $this->customerRepository->create($data);
-
-        if (core()->getConfigData('emails.general.notifications.emails.general.notifications.customer_account_credentials')) {
+        $customer = $this->customer_repository->create($data);
+        if (core()->get_config_data('emails.general.notifications.emails.general.notifications.customer_account_credentials')) {
             try {
-                Mail::queue(new NewCustomerNotification($customer, $password));
+                Mail::queue(new New_Customer_Notification($customer, $password));
             } catch (\Exception $e) {
                 report($e);
             }
         }
-
         Event::dispatch('customer.create.after', $customer);
-
         Event::dispatch('customer.registration.after', $customer);
-
-        return new JsonResponse([
-            'data' => $customer,
-            'message' => trans('admin::app.customers.customers.index.create.create-success'),
-        ]);
+        return new Json_Response(['data' => $customer, 'message' => trans('admin::app.customers.customers.index.create.create-success')]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -139,46 +91,16 @@ class CustomerController extends Controller
      */
     public function update(int $id)
     {
-        $this->validate(request(), [
-            'first_name' => 'string|required',
-            'last_name' => 'string|required',
-            'gender' => 'required',
-            'email' => 'required|unique:customers,email,'.$id,
-            'date_of_birth' => 'date|before:today',
-            'phone' => ['unique:customers,phone,'.$id, new PhoneNumber()],
-        ]);
-
-        $data = request()->only([
-            'first_name',
-            'last_name',
-            'gender',
-            'email',
-            'date_of_birth',
-            'phone',
-            'customer_group_id',
-            'status',
-            'is_suspended',
-        ]);
-
+        $this->validate(request(), ['first_name' => 'string|required', 'last_name' => 'string|required', 'gender' => 'required', 'email' => 'required|unique:customers,email,' . $id, 'date_of_birth' => 'date|before:today', 'phone' => ['unique:customers,phone,' . $id, new Phone_Number()]]);
+        $data = request()->only(['first_name', 'last_name', 'gender', 'email', 'date_of_birth', 'phone', 'customer_group_id', 'status', 'is_suspended']);
         if (empty($data['phone'])) {
             $data['phone'] = null;
         }
-
         Event::dispatch('customer.update.before', $id);
-
-        $customer = $this->customerRepository->update($data, $id);
-
+        $customer = $this->customer_repository->update($data, $id);
         Event::dispatch('customer.update.after', $customer);
-
-        return new JsonResponse([
-            'message' => trans('admin::app.customers.customers.update-success'),
-            'data' => [
-                'customer' => $customer->fresh(),
-                'group' => $customer->group,
-            ],
-        ]);
+        return new Json_Response(['message' => trans('admin::app.customers.customers.update-success'), 'data' => ['customer' => $customer->fresh(), 'group' => $customer->group]]);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -186,93 +108,63 @@ class CustomerController extends Controller
      */
     public function destroy(int $id)
     {
-        $customer = $this->customerRepository->findorFail($id);
-
-        if (! $customer) {
+        $customer = $this->customer_repository->findor_fail($id);
+        if (!$customer) {
             return response()->json(['message' => trans('admin::app.customers.customers.delete-failed')], 400);
         }
-
-        if (! $this->customerRepository->haveActiveOrders($customer)) {
-
-            $this->customerRepository->delete($id);
-
+        if (!$this->customer_repository->have_active_orders($customer)) {
+            $this->customer_repository->delete($id);
             session()->flash('success', trans('admin::app.customers.customers.delete-success'));
-
             return redirect()->route('admin.customers.customers.index');
         }
-
         session()->flash('error', trans('admin::app.customers.customers.view.order-pending'));
-
         return redirect()->route('admin.customers.customers.index');
     }
-
     /**
      * Login as customer.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function loginAsCustomer(int $id)
+    public function login_as_customer(int $id)
     {
-        $customer = $this->customerRepository->findOrFail($id);
-
+        $customer = $this->customer_repository->find_or_fail($id);
         auth()->guard('customer')->login($customer);
-
         session()->flash('success', trans('admin::app.customers.customers.index.login-message', ['customer_name' => $customer->name]));
-
         return redirect(route('shop.customers.account.profile.index'));
     }
-
     /**
      * To store the response of the note.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeNotes(int $id)
+    public function store_notes(int $id)
     {
-        $this->validate(request(), [
-            'note' => 'string|required',
-        ]);
-
+        $this->validate(request(), ['note' => 'string|required']);
         Event::dispatch('customer.note.create.before', $id);
-
-        $customerNote = $this->customerNoteRepository->create([
-            'customer_id' => $id,
-            'note' => request()->input('note'),
-            'customer_notified' => request()->input('customer_notified', 0),
-        ]);
-
-        Event::dispatch('customer.note.create.after', $customerNote);
-
+        $customer_note = $this->customer_note_repository->create(['customer_id' => $id, 'note' => request()->input('note'), 'customer_notified' => request()->input('customer_notified', 0)]);
+        Event::dispatch('customer.note.create.after', $customer_note);
         session()->flash('success', trans('admin::app.customers.customers.view.note-created-success'));
-
         return redirect()->route('admin.customers.customers.view', $id);
     }
-
     /**
      * View all details of customer.
      */
     public function show(int $id)
     {
-        $customer = $this->customerRepository->with(['addresses', 'group'])->findOrFail($id);
-
-        $groups = $this->customerGroupRepository->findWhere([['code', '<>', 'guest']]);
-
+        $customer = $this->customer_repository->with(['addresses', 'group'])->find_or_fail($id);
+        $groups = $this->customer_group_repository->find_where([['code', '<>', 'guest']]);
         if (request()->ajax()) {
             switch (request()->query('type')) {
                 case self::ORDERS:
-                    return datagrid(OrderDataGrid::class)->process();
-
+                    return datagrid(Order_Data_Grid::class)->process();
                 case self::INVOICES:
-                    return datagrid(InvoiceDataGrid::class)->process();
-
+                    return datagrid(Invoice_Data_Grid::class)->process();
                 case self::REVIEWS:
-                    return datagrid(ReviewDataGrid::class)->process();
+                    return datagrid(Review_Data_Grid::class)->process();
             }
         }
-
         return view('admin::customers.customers.view', compact('customer', 'groups'));
     }
-
     /**
      * Result of search customer.
      *
@@ -280,72 +172,50 @@ class CustomerController extends Controller
      */
     public function search()
     {
-        $customers = $this->customerRepository->scopeQuery(function ($query) {
-            return $query->where('email', 'like', '%'.urldecode(request()->input('query')).'%')
-                ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%'.urldecode(request()->input('query')).'%')
-                ->orderBy('created_at', 'desc');
+        $customers = $this->customer_repository->scope_query(function ($query) {
+            return $query->where('email', 'like', '%' . urldecode(request()->input('query')) . '%')->or_where(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%' . urldecode(request()->input('query')) . '%')->order_by('created_at', 'desc');
         })->paginate(self::COUNT);
-
         return response()->json($customers);
     }
-
     /**
      * To mass update the customer.
      */
-    public function massUpdate(MassUpdateRequest $massUpdateRequest): JsonResponse
+    public function mass_update(Mass_Update_Request $mass_update_request): Json_Response
     {
-        $selectedCustomerIds = $massUpdateRequest->input('indices');
-
-        foreach ($selectedCustomerIds as $customerId) {
-            Event::dispatch('customer.update.before', $customerId);
-
-            $customer = $this->customerRepository->update([
-                'status' => $massUpdateRequest->input('value'),
-            ], $customerId);
-
+        $selected_customer_ids = $mass_update_request->input('indices');
+        foreach ($selected_customer_ids as $customer_id) {
+            Event::dispatch('customer.update.before', $customer_id);
+            $customer = $this->customer_repository->update(['status' => $mass_update_request->input('value')], $customer_id);
             Event::dispatch('customer.update.after', $customer);
         }
-
-        return new JsonResponse([
-            'message' => trans('admin::app.customers.customers.index.datagrid.update-success'),
-        ]);
+        return new Json_Response(['message' => trans('admin::app.customers.customers.index.datagrid.update-success')]);
     }
-
     /**
      * To mass delete the customer.
      */
-    public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
+    public function mass_destroy(Mass_Destroy_Request $mass_destroy_request): Json_Response
     {
-        $customers = $this->customerRepository->findWhereIn('id', $massDestroyRequest->input('indices'));
-
+        $customers = $this->customer_repository->find_where_in('id', $mass_destroy_request->input('indices'));
         try {
             /**
              * Ensure that customers do not have any active orders before performing deletion.
              */
             foreach ($customers as $customer) {
-                if ($this->customerRepository->haveActiveOrders($customer)) {
+                if ($this->customer_repository->have_active_orders($customer)) {
                     throw new \Exception(trans('admin::app.customers.customers.index.datagrid.order-pending'));
                 }
             }
-
             /**
              * After ensuring that they have no active orders delete the corresponding customer.
              */
             foreach ($customers as $customer) {
                 Event::dispatch('customer.delete.before', $customer);
-
-                $this->customerRepository->delete($customer->id);
-
+                $this->customer_repository->delete($customer->id);
                 Event::dispatch('customer.delete.after', $customer);
             }
-
-            return new JsonResponse([
-                'message' => trans('admin::app.customers.customers.index.datagrid.delete-success'),
-            ]);
+            return new Json_Response(['message' => trans('admin::app.customers.customers.index.datagrid.delete-success')]);
         } catch (\Exception $exception) {
-            return new JsonResponse([
-                'message' => $exception->getMessage(),
-            ], 500);
+            return new Json_Response(['message' => $exception->get_message()], 500);
         }
     }
 }

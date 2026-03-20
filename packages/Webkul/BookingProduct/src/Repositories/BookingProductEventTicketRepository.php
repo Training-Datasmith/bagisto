@@ -1,90 +1,62 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Webkul\BookingProduct\Repositories;
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Repositories;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
-use Webkul\BookingProduct\Contracts\BookingProduct;
-use Webkul\BookingProduct\Contracts\BookingProductEventTicket;
+use Webkul\Booking_Product\Contracts\Booking_Product;
+use Webkul\Booking_Product\Contracts\Booking_Product_Event_Ticket;
 use Webkul\Core\Eloquent\Repository;
-
-class BookingProductEventTicketRepository extends Repository
+class Booking_Product_Event_Ticket_Repository extends Repository
 {
     /**
      * Specify Model class name
      */
     public function model(): string
     {
-        return BookingProductEventTicket::class;
+        return Booking_Product_Event_Ticket::class;
     }
-
     /**
      * Summary of save Event Tickets.
      */
-    public function saveEventTickets(array $data, BookingProduct $bookingProduct): void
+    public function save_event_tickets(array $data, Booking_Product $booking_product): void
     {
-        Event::dispatch('booking_product.booking.event-ticket.save.before', [
-            'data' => $data,
-            'bookingProduct' => $bookingProduct,
-        ]);
-
-        $previousTicketIds = $bookingProduct->event_tickets()->pluck('id')->toArray();
-
-        $savedTickets = [];
-
-        if (! empty($data['tickets'])) {
-            foreach ($data['tickets'] as $ticketId => &$ticketInputs) {
-                $this->sanitizeInput('special_price', $ticketInputs);
-
-                $this->sanitizeInput('special_price_from', $ticketInputs);
-
-                $this->sanitizeInput('special_price_to', $ticketInputs);
-
-                if (Str::contains($ticketId, 'ticket_')) {
-                    $ticket = $this->create(array_merge([
-                        'booking_product_id' => $bookingProduct->id,
-                    ], $ticketInputs));
+        Event::dispatch('booking_product.booking.event-ticket.save.before', ['data' => $data, 'bookingProduct' => $booking_product]);
+        $previous_ticket_ids = $booking_product->event_tickets()->pluck('id')->to_array();
+        $saved_tickets = [];
+        if (!empty($data['tickets'])) {
+            foreach ($data['tickets'] as $ticket_id => &$ticket_inputs) {
+                $this->sanitize_input('special_price', $ticket_inputs);
+                $this->sanitize_input('special_price_from', $ticket_inputs);
+                $this->sanitize_input('special_price_to', $ticket_inputs);
+                if (Str::contains($ticket_id, 'ticket_')) {
+                    $ticket = $this->create(array_merge(['booking_product_id' => $booking_product->id], $ticket_inputs));
                 } else {
-                    if (($index = array_search($ticketId, $previousTicketIds)) !== false) {
-                        unset($previousTicketIds[$index]);
+                    if (($index = array_search($ticket_id, $previous_ticket_ids)) !== false) {
+                        unset($previous_ticket_ids[$index]);
                     }
-
-                    $ticket = $this->update($ticketInputs, $ticketId);
+                    $ticket = $this->update($ticket_inputs, $ticket_id);
                 }
-
-                $savedTickets[$ticketId] = [
-                    'ticket' => $ticket,
-                    'ticketInputs' => $ticketInputs,
-                ];
+                $saved_tickets[$ticket_id] = ['ticket' => $ticket, 'ticketInputs' => $ticket_inputs];
             }
-
-            Event::dispatch('booking_product.booking.event-ticket.save.after', ['tickets' => $savedTickets]);
+            Event::dispatch('booking_product.booking.event-ticket.save.after', ['tickets' => $saved_tickets]);
         }
-
-        if (! empty($previousTicketIds)) {
-            $this->destroy($previousTicketIds);
+        if (!empty($previous_ticket_ids)) {
+            $this->destroy($previous_ticket_ids);
         }
     }
-
     /**
      * Summary of sanitize Input.
      *
      * @param  string  $fieldName
      * @param  array  $inputs
      */
-    private function sanitizeInput($fieldName, &$inputs)
+    private function sanitize_input($field_name, &$inputs)
     {
-        $fieldValue = $inputs[$fieldName] ?? null;
-
-        if (
-            ! isset($fieldValue)
-            || empty($fieldValue)
-            || $fieldValue === '0.0000'
-            || $fieldValue === '0000-00-00 00:00:00'
-        ) {
-            $inputs[$fieldName] = null;
+        $field_value = $inputs[$field_name] ?? null;
+        if (!isset($field_value) || empty($field_value) || $field_value === '0.0000' || $field_value === '0000-00-00 00:00:00') {
+            $inputs[$field_name] = null;
         }
     }
 }

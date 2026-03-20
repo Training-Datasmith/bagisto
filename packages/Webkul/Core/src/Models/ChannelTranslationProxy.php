@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Models;
 
-use Konekt\Concord\Proxies\ModelProxy;
-
-class ChannelTranslationProxy extends ModelProxy
+use Konekt\Concord\Proxies\Model_Proxy;
+class Channel_Translation_Proxy extends Model_Proxy
 {
 }

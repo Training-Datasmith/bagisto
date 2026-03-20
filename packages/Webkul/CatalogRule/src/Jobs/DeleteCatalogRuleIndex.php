@@ -1,40 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Webkul\CatalogRule\Jobs;
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\Should_Queue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\Interacts_With_Queue;
+use Illuminate\Queue\Serializes_Models;
 use Webkul\Product\Helpers\Indexers\Price as PriceIndexer;
-use Webkul\Product\Repositories\ProductRepository;
-
-class DeleteCatalogRuleIndex implements ShouldQueue
+use Webkul\Product\Repositories\Product_Repository;
+class Delete_Catalog_Rule_Index implements Should_Queue
 {
     use Dispatchable;
-    use InteractsWithQueue;
+    use Interacts_With_Queue;
     use Queueable;
-    use SerializesModels;
-
+    use Serializes_Models;
     /**
      * Default batch size
      */
     protected const BATCH_SIZE = 100;
-
     /**
      * Create a new job instance.
      *
      * @param  array  $productIds
      * @return void
      */
-    public function __construct(protected $productIds)
+    public function __construct(protected $product_ids)
     {
-        $this->productIds = $productIds;
+        $this->product_ids = $product_ids;
     }
-
     /**
      * Execute the job.
      *
@@ -46,10 +41,7 @@ class DeleteCatalogRuleIndex implements ShouldQueue
          * Reindex price index for the products associated with the catalog rule.
          */
         while (true) {
-            $paginator = app(ProductRepository::class)
-                ->whereIn('id', $this->productIds)
-                ->cursorPaginate(self::BATCH_SIZE);
-
+            $paginator = app(Product_Repository::class)->where_in('id', $this->product_ids)->cursor_paginate(self::BATCH_SIZE);
             /**
              * TODO:
              *
@@ -58,12 +50,10 @@ class DeleteCatalogRuleIndex implements ShouldQueue
              * application of other rules on the products. In such a scenario,
              * it's necessary to reindex the remaining rules for these products.
              */
-            app(PriceIndexer::class)->reindexBatch($paginator->items());
-
-            if (! $cursor = $paginator->nextCursor()) {
+            app(Price_Indexer::class)->reindex_batch($paginator->items());
+            if (!$cursor = $paginator->next_cursor()) {
                 break;
             }
-
             request()->query->add(['cursor' => $cursor->encode()]);
         }
     }

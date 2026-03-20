@@ -1,33 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Webkul\CatalogRule\Repositories;
+declare (strict_types=1);
+namespace Webkul\Catalog_Rule\Repositories;
 
 use Illuminate\Container\Container;
-use Webkul\Attribute\Repositories\AttributeFamilyRepository;
-use Webkul\Attribute\Repositories\AttributeRepository;
-use Webkul\Category\Repositories\CategoryRepository;
+use Webkul\Attribute\Repositories\Attribute_Family_Repository;
+use Webkul\Attribute\Repositories\Attribute_Repository;
+use Webkul\Category\Repositories\Category_Repository;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Tax\Repositories\TaxCategoryRepository;
-
-class CatalogRuleRepository extends Repository
+use Webkul\Tax\Repositories\Tax_Category_Repository;
+class Catalog_Rule_Repository extends Repository
 {
     /**
      * Create a new repository instance.
      *
      * @return void
      */
-    public function __construct(
-        protected AttributeFamilyRepository $attributeFamilyRepository,
-        protected AttributeRepository $attributeRepository,
-        protected CategoryRepository $categoryRepository,
-        protected TaxCategoryRepository $taxCategoryRepository,
-        Container $container
-    ) {
+    public function __construct(protected Attribute_Family_Repository $attribute_family_repository, protected Attribute_Repository $attribute_repository, protected Category_Repository $category_repository, protected Tax_Category_Repository $tax_category_repository, Container $container)
+    {
         parent::__construct($container);
     }
-
     /**
      * Specify model class name.
      */
@@ -35,7 +27,6 @@ class CatalogRuleRepository extends Repository
     {
         return 'Webkul\CatalogRule\Contracts\CatalogRule';
     }
-
     /**
      * Create.
      *
@@ -43,17 +34,12 @@ class CatalogRuleRepository extends Repository
      */
     public function create(array $data)
     {
-        $data = $this->transformFormData($data);
-
-        $catalogRule = parent::create($data);
-
-        $catalogRule->channels()->sync($data['channels']);
-
-        $catalogRule->customer_groups()->sync($data['customer_groups']);
-
-        return $catalogRule;
+        $data = $this->transform_form_data($data);
+        $catalog_rule = parent::create($data);
+        $catalog_rule->channels()->sync($data['channels']);
+        $catalog_rule->customer_groups()->sync($data['customer_groups']);
+        return $catalog_rule;
     }
-
     /**
      * Update.
      *
@@ -62,127 +48,71 @@ class CatalogRuleRepository extends Repository
      */
     public function update(array $data, $id)
     {
-        $data = $this->transformFormData($data);
-
-        $catalogRule = $this->find($id);
-
+        $data = $this->transform_form_data($data);
+        $catalog_rule = $this->find($id);
         parent::update($data, $id);
-
-        $catalogRule->channels()->sync($data['channels']);
-
-        $catalogRule->customer_groups()->sync($data['customer_groups']);
-
-        return $catalogRule;
+        $catalog_rule->channels()->sync($data['channels']);
+        $catalog_rule->customer_groups()->sync($data['customer_groups']);
+        return $catalog_rule;
     }
-
     /**
      * Transform form data.
      */
-    public function transformFormData(array $data): array
+    public function transform_form_data(array $data): array
     {
-        return [
-            ...$data,
-            'starts_from' => ! empty($data['starts_from']) ? $data['starts_from'] : null,
-            'ends_till' => ! empty($data['ends_till']) ? $data['ends_till'] : null,
-            'status' => isset($data['status']),
-            'conditions' => $data['conditions'] ?? [],
-        ];
+        return [...$data, 'starts_from' => !empty($data['starts_from']) ? $data['starts_from'] : null, 'ends_till' => !empty($data['ends_till']) ? $data['ends_till'] : null, 'status' => isset($data['status']), 'conditions' => $data['conditions'] ?? []];
     }
-
     /**
      * Returns attributes for catalog rule conditions.
      *
      * @return array
      */
-    public function getConditionAttributes()
+    public function get_condition_attributes()
     {
-        $attributes = [
-            [
-                'key' => 'product',
-                'label' => trans('admin::app.marketing.promotions.catalog-rules.create.product-attribute'),
-                'children' => [
-                    [
-                        'key' => 'product|category_ids',
-                        'type' => 'multiselect',
-                        'label' => trans('admin::app.marketing.promotions.catalog-rules.create.categories'),
-                        'options' => $this->categoryRepository->getCategoryTree(),
-                    ], [
-                        'key' => 'product|attribute_family_id',
-                        'type' => 'select',
-                        'label' => trans('admin::app.marketing.promotions.catalog-rules.create.attribute-family'),
-                        'options' => $this->getAttributeFamilies(),
-                    ],
-                ],
-            ],
-        ];
-
-        foreach ($this->attributeRepository->findWhereNotIn('type', ['textarea', 'image', 'file']) as $attribute) {
-            $attributeType = $attribute->type;
-
+        $attributes = [['key' => 'product', 'label' => trans('admin::app.marketing.promotions.catalog-rules.create.product-attribute'), 'children' => [['key' => 'product|category_ids', 'type' => 'multiselect', 'label' => trans('admin::app.marketing.promotions.catalog-rules.create.categories'), 'options' => $this->category_repository->get_category_tree()], ['key' => 'product|attribute_family_id', 'type' => 'select', 'label' => trans('admin::app.marketing.promotions.catalog-rules.create.attribute-family'), 'options' => $this->get_attribute_families()]]]];
+        foreach ($this->attribute_repository->find_where_not_in('type', ['textarea', 'image', 'file']) as $attribute) {
+            $attribute_type = $attribute->type;
             if ($attribute->code == 'tax_category_id') {
-                $options = $this->getTaxCategories();
+                $options = $this->get_tax_categories();
+            } else if ($attribute->type === 'select') {
+                $options = $attribute->options()->order_by('sort_order')->get();
             } else {
-                if ($attribute->type === 'select') {
-                    $options = $attribute->options()->orderBy('sort_order')->get();
-                } else {
-                    $options = $attribute->options;
-                }
+                $options = $attribute->options;
             }
-
             if ($attribute->validation == 'decimal') {
-                $attributeType = 'decimal';
+                $attribute_type = 'decimal';
             }
-
             if ($attribute->validation == 'numeric') {
-                $attributeType = 'integer';
+                $attribute_type = 'integer';
             }
-
-            $attributes[0]['children'][] = [
-                'key' => 'product|'.$attribute->code,
-                'type' => $attribute->type,
-                'label' => $attribute->name,
-                'options' => $options,
-            ];
+            $attributes[0]['children'][] = ['key' => 'product|' . $attribute->code, 'type' => $attribute->type, 'label' => $attribute->name, 'options' => $options];
         }
-
         return $attributes;
     }
-
     /**
      * Returns all tax categories.
      *
      * @return array
      */
-    public function getTaxCategories()
+    public function get_tax_categories()
     {
-        $taxCategories = [];
-
-        foreach ($this->taxCategoryRepository->all() as $taxCategory) {
-            $taxCategories[] = [
-                'id' => $taxCategory->id,
-                'admin_name' => $taxCategory->name,
-            ];
+        $tax_categories = [];
+        foreach ($this->tax_category_repository->all() as $tax_category) {
+            $tax_categories[] = ['id' => $tax_category->id, 'admin_name' => $tax_category->name];
         }
-
-        return $taxCategories;
+        return $tax_categories;
     }
-
     /**
      * Returns all attribute families.
      *
      * @return array
      */
-    public function getAttributeFamilies()
+    public function get_attribute_families()
     {
-        $attributeFamilies = [];
-
-        foreach ($this->attributeFamilyRepository->all() as $attributeFamily) {
-            $attributeFamilies[] = [
-                'id' => $attributeFamily->id,
-                'admin_name' => $attributeFamily->name,
-            ];
+        $attribute_families = [];
+        foreach ($this->attribute_family_repository->all() as $attribute_family) {
+            $attribute_families[] = ['id' => $attribute_family->id, 'admin_name' => $attribute_family->name];
         }
-
-        return $attributeFamilies;
+        return $attribute_families;
     }
 }

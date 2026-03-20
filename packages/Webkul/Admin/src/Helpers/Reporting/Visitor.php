@@ -1,39 +1,31 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Helpers\Reporting;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Webkul\Core\Repositories\VisitRepository;
-
-class Visitor extends AbstractReporting
+use Webkul\Core\Repositories\Visit_Repository;
+class Visitor extends Abstract_Reporting
 {
     /**
      * Create a helper instance.
      *
      * @return void
      */
-    public function __construct(protected VisitRepository $visitRepository)
+    public function __construct(protected Visit_Repository $visit_repository)
     {
         parent::__construct();
     }
-
     /**
      * Retrieves total visitors and their progress.
      *
      * @param  string  $visitableType
      */
-    public function getTotalVisitorsProgress($visitableType = null): array
+    public function get_total_visitors_progress($visitable_type = null): array
     {
-        return [
-            'previous' => $previous = $this->getTotalVisitors($this->lastStartDate, $this->lastEndDate, $visitableType),
-            'current' => $current = $this->getTotalVisitors($this->startDate, $this->endDate, $visitableType),
-            'progress' => $this->getPercentageChange($previous, $current),
-        ];
+        return ['previous' => $previous = $this->get_total_visitors($this->last_start_date, $this->last_end_date, $visitable_type), 'current' => $current = $this->get_total_visitors($this->start_date, $this->end_date, $visitable_type), 'progress' => $this->get_percentage_change($previous, $current)];
     }
-
     /**
      * Retrieves total visitors and their progress.
      *
@@ -42,41 +34,22 @@ class Visitor extends AbstractReporting
      * @param  string  $visitableType
      * @return array
      */
-    public function getTotalVisitors($startDate, $endDate, $visitableType = null): int
+    public function get_total_visitors($start_date, $end_date, $visitable_type = null): int
     {
-        if ($visitableType) {
-            return $this->visitRepository
-                ->resetModel()
-                ->where('visitable_type', $visitableType)
-                ->whereIn('channel_id', $this->channelIds)
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->get()
-                ->count();
+        if ($visitable_type) {
+            return $this->visit_repository->reset_model()->where('visitable_type', $visitable_type)->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->get()->count();
         }
-
-        return $this->visitRepository
-            ->resetModel()
-            ->whereNull('visitable_id')
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get()
-            ->count();
+        return $this->visit_repository->reset_model()->where_null('visitable_id')->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->get()->count();
     }
-
     /**
      * Retrieves unique visitors and their progress.
      *
      * @param  string  $visitableType
      */
-    public function getTotalUniqueVisitorsProgress($visitableType = null): array
+    public function get_total_unique_visitors_progress($visitable_type = null): array
     {
-        return [
-            'previous' => $previous = $this->getTotalUniqueVisitors($this->lastStartDate, $this->lastEndDate, $visitableType),
-            'current' => $current = $this->getTotalUniqueVisitors($this->startDate, $this->endDate, $visitableType),
-            'progress' => $this->getPercentageChange($previous, $current),
-        ];
+        return ['previous' => $previous = $this->get_total_unique_visitors($this->last_start_date, $this->last_end_date, $visitable_type), 'current' => $current = $this->get_total_unique_visitors($this->start_date, $this->end_date, $visitable_type), 'progress' => $this->get_percentage_change($previous, $current)];
     }
-
     /**
      * Retrieves total unique visitors
      *
@@ -85,100 +58,63 @@ class Visitor extends AbstractReporting
      * @param  string  $visitableType
      * @return array
      */
-    public function getTotalUniqueVisitors($startDate, $endDate, $visitableType = null): int
+    public function get_total_unique_visitors($start_date, $end_date, $visitable_type = null): int
     {
-        if ($visitableType) {
-            return $this->visitRepository
-                ->resetModel()
-                ->where('visitable_type', $visitableType)
-                ->groupBy(DB::raw('CONCAT(ip, "-", visitor_id, "-", visitable_type)'))
-                ->whereIn('channel_id', $this->channelIds)
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->get()
-                ->count();
+        if ($visitable_type) {
+            return $this->visit_repository->reset_model()->where('visitable_type', $visitable_type)->group_by(DB::raw('CONCAT(ip, "-", visitor_id, "-", visitable_type)'))->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->get()->count();
         }
-
-        return $this->visitRepository
-            ->resetModel()
-            ->whereNull('visitable_id')
-            ->groupBy(DB::raw('CONCAT(ip, "-", visitor_id)'))
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get()
-            ->count();
+        return $this->visit_repository->reset_model()->where_null('visitable_id')->group_by(DB::raw('CONCAT(ip, "-", visitor_id)'))->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->get()->count();
     }
-
     /**
      * Returns previous sales over time
      *
      * @param  string  $visitableType
      */
-    public function getPreviousTotalVisitorsOverTime($visitableType = null): array
+    public function get_previous_total_visitors_over_time($visitable_type = null): array
     {
-        return $this->getTotalVisitorsOverTime($this->lastStartDate, $this->lastEndDate, 'auto', $visitableType);
+        return $this->get_total_visitors_over_time($this->last_start_date, $this->last_end_date, 'auto', $visitable_type);
     }
-
     /**
      * Returns current sales over time
      *
      * @param  string  $visitableType
      */
-    public function getCurrentTotalVisitorsOverTime($visitableType = null): array
+    public function get_current_total_visitors_over_time($visitable_type = null): array
     {
-        return $this->getTotalVisitorsOverTime($this->startDate, $this->endDate, 'auto', $visitableType);
+        return $this->get_total_visitors_over_time($this->start_date, $this->end_date, 'auto', $visitable_type);
     }
-
     /**
      * Returns previous sales over week
      *
      * @param  string  $visitableType
      */
-    public function getPreviousTotalVisitorsOverWeek($visitableType = null): array
+    public function get_previous_total_visitors_over_week($visitable_type = null): array
     {
-        return $this->getTotalVisitorsOverWeek($this->lastStartDate, $this->lastEndDate, $visitableType);
+        return $this->get_total_visitors_over_week($this->last_start_date, $this->last_end_date, $visitable_type);
     }
-
     /**
      * Returns current sales over week
      *
      * @param  string  $visitableType
      */
-    public function getCurrentTotalVisitorsOverWeek($visitableType = null): array
+    public function get_current_total_visitors_over_week($visitable_type = null): array
     {
-        return $this->getTotalVisitorsOverWeek($this->startDate, $this->endDate, $visitableType);
+        return $this->get_total_visitors_over_week($this->start_date, $this->end_date, $visitable_type);
     }
-
     /**
      * Gets visitable with most visits.
      *
      * @param  string  $visitableType
      * @param  int  $limit
      */
-    public function getVisitableWithMostVisits($visitableType = null, $limit = null): Collection
+    public function get_visitable_with_most_visits($visitable_type = null, $limit = null): Collection
     {
-        $visits = $this->visitRepository
-            ->resetModel()
-            ->addSelect(
-                'id',
-                'visitable_type',
-                'visitable_id',
-                DB::raw('COUNT(*) as visits')
-            )
-            ->where('visitable_type', $visitableType)
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->groupBy('visitable_id')
-            ->orderByDesc('visits')
-            ->limit($limit)
-            ->get();
-
+        $visits = $this->visit_repository->reset_model()->add_select('id', 'visitable_type', 'visitable_id', DB::raw('COUNT(*) as visits'))->where('visitable_type', $visitable_type)->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$this->start_date, $this->end_date])->group_by('visitable_id')->order_by_desc('visits')->limit($limit)->get();
         $visits->map(function ($visit) {
             $visit->name = $visit->visitable->name;
         });
-
         return $visits;
     }
-
     /**
      * Generates visitor graph data.
      *
@@ -187,38 +123,18 @@ class Visitor extends AbstractReporting
      * @param  string  $period
      * @param  string  $visitableType
      */
-    public function getTotalVisitorsOverTime($startDate, $endDate, $period = 'auto', $visitableType = null): array
+    public function get_total_visitors_over_time($start_date, $end_date, $period = 'auto', $visitable_type = null): array
     {
-        $config = $this->getTimeInterval($startDate, $endDate, $period);
-
-        $groupColumn = $config['group_column'];
-
-        $results = $this->visitRepository
-            ->resetModel()
-            ->select(
-                DB::raw("$groupColumn AS date"),
-                DB::raw('COUNT(*) AS total')
-            )
-            ->whereNull('visitable_id')
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy('date')
-            ->get();
-
+        $config = $this->get_time_interval($start_date, $end_date, $period);
+        $group_column = $config['group_column'];
+        $results = $this->visit_repository->reset_model()->select(DB::raw("{$group_column} AS date"), DB::raw('COUNT(*) AS total'))->where_null('visitable_id')->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->group_by('date')->get();
         $stats = [];
-
         foreach ($config['intervals'] as $interval) {
             $total = $results->where('date', $interval['filter'])->first();
-
-            $stats[] = [
-                'label' => $interval['start'],
-                'total' => $total?->total ?? 0,
-            ];
+            $stats[] = ['label' => $interval['start'], 'total' => $total?->total ?? 0];
         }
-
         return $stats;
     }
-
     /**
      * Generates visitor over week graph data.
      *
@@ -226,31 +142,16 @@ class Visitor extends AbstractReporting
      * @param  \Carbon\Carbon  $endDate
      * @param  string  $visitableType
      */
-    public function getTotalVisitorsOverWeek($startDate, $endDate, $visitableType = null): array
+    public function get_total_visitors_over_week($start_date, $end_date, $visitable_type = null): array
     {
         $stats = [];
-
-        $weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-        $visits = $this->visitRepository
-            ->resetModel()
-            ->select(
-                DB::raw('DAYNAME(created_at) AS day'),
-                DB::raw('COUNT(*) AS count')
-            )
-            ->whereNull('visitable_id')
-            ->whereIn('channel_id', $this->channelIds)
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->groupBy('day')
-            ->get();
-
-        foreach ($weekDays as $day) {
+        $week_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $visits = $this->visit_repository->reset_model()->select(DB::raw('DAYNAME(created_at) AS day'), DB::raw('COUNT(*) AS count'))->where_null('visitable_id')->where_in('channel_id', $this->channel_ids)->where_between('created_at', [$start_date, $end_date])->group_by('day')->get();
+        foreach ($week_days as $day) {
             $total = $visits->where('day', $day)->first();
-
             $stats['label'][] = $day;
             $stats['total'][] = $total?->count ?? 0;
         }
-
         return $stats;
     }
 }

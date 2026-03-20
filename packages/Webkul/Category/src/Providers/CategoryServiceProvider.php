@@ -1,22 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Webkul\Category\Models\CategoryProxy;
-use Webkul\Category\Observers\CategoryObserver;
-
-class CategoryServiceProvider extends ServiceProvider
+use Illuminate\Support\Service_Provider;
+use Webkul\Category\Models\Category_Proxy;
+use Webkul\Category\Observers\Category_Observer;
+class Category_Service_Provider extends Service_Provider
 {
     /**
      * Bootstrap services.
      */
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
-
-        CategoryProxy::observe(CategoryObserver::class);
+        $this->load_migrations_from(__DIR__ . '/../Database/Migrations');
+        Category_Proxy::observe(Category_Observer::class);
     }
 }

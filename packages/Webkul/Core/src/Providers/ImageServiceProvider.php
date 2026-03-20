@@ -1,17 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Providers;
 
-use Intervention\Image\ImageManager;
-use Intervention\Image\ImageServiceProvider as BaseImageServiceProvider;
-
+use Intervention\Image\Image_Manager;
+use Intervention\Image\Image_Service_Provider as BaseImageServiceProvider;
 /**
  * This is the overridden `ImageServiceProvider` class from the `intervention/image` package. The base class
  * supports all versions of Laravel, but this class only supports the current Laravel version used by Bagisto.
  */
-class ImageServiceProvider extends BaseImageServiceProvider
+class Image_Service_Provider extends Base_Image_Service_Provider
 {
     /**
      * Register the service provider.
@@ -21,12 +19,10 @@ class ImageServiceProvider extends BaseImageServiceProvider
     public function register()
     {
         $this->app->singleton('image', function ($app) {
-            return new ImageManager($this->getImageConfig($app));
+            return new Image_Manager($this->get_image_config($app));
         });
-
         $this->app->alias('image', 'Intervention\Image\ImageManager');
     }
-
     /**
      * Bootstrap the application events.
      *
@@ -34,11 +30,8 @@ class ImageServiceProvider extends BaseImageServiceProvider
      */
     public function boot()
     {
-        $this->cacheIsInstalled()
-            ? $this->bootstrapImageCache()
-            : null;
+        $this->cache_is_installed() ? $this->bootstrap_image_cache() : null;
     }
-
     /**
      * Get the services provided by the provider.
      *
@@ -48,51 +41,42 @@ class ImageServiceProvider extends BaseImageServiceProvider
     {
         return ['image'];
     }
-
     /**
      * Bootstrap imagecache
      *
      * @return void
      */
-    protected function bootstrapImageCache()
+    protected function bootstrap_image_cache()
     {
         /**
          * Image cache route.
          */
         if (is_string(config('imagecache.route'))) {
-            $filenamePattern = '[ \w\\.\\/\\-\\@\(\)\=]+';
-
-            $this->app['router']->get(config('imagecache.route').'/{template}/{filename}', [
-                'uses' => 'Webkul\Core\ImageCache\Controller@getResponse',
-                'as' => 'imagecache',
-            ])->where(['filename' => $filenamePattern]);
+            $filename_pattern = '[ \w\.\/\-\@\(\)\=]+';
+            $this->app['router']->get(config('imagecache.route') . '/{template}/{filename}', ['uses' => 'Webkul\Core\ImageCache\Controller@getResponse', 'as' => 'imagecache'])->where(['filename' => $filename_pattern]);
         }
     }
-
     /**
      * Determines if Intervention Image Cache is installed.
      *
      * @return bool
      */
-    private function cacheIsInstalled()
+    private function cache_is_installed()
     {
-        return class_exists('Intervention\\Image\\ImageCache');
+        return class_exists('Intervention\Image\ImageCache');
     }
-
     /**
      * Return image configuration as array.
      *
      * @param  Application  $app
      * @return array
      */
-    private function getImageConfig($app)
+    private function get_image_config($app)
     {
         $config = $app['config']->get('image');
-
         if (is_null($config)) {
             return [];
         }
-
         return $config;
     }
 }

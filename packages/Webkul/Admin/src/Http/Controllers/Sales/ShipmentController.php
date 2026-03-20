@@ -1,29 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Sales;
 
-use Webkul\Admin\DataGrids\Sales\OrderShipmentDataGrid;
+use Webkul\Admin\Data_Grids\Sales\Order_Shipment_Data_Grid;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\Sales\Repositories\OrderItemRepository;
-use Webkul\Sales\Repositories\OrderRepository;
-use Webkul\Sales\Repositories\ShipmentRepository;
-
-class ShipmentController extends Controller
+use Webkul\Sales\Repositories\Order_Item_Repository;
+use Webkul\Sales\Repositories\Order_Repository;
+use Webkul\Sales\Repositories\Shipment_Repository;
+class Shipment_Controller extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(
-        protected OrderRepository $orderRepository,
-        protected OrderItemRepository $orderItemRepository,
-        protected ShipmentRepository $shipmentRepository
-    ) {
+    public function __construct(protected Order_Repository $order_repository, protected Order_Item_Repository $order_item_repository, protected Shipment_Repository $shipment_repository)
+    {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -32,134 +26,90 @@ class ShipmentController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(OrderShipmentDataGrid::class)->process();
+            return datagrid(Order_Shipment_Data_Grid::class)->process();
         }
-
         return view('admin::sales.shipments.index');
     }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\View\View
      */
-    public function create(int $orderId)
+    public function create(int $order_id)
     {
-        $order = $this->orderRepository->findOrFail($orderId);
-
-        if (! $order->channel || ! $order->canShip()) {
+        $order = $this->order_repository->find_or_fail($order_id);
+        if (!$order->channel || !$order->can_ship()) {
             session()->flash('error', trans('admin::app.sales.shipments.create.creation-error'));
-
             return redirect()->back();
         }
-
         return view('admin::sales.shipments.create', compact('order'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(int $orderId)
+    public function store(int $order_id)
     {
-        $order = $this->orderRepository->findOrFail($orderId);
-
-        if (! $order->canShip()) {
+        $order = $this->order_repository->find_or_fail($order_id);
+        if (!$order->can_ship()) {
             session()->flash('error', trans('admin::app.sales.shipments.create.order-error'));
-
             return redirect()->back();
         }
-
-        $this->validate(request(), [
-            'shipment.source' => 'required',
-            'shipment.items.*.*' => 'required|numeric|min:0',
-        ]);
-
+        $this->validate(request(), ['shipment.source' => 'required', 'shipment.items.*.*' => 'required|numeric|min:0']);
         $data = request()->only(['shipment', 'carrier_name']);
-
-        if (! $this->isInventoryValidate($data)) {
+        if (!$this->is_inventory_validate($data)) {
             session()->flash('error', trans('admin::app.sales.shipments.create.quantity-invalid'));
-
             return redirect()->back();
         }
-
-        $this->shipmentRepository->create(array_merge($data, [
-            'order_id' => $orderId,
-        ]));
-
+        $this->shipment_repository->create(array_merge($data, ['order_id' => $order_id]));
         session()->flash('success', trans('admin::app.sales.shipments.create.success'));
-
-        return redirect()->route('admin.sales.orders.view', $orderId);
+        return redirect()->route('admin.sales.orders.view', $order_id);
     }
-
     /**
      * Checks if requested quantity available or not.
      *
      * @param  array  $data
      * @return bool
      */
-    public function isInventoryValidate(&$data)
+    public function is_inventory_validate(&$data)
     {
-        if (! isset($data['shipment']['items'])) {
+        if (!isset($data['shipment']['items'])) {
             return;
         }
-
         $valid = false;
-
-        $inventorySourceId = $data['shipment']['source'];
-
-        foreach ($data['shipment']['items'] as $itemId => $inventorySource) {
-            $qty = $inventorySource[$inventorySourceId];
-
+        $inventory_source_id = $data['shipment']['source'];
+        foreach ($data['shipment']['items'] as $item_id => $inventory_source) {
+            $qty = $inventory_source[$inventory_source_id];
             if ((int) $qty) {
-                $orderItem = $this->orderItemRepository->find($itemId);
-
-                if ($orderItem->qty_to_ship < $qty) {
+                $order_item = $this->order_item_repository->find($item_id);
+                if ($order_item->qty_to_ship < $qty) {
                     return false;
                 }
-
-                if ($orderItem->getTypeInstance()->isComposite()) {
-                    foreach ($orderItem->children as $child) {
-                        if (! $child->qty_ordered) {
+                if ($order_item->get_type_instance()->is_composite()) {
+                    foreach ($order_item->children as $child) {
+                        if (!$child->qty_ordered) {
                             continue;
                         }
-
-                        $finalQty = ($child->qty_ordered / $orderItem->qty_ordered) * $qty;
-
-                        $availableQty = $child->product->inventories()
-                            ->where('inventory_source_id', $inventorySourceId)
-                            ->sum('qty');
-
-                        if (
-                            $child->qty_to_ship < $finalQty
-                            || $availableQty < $finalQty
-                        ) {
+                        $final_qty = $child->qty_ordered / $order_item->qty_ordered * $qty;
+                        $available_qty = $child->product->inventories()->where('inventory_source_id', $inventory_source_id)->sum('qty');
+                        if ($child->qty_to_ship < $final_qty || $available_qty < $final_qty) {
                             return false;
                         }
                     }
                 } else {
-                    $availableQty = $orderItem->product->inventories()
-                        ->where('inventory_source_id', $inventorySourceId)
-                        ->sum('qty');
-
-                    if (
-                        $orderItem->qty_to_ship < $qty
-                        || $availableQty < $qty
-                    ) {
+                    $available_qty = $order_item->product->inventories()->where('inventory_source_id', $inventory_source_id)->sum('qty');
+                    if ($order_item->qty_to_ship < $qty || $available_qty < $qty) {
                         return false;
                     }
                 }
-
                 $valid = true;
             } else {
-                unset($data['shipment']['items'][$itemId]);
+                unset($data['shipment']['items'][$item_id]);
             }
         }
-
         return $valid;
     }
-
     /**
      * Show the view for the specified resource.
      *
@@ -167,8 +117,7 @@ class ShipmentController extends Controller
      */
     public function view(int $id)
     {
-        $shipment = $this->shipmentRepository->findOrFail($id);
-
+        $shipment = $this->shipment_repository->find_or_fail($id);
         return view('admin::sales.shipments.view', compact('shipment'));
     }
 }

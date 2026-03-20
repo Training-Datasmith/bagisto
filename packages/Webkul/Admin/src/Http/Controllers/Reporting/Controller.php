@@ -1,32 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Reporting;
 
 use Maatwebsite\Excel\Facades\Excel;
-use Webkul\Admin\Exports\ReportingExport;
+use Webkul\Admin\Exports\Reporting_Export;
 use Webkul\Admin\Helpers\Reporting as ReportingHelper;
 use Webkul\Admin\Http\Controllers\Controller as BaseController;
-
-class Controller extends BaseController
+class Controller extends Base_Controller
 {
     /**
      * Request param functions.
      *
      * @var array
      */
-    protected $typeFunctions = [];
-
+    protected $type_functions = [];
     /**
      * Create a controller instance.
      *
      * @return void
      */
-    public function __construct(protected ReportingHelper $reportingHelper)
+    public function __construct(protected Reporting_Helper $reporting_helper)
     {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -34,29 +30,19 @@ class Controller extends BaseController
      */
     public function stats()
     {
-        $stats = $this->reportingHelper->{$this->resolveTypeFunction()}();
-
-        return response()->json([
-            'statistics' => $stats,
-            'date_range' => $this->reportingHelper->getDateRange(),
-        ]);
+        $stats = $this->reporting_helper->{$this->resolve_type_function()}();
+        return response()->json(['statistics' => $stats, 'date_range' => $this->reporting_helper->get_date_range()]);
     }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function viewStats()
+    public function view_stats()
     {
-        $stats = $this->reportingHelper->{$this->resolveTypeFunction()}('table');
-
-        return response()->json([
-            'statistics' => $stats,
-            'date_range' => $this->reportingHelper->getDateRange(),
-        ]);
+        $stats = $this->reporting_helper->{$this->resolve_type_function()}('table');
+        return response()->json(['statistics' => $stats, 'date_range' => $this->reporting_helper->get_date_range()]);
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -64,32 +50,28 @@ class Controller extends BaseController
      */
     public function export()
     {
-        $stats = $this->reportingHelper->{$this->resolveTypeFunction()}('table');
-
-        return Excel::download(new ReportingExport($stats), request()->query('type').'.'.request()->query('format'));
+        $stats = $this->reporting_helper->{$this->resolve_type_function()}('table');
+        return Excel::download(new Reporting_Export($stats), request()->query('type') . '.' . request()->query('format'));
     }
-
     /**
      * Validate if the requested type is valid.
      *
      * @return void
      */
-    protected function validateRequestedType()
+    protected function validate_requested_type()
     {
-        return ! array_key_exists(request()->query('type'), $this->typeFunctions);
+        return !array_key_exists(request()->query('type'), $this->type_functions);
     }
-
     /**
      * Resolve the requested type into a valid function name.
      *
      * @return string
      */
-    protected function resolveTypeFunction()
+    protected function resolve_type_function()
     {
-        if ($this->validateRequestedType()) {
+        if ($this->validate_requested_type()) {
             abort(404);
         }
-
-        return $this->typeFunctions[request()->query('type')];
+        return $this->type_functions[request()->query('type')];
     }
 }

@@ -1,25 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Sales;
 
 use Carbon\Carbon;
-use Webkul\Admin\DataGrids\Sales\BookingDataGrid;
+use Webkul\Admin\Data_Grids\Sales\Booking_Data_Grid;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\BookingProduct\Repositories\BookingRepository;
-
-class BookingController extends Controller
+use Webkul\Booking_Product\Repositories\Booking_Repository;
+class Booking_Controller extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(protected BookingRepository $bookingRepository)
+    public function __construct(protected Booking_Repository $booking_repository)
     {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -28,12 +25,10 @@ class BookingController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(BookingDataGrid::class)->process();
+            return datagrid(Booking_Data_Grid::class)->process();
         }
-
         return view('admin::sales.bookings.index');
     }
-
     /**
      * Returns a listing of the resource.
      *
@@ -41,31 +36,17 @@ class BookingController extends Controller
      */
     public function get()
     {
-        if (! request('view_type')) {
-            return app(BookingDataGrid::class)->process();
+        if (!request('view_type')) {
+            return app(Booking_Data_Grid::class)->process();
         }
-
-        $startDate = request()->get('startDate')
-            ? Carbon::createFromTimeString(request()->get('startDate').' 00:00:01')
-            : Carbon::now()->startOfWeek()->format('Y-m-d H:i:s');
-
-        $endDate = request()->get('endDate')
-            ? Carbon::createFromTimeString(request()->get('endDate').' 23:59:59')
-            : Carbon::now()->endOfWeek()->format('Y-m-d H:i:s');
-
-        $bookings = $this->bookingRepository->getBookings([strtotime($startDate), strtotime($endDate)])
-            ->map(function ($booking) {
-                $booking['start'] = Carbon::createFromTimestamp($booking->start)->format('Y-m-d h:i A');
-
-                $booking['end'] = Carbon::createFromTimestamp($booking->end)->format('Y-m-d h:i A');
-
-                $booking->total = core()->formatBasePrice($booking->total);
-
-                return $booking;
-            });
-
-        return response()->json([
-            'bookings' => $bookings,
-        ]);
+        $start_date = request()->get('startDate') ? Carbon::create_from_time_string(request()->get('startDate') . ' 00:00:01') : Carbon::now()->start_of_week()->format('Y-m-d H:i:s');
+        $end_date = request()->get('endDate') ? Carbon::create_from_time_string(request()->get('endDate') . ' 23:59:59') : Carbon::now()->end_of_week()->format('Y-m-d H:i:s');
+        $bookings = $this->booking_repository->get_bookings([strtotime($start_date), strtotime($end_date)])->map(function ($booking) {
+            $booking['start'] = Carbon::create_from_timestamp($booking->start)->format('Y-m-d h:i A');
+            $booking['end'] = Carbon::create_from_timestamp($booking->end)->format('Y-m-d h:i A');
+            $booking->total = core()->format_base_price($booking->total);
+            return $booking;
+        });
+        return response()->json(['bookings' => $bookings]);
     }
 }

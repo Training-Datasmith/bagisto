@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Attribute\Contracts;
 
-interface AttributeOptionTranslation
+interface Attribute_Option_Translation
 {
 }

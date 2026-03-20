@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UserForm extends FormRequest
+use Illuminate\Foundation\Http\Form_Request;
+class User_Form extends Form_Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +15,6 @@ class UserForm extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,15 +22,6 @@ class UserForm extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-            'email' => 'required|email|unique:admins,email,'.$this->id,
-            'password' => 'nullable|min:6|confirmed',
-            'password_confirmation' => 'nullable|required_with:password|same:password',
-            'status' => 'sometimes',
-            'role_id' => 'required',
-            'image' => 'array',
-            'image.*' => 'mimes:jpeg,jpg,png,gif|max:10000',
-        ];
+        return ['name' => 'required', 'email' => 'required|email|unique:admins,email,' . $this->id, 'password' => 'nullable|min:6|confirmed', 'password_confirmation' => 'nullable|required_with:password|same:password', 'status' => 'sometimes', 'role_id' => 'required', 'image' => 'array', 'image.*' => 'mimes:jpeg,jpg,png,gif|max:10000'];
     }
 }

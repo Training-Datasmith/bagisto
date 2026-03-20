@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -20,11 +19,9 @@ return new class () extends Migration {
             $table->string('admin_name')->nullable();
             $table->integer('sort_order')->nullable();
             $table->string('swatch_value')->nullable();
-
-            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
+            $table->foreign('attribute_id')->references('id')->on('attributes')->on_delete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -32,6 +29,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('attribute_options');
+        Schema::drop_if_exists('attribute_options');
     }
 };

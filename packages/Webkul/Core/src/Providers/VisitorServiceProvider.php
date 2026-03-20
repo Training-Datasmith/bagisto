@@ -1,17 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Providers;
 
 use Illuminate\Http\Request;
-use Shetabit\Visitor\Provider\VisitorServiceProvider as BaseVisitorServiceProvider;
+use Shetabit\Visitor\Provider\Visitor_Service_Provider as BaseVisitorServiceProvider;
 use Webkul\Core\Visitor;
-
 /**
  * This is the overridden `VisitorServiceProvider` class from the `shetabit/visitor` package.
  */
-class VisitorServiceProvider extends BaseVisitorServiceProvider
+class Visitor_Service_Provider extends Base_Visitor_Service_Provider
 {
     /**
      * Register any package services.
@@ -23,16 +21,14 @@ class VisitorServiceProvider extends BaseVisitorServiceProvider
          */
         $this->app->singleton('shetabit-visitor', function () {
             $request = app(Request::class);
-
             return new Visitor($request, config('visitor'));
         });
     }
-
     /**
      * Perform post-registration booting of services.
      */
     public function boot(): void
     {
-        $this->registerMacroHelpers();
+        $this->register_macro_helpers();
     }
 }

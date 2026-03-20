@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Webkul\CartRule\Repositories;
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class CartRuleCouponUsageRepository extends Repository
+class Cart_Rule_Coupon_Usage_Repository extends Repository
 {
     /**
      * Specify Model class name

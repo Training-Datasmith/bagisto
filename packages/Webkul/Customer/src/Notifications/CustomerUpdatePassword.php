@@ -1,19 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\Serializes_Models;
 use Webkul\Customer\Models\Customer;
-
-class CustomerUpdatePassword extends Mailable
+class Customer_Update_Password extends Mailable
 {
     use Queueable;
-    use SerializesModels;
-
+    use Serializes_Models;
     /**
      * Create a new message instance.
      *
@@ -22,7 +19,6 @@ class CustomerUpdatePassword extends Mailable
     public function __construct(public Customer $customer)
     {
     }
-
     /**
      * Build the message.
      *
@@ -30,9 +26,6 @@ class CustomerUpdatePassword extends Mailable
      */
     public function build()
     {
-        return $this->from(core()->getSenderEmailDetails()['email'], core()->getSenderEmailDetails()['name'])
-            ->to($this->customer->email, $this->customer->name)
-            ->subject(trans('shop::app.mail.update-password.subject'))
-            ->view('shop::emails.customer.update-password', ['user' => $this->customer]);
+        return $this->from(core()->get_sender_email_details()['email'], core()->get_sender_email_details()['name'])->to($this->customer->email, $this->customer->name)->subject(trans('shop::app.mail.update-password.subject'))->view('shop::emails.customer.update-password', ['user' => $this->customer]);
     }
 }

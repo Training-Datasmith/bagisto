@@ -1,21 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Webkul\Core\ElasticSearch as BaseElasticSearch;
-
-class ElasticSearch extends Facade
+use Webkul\Core\Elastic_Search as BaseElasticSearch;
+class Elastic_Search extends Facade
 {
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function get_facade_accessor()
     {
-        return BaseElasticSearch::class;
+        return Base_Elastic_Search::class;
     }
 }

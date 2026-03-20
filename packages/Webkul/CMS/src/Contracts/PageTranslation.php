@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\CMS\Contracts;
 
-interface PageTranslation
+interface Page_Translation
 {
 }

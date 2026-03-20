@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Attribute\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Webkul\Attribute\Models\Attribute;
-
-class AttributeFactory extends Factory
+class Attribute_Factory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -15,127 +13,64 @@ class AttributeFactory extends Factory
      * @var string
      */
     protected $model = Attribute::class;
-
     /**
      * @var array
      */
-    protected $states = [
-        'validation_numeric',
-        'validation_email',
-        'validation_decimal',
-        'validation_url',
-        'required',
-        'unique',
-        'filterable',
-        'configurable',
-    ];
-
+    protected $states = ['validation_numeric', 'validation_email', 'validation_decimal', 'validation_url', 'required', 'unique', 'filterable', 'configurable'];
     /**
      * Define the model's default state.
      */
     public function definition(): array
     {
-        $types = [
-            'text',
-            'textarea',
-            'price',
-            'boolean',
-            'select',
-            'multiselect',
-            'datetime',
-            'date',
-            'image',
-            'file',
-            'checkbox',
-        ];
-
-        return [
-            'admin_name' => $this->faker->word,
-            'code' => $this->faker->regexify('/^[a-zA-Z]+[a-zA-Z0-9_]+$/'),
-            'type' => array_rand($types),
-            'validation' => '',
-            'position' => $this->faker->randomDigit,
-            'is_required' => false,
-            'is_unique' => false,
-            'value_per_locale' => false,
-            'value_per_channel' => false,
-            'is_filterable' => false,
-            'is_configurable' => false,
-            'is_user_defined' => true,
-            'is_visible_on_front' => true,
-            'swatch_type' => null,
-        ];
+        $types = ['text', 'textarea', 'price', 'boolean', 'select', 'multiselect', 'datetime', 'date', 'image', 'file', 'checkbox'];
+        return ['admin_name' => $this->faker->word, 'code' => $this->faker->regexify('/^[a-zA-Z]+[a-zA-Z0-9_]+$/'), 'type' => array_rand($types), 'validation' => '', 'position' => $this->faker->random_digit, 'is_required' => false, 'is_unique' => false, 'value_per_locale' => false, 'value_per_channel' => false, 'is_filterable' => false, 'is_configurable' => false, 'is_user_defined' => true, 'is_visible_on_front' => true, 'swatch_type' => null];
     }
-
-    public function validation_numeric(): AttributeFactory
+    public function validation_numeric(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'validation' => 'numeric',
-            ];
+            return ['validation' => 'numeric'];
         });
     }
-
-    public function validation_email(): AttributeFactory
+    public function validation_email(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'validation' => 'email',
-            ];
+            return ['validation' => 'email'];
         });
     }
-
-    public function validation_decimal(): AttributeFactory
+    public function validation_decimal(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'validation' => 'decimal',
-            ];
+            return ['validation' => 'decimal'];
         });
     }
-
-    public function validation_url(): AttributeFactory
+    public function validation_url(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'validation' => 'url',
-            ];
+            return ['validation' => 'url'];
         });
     }
-
-    public function required(): AttributeFactory
+    public function required(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'is_required' => true,
-            ];
+            return ['is_required' => true];
         });
     }
-
-    public function unique(): AttributeFactory
+    public function unique(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'is_unique' => true,
-            ];
+            return ['is_unique' => true];
         });
     }
-
-    public function filterable(): AttributeFactory
+    public function filterable(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'is_filterable' => true,
-            ];
+            return ['is_filterable' => true];
         });
     }
-
-    public function configurable(): AttributeFactory
+    public function configurable(): Attribute_Factory
     {
         return $this->state(function (array $attributes) {
-            return [
-                'is_configurable' => true,
-            ];
+            return ['is_configurable' => true];
         });
     }
 }

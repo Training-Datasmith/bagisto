@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core;
 
 use Illuminate\Database\Eloquent\Model;
 use Shetabit\Visitor\Visitor as BaseVisitor;
-use Webkul\Core\Jobs\UpdateCreateVisitIndex;
-
-class Visitor extends BaseVisitor
+use Webkul\Core\Jobs\Update_Create_Visit_Index;
+class Visitor extends Base_Visitor
 {
     /**
      * Create a visit log.
@@ -17,19 +15,16 @@ class Visitor extends BaseVisitor
      */
     public function visit(?Model $model = null)
     {
-        if (! core()->getConfigData('general.general.visitor_options.enabled')) {
+        if (!core()->get_config_data('general.general.visitor_options.enabled')) {
             return;
         }
-
         foreach ($this->except as $path) {
             if ($this->request->is($path)) {
                 return;
             }
         }
-
-        UpdateCreateVisitIndex::dispatch($model, $this->prepareLog());
+        Update_Create_Visit_Index::dispatch($model, $this->prepare_log());
     }
-
     /**
      * Retrieve request's url.
      */
@@ -37,27 +32,23 @@ class Visitor extends BaseVisitor
     {
         return $this->request->url();
     }
-
     /**
      * Prepare log's data.
      *
      *
      * @throws \Exception
      */
-    protected function prepareLog(): array
+    protected function prepare_log(): array
     {
-        return array_merge(parent::prepareLog(), [
-            'channel_id' => core()->getCurrentChannel()->id,
-        ]);
+        return array_merge(parent::prepare_log(), ['channel_id' => core()->get_current_channel()->id]);
     }
-
     /**
      * Returns logs.
      *
      * @return array
      */
-    public function getLog()
+    public function get_log()
     {
-        return $this->prepareLog();
+        return $this->prepare_log();
     }
 }

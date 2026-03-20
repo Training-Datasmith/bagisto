@@ -1,26 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\Authorizes_Requests;
+use Illuminate\Foundation\Bus\Dispatches_Jobs;
+use Illuminate\Foundation\Validation\Validates_Requests;
 use Illuminate\Routing\Controller as BaseController;
-
-class Controller extends BaseController
+class Controller extends Base_Controller
 {
-    use AuthorizesRequests;
-    use DispatchesJobs;
-    use ValidatesRequests;
-
+    use Authorizes_Requests;
+    use Dispatches_Jobs;
+    use Validates_Requests;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function redirectToLogin()
+    public function redirect_to_login()
     {
         return redirect()->route('admin.session.create');
     }

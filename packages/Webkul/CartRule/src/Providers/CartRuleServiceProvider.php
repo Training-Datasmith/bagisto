@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Providers;
 
-namespace Webkul\CartRule\Providers;
-
-use Illuminate\Support\ServiceProvider;
-
-class CartRuleServiceProvider extends ServiceProvider
+use Illuminate\Support\Service_Provider;
+class Cart_Rule_Service_Provider extends Service_Provider
 {
     /**
      * Bootstrap services.
@@ -15,8 +13,7 @@ class CartRuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
-
-        $this->app->register(EventServiceProvider::class);
+        $this->load_migrations_from(__DIR__ . '/../Database/Migrations');
+        $this->app->register(Event_Service_Provider::class);
     }
 }

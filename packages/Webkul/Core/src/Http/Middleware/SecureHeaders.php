@@ -1,20 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Http\Middleware;
 
 use Closure;
-
-class SecureHeaders
+class Secure_Headers
 {
     /**
      * Unwanted header list.
      *
      * @var array
      */
-    private $unwantedHeaderList = [];
-
+    private $unwanted_header_list = [];
     /**
      * Handle an incoming request.
      *
@@ -23,22 +20,18 @@ class SecureHeaders
      */
     public function handle($request, Closure $next)
     {
-        $this->removeUnwantedHeaders();
-
+        $this->remove_unwanted_headers();
         $response = $next($request);
-
-        $this->setHeaders($response);
-
+        $this->set_headers($response);
         return $response;
     }
-
     /**
      * Set headers.
      *
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    private function setHeaders($response)
+    private function set_headers($response)
     {
         $response->headers->set('Referrer-Policy', 'no-referrer-when-downgrade');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
@@ -47,19 +40,17 @@ class SecureHeaders
         $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         $response->headers->set('X-Built-With', 'Bagisto');
     }
-
     /**
      * Remove unwanted headers.
      *
      * @return void
      */
-    private function removeUnwantedHeaders()
+    private function remove_unwanted_headers()
     {
         if (headers_sent()) {
             return;
         }
-
-        foreach ($this->unwantedHeaderList as $header) {
+        foreach ($this->unwanted_header_list as $header) {
             header_remove($header);
         }
     }

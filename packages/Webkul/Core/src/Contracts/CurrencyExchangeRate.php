@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Contracts;
 
-interface CurrencyExchangeRate
+interface Currency_Exchange_Rate
 {
 }

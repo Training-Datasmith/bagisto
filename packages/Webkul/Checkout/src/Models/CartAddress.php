@@ -1,18 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Webkul\Checkout\Contracts\CartAddress as CartAddressContract;
-use Webkul\Checkout\Database\Factories\CartAddressFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
+use Illuminate\Database\Eloquent\Relations\Belongs_To;
+use Illuminate\Database\Eloquent\Relations\Has_Many;
+use Webkul\Checkout\Contracts\Cart_Address as CartAddressContract;
+use Webkul\Checkout\Database\Factories\Cart_Address_Factory;
 use Webkul\Core\Models\Address;
-
 /**
  * Class CartAddress
  *
@@ -20,63 +18,50 @@ use Webkul\Core\Models\Address;
  * @property int $cart_id
  * @property Cart $cart
  */
-class CartAddress extends Address implements CartAddressContract
+class Cart_Address extends Address implements Cart_Address_Contract
 {
-    use HasFactory;
-
+    use Has_Factory;
     /**
      * Define the address type shipping.
      */
     public const ADDRESS_TYPE_SHIPPING = 'cart_shipping';
-
     /**
      * Define the address type billing.
      */
     public const ADDRESS_TYPE_BILLING = 'cart_billing';
-
     /**
      * @var array default values
      */
-    protected $attributes = [
-        'address_type' => self::ADDRESS_TYPE_BILLING,
-    ];
-
+    protected $attributes = ['address_type' => self::ADDRESS_TYPE_BILLING];
     /**
      * The "booted" method of the model.
      */
     protected static function boot(): void
     {
-        static::addGlobalScope('address_type', static function (Builder $builder) {
-            $builder->whereIn('address_type', [
-                self::ADDRESS_TYPE_BILLING,
-                self::ADDRESS_TYPE_SHIPPING,
-            ]);
+        static::add_global_scope('address_type', static function (Builder $builder) {
+            $builder->where_in('address_type', [self::ADDRESS_TYPE_BILLING, self::ADDRESS_TYPE_SHIPPING]);
         });
-
         parent::boot();
     }
-
     /**
      * Get the shipping rates for the cart address.
      */
-    public function shipping_rates(): HasMany
+    public function shipping_rates(): Has_Many
     {
-        return $this->hasMany(CartShippingRateProxy::modelClass());
+        return $this->has_many(Cart_Shipping_Rate_Proxy::model_class());
     }
-
     /**
      * Get the cart record associated with the address.
      */
-    public function cart(): BelongsTo
+    public function cart(): Belongs_To
     {
-        return $this->belongsTo(CartProxy::modelClass());
+        return $this->belongs_to(Cart_Proxy::model_class());
     }
-
     /**
      * Create a new factory instance for the model
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return CartAddressFactory::new();
+        return Cart_Address_Factory::new();
     }
 }

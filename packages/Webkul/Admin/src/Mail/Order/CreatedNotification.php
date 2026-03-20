@@ -1,7 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Mail\Order;
 
 use Illuminate\Mail\Mailables\Address;
@@ -9,8 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Webkul\Admin\Mail\Mailable;
 use Webkul\Sales\Contracts\Order;
-
-class CreatedNotification extends Mailable
+class Created_Notification extends Mailable
 {
     /**
      * Create a new message instance.
@@ -20,30 +18,18 @@ class CreatedNotification extends Mailable
     public function __construct(public Order $order)
     {
     }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            to: [
-                new Address(
-                    core()->getAdminEmailDetails()['email'],
-                    core()->getAdminEmailDetails()['name']
-                ),
-            ],
-            subject: trans('admin::app.emails.orders.created.subject'),
-        );
+        return new Envelope(to: [new Address(core()->get_admin_email_details()['email'], core()->get_admin_email_details()['name'])], subject: trans('admin::app.emails.orders.created.subject'));
     }
-
     /**
      * Get the message content definition.
      */
     public function content(): Content
     {
-        return new Content(
-            view: 'admin::emails.orders.created',
-        );
+        return new Content(view: 'admin::emails.orders.created');
     }
 }

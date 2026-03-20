@@ -1,15 +1,13 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Core\Image_Cache;
 
-namespace Webkul\Core\ImageCache;
-
-use Intervention\Image\AbstractDriver;
-use Intervention\Image\Exception\NotReadableException;
-use Intervention\Image\Exception\NotSupportedException;
-use Intervention\Image\ImageManager as BaseImageManager;
-
-class ImageManager extends BaseImageManager
+use Intervention\Image\Abstract_Driver;
+use Intervention\Image\Exception\Not_Readable_Exception;
+use Intervention\Image\Exception\Not_Supported_Exception;
+use Intervention\Image\Image_Manager as BaseImageManager;
+class Image_Manager extends Base_Image_Manager
 {
     /**
      * Initiates an Image instance from different input types
@@ -19,15 +17,12 @@ class ImageManager extends BaseImageManager
      */
     public function make($data)
     {
-        $driver = $this->createDriver();
-
+        $driver = $this->create_driver();
         if ((bool) filter_var($data, FILTER_VALIDATE_URL)) {
-            return $this->initFromUrl($driver, $data);
+            return $this->init_from_url($driver, $data);
         }
-
         return $driver->init($data);
     }
-
     /**
      * Init from given URL
      *
@@ -35,57 +30,39 @@ class ImageManager extends BaseImageManager
      * @param  string  $url
      * @return \Intervention\Image\Image
      */
-    public function initFromUrl($driver, $url)
+    public function init_from_url($driver, $url)
     {
         $domain = config('app.url');
-
-        $options = [
-            'http' => [
-                'method' => 'GET',
-                'protocol_version' => 1.1, // force use HTTP 1.1 for service mesh environment with envoy
-                'header' => "Accept-language: en\r\n".
-                "Domain: $domain\r\n".
-                "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36\r\n",
-            ],
-        ];
-
+        $options = ['http' => [
+            'method' => 'GET',
+            'protocol_version' => 1.1,
+            // force use HTTP 1.1 for service mesh environment with envoy
+            'header' => "Accept-language: en\r\n" . "Domain: {$domain}\r\n" . "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36\r\n",
+        ]];
         $context = stream_context_create($options);
-
         if ($data = @file_get_contents($url, false, $context)) {
-            return $driver->decoder->initFromBinary($data);
+            return $driver->decoder->init_from_binary($data);
         }
-
-        throw new NotReadableException(
-            'Unable to init from given url ('.$url.').'
-        );
+        throw new Not_Readable_Exception('Unable to init from given url (' . $url . ').');
     }
-
     /**
      * Creates a driver instance according to config settings
      *
      * @return \Intervention\Image\AbstractDriver
      */
-    private function createDriver()
+    private function create_driver()
     {
         if (is_string($this->config['driver'])) {
-            $driverName = ucfirst($this->config['driver']);
-            $driverClass = sprintf('Intervention\\Image\\%s\\Driver', $driverName);
-
-            if (class_exists($driverClass)) {
-                return new $driverClass();
+            $driver_name = ucfirst($this->config['driver']);
+            $driver_class = sprintf('Intervention\Image\%s\Driver', $driver_name);
+            if (class_exists($driver_class)) {
+                return new $driver_class();
             }
-
-            throw new NotSupportedException(
-                "Driver ({$driverName}) could not be instantiated."
-            );
+            throw new Not_Supported_Exception("Driver ({$driver_name}) could not be instantiated.");
         }
-
-        if ($this->config['driver'] instanceof AbstractDriver) {
+        if ($this->config['driver'] instanceof Abstract_Driver) {
             return $this->config['driver'];
         }
-
-        throw new NotSupportedException(
-            'Unknown driver type.'
-        );
+        throw new Not_Supported_Exception('Unknown driver type.');
     }
 }

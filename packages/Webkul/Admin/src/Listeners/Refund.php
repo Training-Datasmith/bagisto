@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Listeners;
 
-use Webkul\Admin\Mail\Order\RefundedNotification;
-use Webkul\Paypal\Payment\SmartButton;
-
+use Webkul\Admin\Mail\Order\Refunded_Notification;
+use Webkul\Paypal\Payment\Smart_Button;
 class Refund extends Base
 {
     /**
@@ -15,48 +13,36 @@ class Refund extends Base
      * @param  \Webkul\Sales\Contracts\Refund  $refund
      * @return void
      */
-    public function afterCreated($refund)
+    public function after_created($refund)
     {
-        $this->refundOrder($refund);
-
+        $this->refund_order($refund);
         try {
-            if (! core()->getConfigData('emails.general.notifications.emails.general.notifications.new_refund_mail_to_admin')) {
+            if (!core()->get_config_data('emails.general.notifications.emails.general.notifications.new_refund_mail_to_admin')) {
                 return;
             }
-
-            $this->prepareMail($refund, new RefundedNotification($refund));
+            $this->prepare_mail($refund, new Refunded_Notification($refund));
         } catch (\Exception $e) {
             report($e);
         }
     }
-
     /**
      * After Refund is created
      *
      * @param  \Webkul\Sales\Contracts\Refund  $refund
      * @return void
      */
-    public function refundOrder($refund)
+    public function refund_order($refund)
     {
         $order = $refund->order;
-
         if ($order->payment->method === 'paypal_smart_button') {
             /* getting smart button instance */
-            $smartButton = new SmartButton();
-
+            $smart_button = new Smart_Button();
             /* getting paypal oder id */
-            $paypalOrderID = $order->payment->additional['orderID'];
-
+            $paypal_order_id = $order->payment->additional['orderID'];
             /* getting capture id by paypal order id */
-            $captureID = $smartButton->getCaptureId($paypalOrderID);
-
+            $capture_id = $smart_button->get_capture_id($paypal_order_id);
             /* now refunding order on the basis of capture id and refund data */
-            $smartButton->refundOrder($captureID, [
-                'amount' => [
-                    'value' => round($refund->grand_total, 2),
-                    'currency_code' => $refund->order_currency_code,
-                ],
-            ]);
+            $smart_button->refund_order($capture_id, ['amount' => ['value' => round($refund->grand_total, 2), 'currency_code' => $refund->order_currency_code]]);
         }
     }
 }

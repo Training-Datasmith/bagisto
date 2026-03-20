@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class CountryRepository extends Repository
+class Country_Repository extends Repository
 {
     /**
      * Specify Model class name

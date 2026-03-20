@@ -1,37 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Webkul\Core\Traits\Sanitizer;
-
-class TinyMCEController extends Controller
+class Tiny_Mce_Controller extends Controller
 {
     use Sanitizer;
-
     /**
      * Storage folder path.
      *
      * @var string
      */
-    private $storagePath = 'tinymce';
-
+    private $storage_path = 'tinymce';
     /**
      * Allowed image MIME types.
      *
      * @var array
      */
-    private $allowedMimeTypes = [
-        'image/gif',
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/svg+xml',
-        'image/webp',
-    ];
-
+    private $allowed_mime_types = ['image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp'];
     /**
      * Upload file from tinymce.
      *
@@ -39,67 +27,37 @@ class TinyMCEController extends Controller
      */
     public function upload()
     {
-        $result = $this->storeMedia();
-
+        $result = $this->store_media();
         if (isset($result['error'])) {
-            return response()->json([
-                'error' => $result['error'],
-            ], 400);
+            return response()->json(['error' => $result['error']], 400);
         }
-
-        if (! empty($result)) {
-            return response()->json([
-                'location' => $result['file_url'],
-            ]);
+        if (!empty($result)) {
+            return response()->json(['location' => $result['file_url']]);
         }
-
-        return response()->json([
-            'error' => trans('admin::app.components.tinymce.errors.file-upload-failed'),
-        ], 400);
+        return response()->json(['error' => trans('admin::app.components.tinymce.errors.file-upload-failed')], 400);
     }
-
     /**
      * Store media.
      *
      * @return array
      */
-    public function storeMedia()
+    public function store_media()
     {
-        if (! request()->hasFile('file')) {
+        if (!request()->has_file('file')) {
             return ['error' => trans('admin::app.components.tinymce.errors.no-file-uploaded')];
         }
-
         $file = request()->file('file');
-
-        $mimeType = $file->getMimeType();
-
-        if (! in_array($mimeType, $this->allowedMimeTypes)) {
+        $mime_type = $file->get_mime_type();
+        if (!in_array($mime_type, $this->allowed_mime_types)) {
             return ['error' => trans('admin::app.components.tinymce.errors.invalid-file-type')];
         }
-
-        $extension = strtolower($file->getClientOriginalExtension());
-
-        $validExtensions = [
-            'image/jpeg' => ['jpg', 'jpeg'],
-            'image/jpg' => ['jpg', 'jpeg'],
-            'image/png' => ['png'],
-            'image/gif' => ['gif'],
-            'image/webp' => ['webp'],
-            'image/svg+xml' => ['svg'],
-        ];
-
-        if (! isset($validExtensions[$mimeType]) || ! in_array($extension, $validExtensions[$mimeType])) {
+        $extension = strtolower($file->get_client_original_extension());
+        $valid_extensions = ['image/jpeg' => ['jpg', 'jpeg'], 'image/jpg' => ['jpg', 'jpeg'], 'image/png' => ['png'], 'image/gif' => ['gif'], 'image/webp' => ['webp'], 'image/svg+xml' => ['svg']];
+        if (!isset($valid_extensions[$mime_type]) || !in_array($extension, $valid_extensions[$mime_type])) {
             return ['error' => trans('admin::app.components.tinymce.errors.file-extension-mismatch')];
         }
-
-        $path = $file->store($this->storagePath);
-
-        $this->sanitizeSVG($path, $mimeType);
-
-        return [
-            'file' => $path,
-            'file_name' => $file->getClientOriginalName(),
-            'file_url' => Storage::url($path),
-        ];
+        $path = $file->store($this->storage_path);
+        $this->sanitize_svg($path, $mime_type);
+        return ['file' => $path, 'file_name' => $file->get_client_original_name(), 'file_url' => Storage::url($path)];
     }
 }

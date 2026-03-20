@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Cart_Rule\Contracts;
 
-namespace Webkul\CartRule\Contracts;
-
-interface CartRule
+interface Cart_Rule
 {
 }

@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-
-class NoCacheMiddleware
+class No_Cache_Middleware
 {
     /**
      * Handle an incoming request.
@@ -17,13 +15,9 @@ class NoCacheMiddleware
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-
         $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-
         $response->headers->set('Pragma', 'no-cache');
-
         $response->headers->set('Expires', '0');
-
         return $response;
     }
 }

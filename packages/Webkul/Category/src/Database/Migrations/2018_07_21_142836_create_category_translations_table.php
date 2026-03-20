@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -26,13 +25,11 @@ return new class () extends Migration {
             $table->text('meta_keywords')->nullable();
             $table->integer('locale_id')->nullable()->unsigned();
             $table->string('locale');
-
             $table->unique(['category_id', 'slug', 'locale']);
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('locales')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->on_delete('cascade');
+            $table->foreign('locale_id')->references('id')->on('locales')->on_delete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -40,6 +37,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('category_translations');
+        Schema::drop_if_exists('category_translations');
     }
 };

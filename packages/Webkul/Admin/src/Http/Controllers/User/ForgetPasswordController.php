@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\User;
 
 use Illuminate\Support\Facades\Password;
 use Webkul\Admin\Http\Controllers\Controller;
-
-class ForgetPasswordController extends Controller
+class Forget_Password_Controller extends Controller
 {
     /**
      * Show the form for creating a new resource.
@@ -20,17 +18,14 @@ class ForgetPasswordController extends Controller
             return redirect()->route('admin.dashboard.index');
         } else {
             if (strpos(url()->previous(), 'admin') !== false) {
-                $intendedUrl = url()->previous();
+                $intended_url = url()->previous();
             } else {
-                $intendedUrl = route('admin.dashboard.index');
+                $intended_url = route('admin.dashboard.index');
             }
-
-            session()->put('url.intended', $intendedUrl);
-
+            session()->put('url.intended', $intended_url);
             return view('admin::users.forget-password.create');
         }
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -39,32 +34,18 @@ class ForgetPasswordController extends Controller
     public function store()
     {
         try {
-            $this->validate(request(), [
-                'email' => 'required|email',
-            ]);
-
-            $response = $this->broker()->sendResetLink(
-                request(['email'])
-            );
-
+            $this->validate(request(), ['email' => 'required|email']);
+            $response = $this->broker()->send_reset_link(request(['email']));
             if ($response == Password::RESET_LINK_SENT) {
                 session()->flash('success', trans('admin::app.users.forget-password.create.reset-link-sent'));
-
                 return redirect()->route('admin.forget_password.create');
             }
-
-            return redirect()->route('admin.forget_password.create')
-                ->withInput(request(['email']))
-                ->withErrors([
-                    'email' => trans('admin::app.users.forget-password.create.email-not-exist'),
-                ]);
+            return redirect()->route('admin.forget_password.create')->with_input(request(['email']))->with_errors(['email' => trans('admin::app.users.forget-password.create.email-not-exist')]);
         } catch (\Exception $e) {
-            session()->flash('error', trans($e->getMessage()));
-
+            session()->flash('error', trans($e->get_message()));
             return redirect()->back();
         }
     }
-
     /**
      * Get the broker to be used during password reset.
      *

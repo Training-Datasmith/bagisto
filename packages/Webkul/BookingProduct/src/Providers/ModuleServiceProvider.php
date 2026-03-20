@@ -1,26 +1,15 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Providers;
 
-namespace Webkul\BookingProduct\Providers;
-
-use Webkul\Core\Providers\CoreModuleServiceProvider;
-
-class ModuleServiceProvider extends CoreModuleServiceProvider
+use Webkul\Core\Providers\Core_Module_Service_Provider;
+class Module_Service_Provider extends Core_Module_Service_Provider
 {
     /**
      * Models.
      *
      * @var array
      */
-    protected $models = [
-        \Webkul\BookingProduct\Models\BookingProduct::class,
-        \Webkul\BookingProduct\Models\BookingProductDefaultSlot::class,
-        \Webkul\BookingProduct\Models\BookingProductAppointmentSlot::class,
-        \Webkul\BookingProduct\Models\BookingProductEventTicket::class,
-        \Webkul\BookingProduct\Models\BookingProductEventTicketTranslation::class,
-        \Webkul\BookingProduct\Models\BookingProductRentalSlot::class,
-        \Webkul\BookingProduct\Models\BookingProductTableSlot::class,
-        \Webkul\BookingProduct\Models\Booking::class,
-    ];
+    protected $models = [\Webkul\Booking_Product\Models\Booking_Product::class, \Webkul\Booking_Product\Models\Booking_Product_Default_Slot::class, \Webkul\Booking_Product\Models\Booking_Product_Appointment_Slot::class, \Webkul\Booking_Product\Models\Booking_Product_Event_Ticket::class, \Webkul\Booking_Product\Models\Booking_Product_Event_Ticket_Translation::class, \Webkul\Booking_Product\Models\Booking_Product_Rental_Slot::class, \Webkul\Booking_Product\Models\Booking_Product_Table_Slot::class, \Webkul\Booking_Product\Models\Booking::class];
 }

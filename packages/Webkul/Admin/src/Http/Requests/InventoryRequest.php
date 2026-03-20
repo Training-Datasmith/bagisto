@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class InventoryRequest extends FormRequest
+use Illuminate\Foundation\Http\Form_Request;
+class Inventory_Request extends Form_Request
 {
     /**
      * Determine if the product is authorized to make this request.
@@ -17,7 +15,6 @@ class InventoryRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,12 +22,8 @@ class InventoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'inventories' => 'required|array',
-            'inventories.*' => 'required|numeric|min:0',
-        ];
+        return ['inventories' => 'required|array', 'inventories.*' => 'required|numeric|min:0'];
     }
-
     /**
      * Custom message for validation.
      *
@@ -38,10 +31,6 @@ class InventoryRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-            'inventories.*.required' => trans('admin::app.catalog.products.validations.quantity-required'),
-            'inventories.*.integer' => trans('admin::app.catalog.products.validations.quantity-integer'),
-            'inventories.*.min' => trans('admin::app.catalog.products.validations.quantity-min-zero'),
-        ];
+        return ['inventories.*.required' => trans('admin::app.catalog.products.validations.quantity-required'), 'inventories.*.integer' => trans('admin::app.catalog.products.validations.quantity-integer'), 'inventories.*.min' => trans('admin::app.catalog.products.validations.quantity-min-zero')];
     }
 }

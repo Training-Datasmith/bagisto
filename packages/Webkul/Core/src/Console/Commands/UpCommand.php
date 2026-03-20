@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Console\Commands;
 
-use Illuminate\Foundation\Console\UpCommand as BaseUpCommand;
+use Illuminate\Foundation\Console\Up_Command as BaseUpCommand;
 use Webkul\Core\Models\Channel;
-
-class UpCommand extends BaseUpCommand
+class Up_Command extends Base_Up_Command
 {
     /**
      * Execute the console command.
@@ -16,20 +14,17 @@ class UpCommand extends BaseUpCommand
      */
     public function handle()
     {
-        $this->upAllChannels();
-
+        $this->up_all_channels();
         parent::handle();
     }
-
     /**
      * Update all channels.
      *
      * @return mixed
      */
-    protected function upAllChannels()
+    protected function up_all_channels()
     {
         $this->components->info('Activating all channels.');
-
         return Channel::query()->update(['is_maintenance_on' => 0]);
     }
 }

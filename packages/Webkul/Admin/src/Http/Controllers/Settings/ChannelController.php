@@ -1,26 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\Settings;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Json_Response;
 use Illuminate\Support\Facades\Event;
-use Webkul\Admin\DataGrids\Settings\ChannelDataGrid;
+use Webkul\Admin\Data_Grids\Settings\Channel_Data_Grid;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\Core\Repositories\ChannelRepository;
-
-class ChannelController extends Controller
+use Webkul\Core\Repositories\Channel_Repository;
+class Channel_Controller extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(protected ChannelRepository $channelRepository)
+    public function __construct(protected Channel_Repository $channel_repository)
     {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -29,12 +26,10 @@ class ChannelController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(ChannelDataGrid::class)->process();
+            return datagrid(Channel_Data_Grid::class)->process();
         }
-
         return view('admin::settings.channels.index');
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -44,7 +39,6 @@ class ChannelController extends Controller
     {
         return view('admin::settings.channels.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -60,48 +54,36 @@ class ChannelController extends Controller
             'inventory_sources' => 'required|array|min:1',
             'root_category_id' => 'required',
             'hostname' => 'unique:channels,hostname',
-
             /* currencies and locales */
             'locales' => 'required|array|min:1',
             'default_locale_id' => 'required|in_array:locales.*',
             'currencies' => 'required|array|min:1',
             'base_currency_id' => 'required|in_array:currencies.*',
-
             /* design */
             'theme' => 'nullable',
             'logo.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
             'favicon.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp,ico',
-
             /* seo */
             'seo_title' => 'required|string',
             'seo_description' => 'required|string',
             'seo_keywords' => 'required|string',
-
             /* maintenance mode */
             'is_maintenance_on' => 'boolean',
             'maintenance_mode_text' => 'nullable',
             'allowed_ips' => 'nullable',
         ]);
-
-        $data = $this->setSEOContent($data);
-
+        $data = $this->set_seo_content($data);
         Event::dispatch('core.channel.create.before');
-
-        $channel = $this->channelRepository->create($data);
-
+        $channel = $this->channel_repository->create($data);
         if ($channel->is_maintenance_on) {
-            app()->maintenanceMode()->activate([]);
+            app()->maintenance_mode()->activate([]);
         } else {
-            app()->maintenanceMode()->deactivate();
+            app()->maintenance_mode()->deactivate();
         }
-
         Event::dispatch('core.channel.create.after', $channel);
-
         session()->flash('success', trans('admin::app.settings.channels.create.create-success'));
-
         return redirect()->route('admin.settings.channels.index');
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -109,11 +91,9 @@ class ChannelController extends Controller
      */
     public function edit(int $id)
     {
-        $channel = $this->channelRepository->with(['locales', 'currencies'])->findOrFail($id);
-
+        $channel = $this->channel_repository->with(['locales', 'currencies'])->find_or_fail($id);
         return view('admin::settings.channels.edit', compact('channel'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -121,135 +101,100 @@ class ChannelController extends Controller
      */
     public function update(int $id)
     {
-        $locale = core()->getRequestedLocaleCode();
-
+        $locale = core()->get_requested_locale_code();
         $data = $this->validate(request(), [
             /* general */
-            'code' => ['required', 'unique:channels,code,'.$id, new \Webkul\Core\Rules\Code()],
-            $locale.'.name' => 'required',
-            $locale.'.description' => 'nullable',
+            'code' => ['required', 'unique:channels,code,' . $id, new \Webkul\Core\Rules\Code()],
+            $locale . '.name' => 'required',
+            $locale . '.description' => 'nullable',
             'inventory_sources' => 'required|array|min:1',
             'root_category_id' => 'required',
-            'hostname' => 'unique:channels,hostname,'.$id,
-
+            'hostname' => 'unique:channels,hostname,' . $id,
             /* currencies and locales */
             'locales' => 'required|array|min:1',
             'default_locale_id' => 'required|in_array:locales.*',
             'currencies' => 'required|array|min:1',
             'base_currency_id' => 'required|in_array:currencies.*',
-
             /* design */
             'theme' => 'nullable',
             'logo.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
             'favicon.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp,ico',
-
             /* seo */
-            $locale.'.seo_title' => 'required|string',
-            $locale.'.seo_description' => 'required|string',
-            $locale.'.seo_keywords' => 'required|string',
-
+            $locale . '.seo_title' => 'required|string',
+            $locale . '.seo_description' => 'required|string',
+            $locale . '.seo_keywords' => 'required|string',
             /* maintenance mode */
             'is_maintenance_on' => 'boolean',
-            $locale.'.maintenance_mode_text' => 'nullable',
+            $locale . '.maintenance_mode_text' => 'nullable',
             'allowed_ips' => 'nullable',
         ]);
-
         $data['is_maintenance_on'] = request()->input('is_maintenance_on') == '1';
-
-        $data = $this->setSEOContent($data, $locale);
-
+        $data = $this->set_seo_content($data, $locale);
         Event::dispatch('core.channel.update.before', $id);
-
-        $channel = $this->channelRepository->update($data, $id);
-
+        $channel = $this->channel_repository->update($data, $id);
         if ($channel->is_maintenance_on) {
-            app()->maintenanceMode()->activate([]);
+            app()->maintenance_mode()->activate([]);
         } else {
-            app()->maintenanceMode()->deactivate();
+            app()->maintenance_mode()->deactivate();
         }
-
         Event::dispatch('core.channel.update.after', $channel);
-
         if ($channel->base_currency->code !== session()->get('currency')) {
             session()->put('currency', $channel->base_currency->code);
         }
-
         session()->flash('success', trans('admin::app.settings.channels.edit.update-success'));
-
         return redirect()->route('admin.settings.channels.index');
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): Json_Response
     {
-        $channel = $this->channelRepository->findOrFail($id);
-
+        $channel = $this->channel_repository->find_or_fail($id);
         if ($channel->code == config('app.channel')) {
-            return new JsonResponse([
-                'message' => trans('admin::app.settings.channels.index.last-delete-error'),
-            ], 400);
+            return new Json_Response(['message' => trans('admin::app.settings.channels.index.last-delete-error')], 400);
         }
-
         try {
             Event::dispatch('core.channel.delete.before', $id);
-
-            $this->channelRepository->delete($id);
-
+            $this->channel_repository->delete($id);
             Event::dispatch('core.channel.delete.after', $id);
-
-            return new JsonResponse([
-                'message' => trans('admin::app.settings.channels.index.delete-success'),
-            ], 200);
+            return new Json_Response(['message' => trans('admin::app.settings.channels.index.delete-success')], 200);
         } catch (\Exception $e) {
         }
-
-        return new JsonResponse([
-            'message' => trans('admin::app.settings.channels.index.delete-failed'),
-        ], 500);
+        return new Json_Response(['message' => trans('admin::app.settings.channels.index.delete-failed')], 500);
     }
-
     /**
      * Set the seo content and return back the updated array.
      *
      * @param  string  $locale
      * @return array
      */
-    private function setSEOContent(array $data, $locale = null)
+    private function set_seo_content(array $data, $locale = null)
     {
-        $editedData = $data;
-
+        $edited_data = $data;
         if ($locale) {
-            $editedData = $data[$locale];
+            $edited_data = $data[$locale];
         }
-
-        $editedData['home_seo']['meta_title'] = $editedData['seo_title'];
-        $editedData['home_seo']['meta_description'] = $editedData['seo_description'];
-        $editedData['home_seo']['meta_keywords'] = $editedData['seo_keywords'];
-
-        $editedData = $this->unsetKeys($editedData, ['seo_title', 'seo_description', 'seo_keywords']);
-
+        $edited_data['home_seo']['meta_title'] = $edited_data['seo_title'];
+        $edited_data['home_seo']['meta_description'] = $edited_data['seo_description'];
+        $edited_data['home_seo']['meta_keywords'] = $edited_data['seo_keywords'];
+        $edited_data = $this->unset_keys($edited_data, ['seo_title', 'seo_description', 'seo_keywords']);
         if ($locale) {
-            $data[$locale] = $editedData;
-            $editedData = $data;
+            $data[$locale] = $edited_data;
+            $edited_data = $data;
         }
-
-        return $editedData;
+        return $edited_data;
     }
-
     /**
      * Unset keys.
      *
      * @param  array  $keys
      * @return array
      */
-    private function unsetKeys($data, $keys)
+    private function unset_keys($data, $keys)
     {
         foreach ($keys as $key) {
             unset($data[$key]);
         }
-
         return $data;
     }
 }

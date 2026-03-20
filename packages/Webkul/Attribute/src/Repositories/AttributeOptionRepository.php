@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Attribute\Repositories;
 
-use Illuminate\Http\UploadedFile;
+use Illuminate\Http\Uploaded_File;
 use Webkul\Core\Eloquent\Repository;
-
-class AttributeOptionRepository extends Repository
+class Attribute_Option_Repository extends Repository
 {
     /**
      * Specify Model class name
@@ -16,19 +14,15 @@ class AttributeOptionRepository extends Repository
     {
         return 'Webkul\Attribute\Contracts\AttributeOption';
     }
-
     /**
      * @return \Webkul\Attribute\Contracts\AttributeOption
      */
     public function create(array $data)
     {
         $option = parent::create($data);
-
-        $this->uploadSwatchImage($data, $option->id);
-
+        $this->upload_swatch_image($data, $option->id);
         return $option;
     }
-
     /**
      * @param  int  $id
      * @param  string  $attribute
@@ -37,27 +31,21 @@ class AttributeOptionRepository extends Repository
     public function update(array $data, $id)
     {
         $option = parent::update($data, $id);
-
-        $this->uploadSwatchImage($data, $id);
-
+        $this->upload_swatch_image($data, $id);
         return $option;
     }
-
     /**
      * @param  array  $data
      * @param  int  $optionId
      * @return void
      */
-    public function uploadSwatchImage($data, $optionId)
+    public function upload_swatch_image($data, $option_id)
     {
         if (empty($data['swatch_value'])) {
             return;
         }
-
-        if ($data['swatch_value'] instanceof UploadedFile) {
-            parent::update([
-                'swatch_value' => $data['swatch_value']->store('attribute_option'),
-            ], $optionId);
+        if ($data['swatch_value'] instanceof Uploaded_File) {
+            parent::update(['swatch_value' => $data['swatch_value']->store('attribute_option')], $option_id);
         }
     }
 }

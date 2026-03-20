@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Listeners;
 
-namespace Webkul\BookingProduct\Listeners;
-
-use Webkul\BookingProduct\Repositories\BookingRepository;
-
+use Webkul\Booking_Product\Repositories\Booking_Repository;
 class Order
 {
     /**
@@ -13,17 +11,16 @@ class Order
      *
      * @return void
      */
-    public function __construct(protected BookingRepository $bookingRepository)
+    public function __construct(protected Booking_Repository $booking_repository)
     {
     }
-
     /**
      * After sales order creation, add entry to bookings table
      *
      * @param  \Webkul\Sales\Contracts\Order  $order
      */
-    public function afterPlaceOrder($order)
+    public function after_place_order($order)
     {
-        $this->bookingRepository->create(['order' => $order]);
+        $this->booking_repository->create(['order' => $order]);
     }
 }

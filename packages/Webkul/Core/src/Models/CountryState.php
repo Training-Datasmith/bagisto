@@ -1,29 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Models;
 
-use Webkul\Core\Contracts\CountryState as CountryStateContract;
-use Webkul\Core\Eloquent\TranslatableModel;
-
-class CountryState extends TranslatableModel implements CountryStateContract
+use Webkul\Core\Contracts\Country_State as CountryStateContract;
+use Webkul\Core\Eloquent\Translatable_Model;
+class Country_State extends Translatable_Model implements Country_State_Contract
 {
     public $timestamps = false;
-
-    public $translatedAttributes = ['default_name'];
-
+    public $translated_attributes = ['default_name'];
     protected $with = ['translations'];
-
     /**
      * @return array
      */
-    public function toArray()
+    public function to_array()
     {
-        $array = parent::toArray();
-
+        $array = parent::to_array();
         $array['default_name'] = $this->default_name;
-
         return $array;
     }
 }

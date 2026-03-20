@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Webkul\Core\Menu as BaseMenu;
-
 class Menu extends Facade
 {
     /**
@@ -14,8 +12,8 @@ class Menu extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function get_facade_accessor()
     {
-        return BaseMenu::class;
+        return Base_Menu::class;
     }
 }

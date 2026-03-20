@@ -1,108 +1,87 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Webkul\Checkout\Contracts\CartItem as CartItemContract;
-use Webkul\Checkout\Database\Factories\CartItemFactory;
-use Webkul\Product\Models\ProductProxy;
-use Webkul\Product\Type\AbstractType;
-
-class CartItem extends Model implements CartItemContract
+use Illuminate\Database\Eloquent\Relations\Belongs_To;
+use Illuminate\Database\Eloquent\Relations\Has_Many;
+use Illuminate\Database\Eloquent\Relations\Has_One;
+use Webkul\Checkout\Contracts\Cart_Item as CartItemContract;
+use Webkul\Checkout\Database\Factories\Cart_Item_Factory;
+use Webkul\Product\Models\Product_Proxy;
+use Webkul\Product\Type\Abstract_Type;
+class Cart_Item extends Model implements Cart_Item_Contract
 {
-    use HasFactory;
-
+    use Has_Factory;
     /**
      * Cast the additional attribute to an array.
      */
-    protected $casts = [
-        'additional' => 'array',
-    ];
-
+    protected $casts = ['additional' => 'array'];
     /**
      * Guarded attributes.
      */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-    ];
-
+    protected $guarded = ['id', 'created_at', 'updated_at'];
     /**
      * Type instance.
      */
-    protected $typeInstance;
-
+    protected $type_instance;
     /**
      * Retrieve type instance.
      */
-    public function getTypeInstance(): AbstractType
+    public function get_type_instance(): Abstract_Type
     {
-        if ($this->typeInstance) {
-            return $this->typeInstance;
+        if ($this->type_instance) {
+            return $this->type_instance;
         }
-
-        $this->typeInstance = app(config('product_types.'.$this->type.'.class'));
-
+        $this->type_instance = app(config('product_types.' . $this->type . '.class'));
         if ($this->product) {
-            $this->typeInstance->setProduct($this->product);
+            $this->type_instance->set_product($this->product);
         }
-
-        return $this->typeInstance;
+        return $this->type_instance;
     }
-
     /**
      * Get the product record associated with the cart item.
      */
-    public function product(): HasOne
+    public function product(): Has_One
     {
-        return $this->hasOne(ProductProxy::modelClass(), 'id', 'product_id');
+        return $this->has_one(Product_Proxy::model_class(), 'id', 'product_id');
     }
-
     /**
      * Get the cart record associated with the cart item.
      */
-    public function cart(): HasOne
+    public function cart(): Has_One
     {
-        return $this->hasOne(CartProxy::modelClass(), 'id', 'cart_id');
+        return $this->has_one(Cart_Proxy::model_class(), 'id', 'cart_id');
     }
-
     /**
      * Get the parent item record associated with the cart item.
      */
-    public function parent(): BelongsTo
+    public function parent(): Belongs_To
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongs_to(self::class, 'parent_id');
     }
-
     /**
      * Get the child item, this is for configurable products.
      */
-    public function child(): BelongsTo
+    public function child(): Belongs_To
     {
-        return $this->belongsTo(static::class, 'id', 'parent_id');
+        return $this->belongs_to(static::class, 'id', 'parent_id');
     }
-
     /**
      * Get the children items, this is for bundle products.
      */
-    public function children(): HasMany
+    public function children(): Has_Many
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->has_many(self::class, 'parent_id');
     }
-
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return CartItemFactory::new();
+        return Cart_Item_Factory::new();
     }
 }

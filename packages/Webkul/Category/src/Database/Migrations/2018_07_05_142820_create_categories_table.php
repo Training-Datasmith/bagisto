@@ -1,13 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Kalnoy\Nestedset\NestedSet;
-
-return new class () extends Migration {
+use Kalnoy\Nestedset\Nested_Set;
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -22,12 +21,11 @@ return new class () extends Migration {
             $table->string('category_banner')->nullable();
             $table->boolean('status')->default(0);
             $table->string('display_mode')->default('products_and_description')->nullable();
-            NestedSet::columns($table);
+            Nested_Set::columns($table);
             $table->json('additional')->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -35,6 +33,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::drop_if_exists('categories');
     }
 };

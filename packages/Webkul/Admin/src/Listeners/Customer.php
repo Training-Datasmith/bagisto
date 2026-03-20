@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Listeners;
 
 use Illuminate\Support\Facades\Mail;
-use Webkul\Admin\Mail\Customer\RegistrationNotification;
-
+use Webkul\Admin\Mail\Customer\Registration_Notification;
 class Customer extends Base
 {
     /**
@@ -15,14 +13,13 @@ class Customer extends Base
      * @param  \Webkul\Customer\Contracts\Customer  $customer
      * @return void
      */
-    public function afterCreated($customer)
+    public function after_created($customer)
     {
         try {
-            if (! core()->getConfigData('emails.general.notifications.emails.general.notifications.customer_registration_confirmation_mail_to_admin')) {
+            if (!core()->get_config_data('emails.general.notifications.emails.general.notifications.customer_registration_confirmation_mail_to_admin')) {
                 return;
             }
-
-            Mail::queue(new RegistrationNotification($customer));
+            Mail::queue(new Registration_Notification($customer));
         } catch (\Exception $e) {
             report($e);
         }

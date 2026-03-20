@@ -1,41 +1,35 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance as BasePreventRequestsDuringMaintenance;
+use Illuminate\Foundation\Http\Middleware\Prevent_Requests_During_Maintenance as BasePreventRequestsDuringMaintenance;
 use Illuminate\Routing\Route;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
-class PreventRequestsDuringMaintenance extends BasePreventRequestsDuringMaintenance
+use Symfony\Component\Http_Kernel\Exception\Http_Exception;
+class Prevent_Requests_During_Maintenance extends Base_Prevent_Requests_During_Maintenance
 {
     /**
      * Exclude route names.
      *
      * @var array
      */
-    protected $excludedNames = [];
-
+    protected $excluded_names = [];
     /**
      * Exclude Channel Ip's.
      *
      * @var array
      */
-    protected $excludedIPs = [];
-
+    protected $excluded_i_ps = [];
     /**
      * Constructor.
      */
     public function __construct(Application $app)
     {
         parent::__construct($app);
-
-        $this->except[] = config('app.admin_url').'*';
+        $this->except[] = config('app.admin_url') . '*';
     }
-
     /**
      * Handle an incoming request.
      *
@@ -46,78 +40,48 @@ class PreventRequestsDuringMaintenance extends BasePreventRequestsDuringMaintena
      */
     public function handle($request, Closure $next)
     {
-        if ($this->app->maintenanceMode()->active()) {
+        if ($this->app->maintenance_mode()->active()) {
             try {
-                $data = $this->app->maintenanceMode()->data();
+                $data = $this->app->maintenance_mode()->data();
             } catch (\ErrorException $exception) {
-                if (! $this->app->maintenanceMode()->active()) {
+                if (!$this->app->maintenance_mode()->active()) {
                     return $next($request);
                 }
-
                 throw $exception;
             }
-
             if (isset($data['secret']) && $request->path() === $data['secret']) {
-                return $this->bypassResponse($data['secret']);
+                return $this->bypass_response($data['secret']);
             }
-
-            if ($this->hasValidBypassCookie($request, $data)) {
+            if ($this->has_valid_bypass_cookie($request, $data)) {
                 return $next($request);
             }
-
-            $this->setAllowedIps();
-
-            if (
-                in_array($request->ip(), $this->excludedIPs)
-                || $this->inExceptArray($request)
-                || ! (bool) core()->getCurrentChannel()->is_maintenance_on
-            ) {
+            $this->set_allowed_ips();
+            if (in_array($request->ip(), $this->excluded_i_ps) || $this->in_except_array($request) || !(bool) core()->get_current_channel()->is_maintenance_on) {
                 return $next($request);
             }
-
-            if (
-                $request->route() instanceof Route
-                && in_array($request->route()->getName(), $this->excludedNames)
-            ) {
+            if ($request->route() instanceof Route && in_array($request->route()->get_name(), $this->excluded_names)) {
                 return $next($request);
             }
-
             if (isset($data['redirect'])) {
-                $path = $data['redirect'] === '/'
-                    ? $data['redirect']
-                    : trim($data['redirect'], '/');
-
+                $path = $data['redirect'] === '/' ? $data['redirect'] : trim($data['redirect'], '/');
                 if ($request->path() !== $path) {
                     return redirect($path);
                 }
             }
-
             if (isset($data['template'])) {
-                return response(
-                    $data['template'],
-                    $data['status'] ?? 503,
-                    $this->getHeaders($data)
-                );
+                return response($data['template'], $data['status'] ?? 503, $this->get_headers($data));
             }
-
-            throw new HttpException(
-                $data['status'] ?? 503,
-                'Service Unavailable',
-                null,
-                $this->getHeaders($data)
-            );
+            throw new Http_Exception($data['status'] ?? 503, 'Service Unavailable', null, $this->get_headers($data));
         }
-
         return $next($request);
     }
-
     /**
      * Set allowed IPs.
      */
-    protected function setAllowedIps(): void
+    protected function set_allowed_ips(): void
     {
-        if ($channel = core()->getCurrentChannel()) {
-            $this->excludedIPs = array_map('trim', explode(',', $channel->allowed_ips ?? ''));
+        if ($channel = core()->get_current_channel()) {
+            $this->excluded_i_ps = array_map('trim', explode(',', $channel->allowed_ips ?? ''));
         }
     }
 }

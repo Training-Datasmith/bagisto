@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\User;
 
 use Webkul\Admin\Http\Controllers\Controller;
-
-class SessionController extends Controller
+class Session_Controller extends Controller
 {
     /**
      * Show the form for creating a new resource.
@@ -18,18 +16,14 @@ class SessionController extends Controller
         if (auth()->guard('admin')->check()) {
             return redirect()->route('admin.dashboard.index');
         }
-
         if (strpos(url()->previous(), 'admin') !== false) {
-            $intendedUrl = url()->previous();
+            $intended_url = url()->previous();
         } else {
-            $intendedUrl = route('admin.dashboard.index');
+            $intended_url = route('admin.dashboard.index');
         }
-
-        session()->put('url.intended', $intendedUrl);
-
+        session()->put('url.intended', $intended_url);
         return view('admin::users.sessions.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -37,57 +31,38 @@ class SessionController extends Controller
      */
     public function store()
     {
-        $this->validate(request(), [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
+        $this->validate(request(), ['email' => 'required|email', 'password' => 'required']);
         $remember = request('remember');
-
-        if (! auth()->guard('admin')->attempt(request(['email', 'password']), $remember)) {
+        if (!auth()->guard('admin')->attempt(request(['email', 'password']), $remember)) {
             session()->flash('error', trans('admin::app.settings.users.login-error'));
-
             return redirect()->back();
         }
-
-        if (! auth()->guard('admin')->user()->status) {
+        if (!auth()->guard('admin')->user()->status) {
             session()->flash('warning', trans('admin::app.settings.users.activate-warning'));
-
             auth()->guard('admin')->logout();
-
             return redirect()->route('admin.session.create');
         }
-
-        if (! bouncer()->hasPermission('dashboard')) {
-            $allPermissions = collect(config('acl'));
-
+        if (!bouncer()->has_permission('dashboard')) {
+            $all_permissions = collect(config('acl'));
             $permissions = auth()->guard('admin')->user()->role->permissions;
-
             foreach ($permissions as $permission) {
-                if (bouncer()->hasPermission($permission)) {
-                    $permissionDetails = $allPermissions->firstWhere('key', $permission);
-
+                if (bouncer()->has_permission($permission)) {
+                    $permission_details = $all_permissions->first_where('key', $permission);
                     // If key is single level (no dots), find the first child entry
-                    if (! str_contains($permission, '.')) {
-                        $childPermission = $allPermissions->first(function ($item) use ($permission) {
-                            return str_starts_with($item['key'], $permission.'.')
-                                && substr_count($item['key'], '.') === 1
-                                && bouncer()->hasPermission($item['key']);
+                    if (!str_contains($permission, '.')) {
+                        $child_permission = $all_permissions->first(function ($item) use ($permission) {
+                            return str_starts_with($item['key'], $permission . '.') && substr_count($item['key'], '.') === 1 && bouncer()->has_permission($item['key']);
                         });
-
-                        if ($childPermission) {
-                            return redirect()->route($childPermission['route']);
+                        if ($child_permission) {
+                            return redirect()->route($child_permission['route']);
                         }
                     }
-
-                    return redirect()->route($permissionDetails['route']);
+                    return redirect()->route($permission_details['route']);
                 }
             }
         }
-
         return redirect()->intended(route('admin.dashboard.index'));
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -97,7 +72,6 @@ class SessionController extends Controller
     public function destroy()
     {
         auth()->guard('admin')->logout();
-
         return redirect()->route('admin.session.create');
     }
 }

@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Webkul\Core\Core as BaseCore;
-
 class Core extends Facade
 {
     /**
@@ -14,8 +12,8 @@ class Core extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function get_facade_accessor()
     {
-        return BaseCore::class;
+        return Base_Core::class;
     }
 }

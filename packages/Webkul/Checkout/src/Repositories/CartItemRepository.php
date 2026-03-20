@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
-
-class CartItemRepository extends Repository
+class Cart_Item_Repository extends Repository
 {
     /**
      * Specify Model class name
@@ -15,13 +13,12 @@ class CartItemRepository extends Repository
     {
         return 'Webkul\Checkout\Contracts\CartItem';
     }
-
     /**
      * @param  int  $cartItemId
      * @return int
      */
-    public function getProduct($cartItemId)
+    public function get_product($cart_item_id)
     {
-        return $this->model->find($cartItemId)->product->id;
+        return $this->model->find($cart_item_id)->product->id;
     }
 }

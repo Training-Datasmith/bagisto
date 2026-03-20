@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Checkout\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Webkul\Checkout\Cart as BaseCart;
-
 class Cart extends Facade
 {
     /**
@@ -14,8 +12,8 @@ class Cart extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function get_facade_accessor()
     {
-        return BaseCart::class;
+        return Base_Cart::class;
     }
 }

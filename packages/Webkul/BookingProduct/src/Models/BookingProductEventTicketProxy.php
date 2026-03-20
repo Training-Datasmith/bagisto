@@ -1,11 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Booking_Product\Models;
 
-namespace Webkul\BookingProduct\Models;
-
-use Konekt\Concord\Proxies\ModelProxy;
-
-class BookingProductEventTicketProxy extends ModelProxy
+use Konekt\Concord\Proxies\Model_Proxy;
+class Booking_Product_Event_Ticket_Proxy extends Model_Proxy
 {
 }

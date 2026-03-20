@@ -1,28 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
+namespace Webkul\Admin\Http\Controllers\Marketing\Search_Seo;
 
-namespace Webkul\Admin\Http\Controllers\Marketing\SearchSEO;
-
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Json_Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use Webkul\Admin\DataGrids\Marketing\SearchSEO\SearchTermDataGrid;
+use Webkul\Admin\Data_Grids\Marketing\Search_Seo\Search_Term_Data_Grid;
 use Webkul\Admin\Http\Controllers\Controller;
-use Webkul\Admin\Http\Requests\MassDestroyRequest;
-use Webkul\Marketing\Repositories\SearchTermRepository;
-
-class SearchTermController extends Controller
+use Webkul\Admin\Http\Requests\Mass_Destroy_Request;
+use Webkul\Marketing\Repositories\Search_Term_Repository;
+class Search_Term_Controller extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(public SearchTermRepository $searchTermRepository)
+    public function __construct(public Search_Term_Repository $search_term_repository)
     {
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,74 +28,35 @@ class SearchTermController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return datagrid(SearchTermDataGrid::class)->process();
+            return datagrid(Search_Term_Data_Grid::class)->process();
         }
-
         return view('admin::marketing.search-seo.search-terms.index');
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(): JsonResponse
+    public function store(): Json_Response
     {
-        $this->validate(request(), [
-            'term' => 'required',
-            'redirect_url' => 'url:http,https',
-            'channel_id' => 'required|exists:channels,id',
-            'locale' => 'required|exists:locales,code',
-        ]);
-
+        $this->validate(request(), ['term' => 'required', 'redirect_url' => 'url:http,https', 'channel_id' => 'required|exists:channels,id', 'locale' => 'required|exists:locales,code']);
         Event::dispatch('marketing.search_seo.search_terms.create.before');
-
-        $searchTerm = $this->searchTermRepository->create(request()->only([
-            'term',
-            'redirect_url',
-            'channel_id',
-            'locale',
-        ]));
-
-        Event::dispatch('marketing.search_seo.search_terms.create.after', $searchTerm);
-
-        return new JsonResponse([
-            'message' => trans('admin::app.marketing.search-seo.search-terms.index.create.success'),
-        ]);
+        $search_term = $this->search_term_repository->create(request()->only(['term', 'redirect_url', 'channel_id', 'locale']));
+        Event::dispatch('marketing.search_seo.search_terms.create.after', $search_term);
+        return new Json_Response(['message' => trans('admin::app.marketing.search-seo.search-terms.index.create.success')]);
     }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
      */
-    public function update(): JsonResponse
+    public function update(): Json_Response
     {
         $id = request()->id;
-
-        $this->validate(request(), [
-            'term' => 'required',
-            'redirect_url' => 'url:http,https',
-            'channel_id' => 'required|exists:channels,id',
-            'locale' => 'required|exists:locales,code',
-        ]);
-
+        $this->validate(request(), ['term' => 'required', 'redirect_url' => 'url:http,https', 'channel_id' => 'required|exists:channels,id', 'locale' => 'required|exists:locales,code']);
         Event::dispatch('marketing.search_seo.search_terms.update.before', $id);
-
-        $searchTerm = $this->searchTermRepository->update(request()->only([
-            'term',
-            'results',
-            'uses',
-            'redirect_url',
-            'channel_id',
-            'locale',
-        ]), $id);
-
-        Event::dispatch('marketing.search_seo.search_terms.update.after', $searchTerm);
-
-        return new JsonResponse([
-            'message' => trans('admin::app.marketing.search-seo.search-terms.index.edit.success'),
-        ]);
+        $search_term = $this->search_term_repository->update(request()->only(['term', 'results', 'uses', 'redirect_url', 'channel_id', 'locale']), $id);
+        Event::dispatch('marketing.search_seo.search_terms.update.after', $search_term);
+        return new Json_Response(['message' => trans('admin::app.marketing.search-seo.search-terms.index.edit.success')]);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -109,49 +67,31 @@ class SearchTermController extends Controller
     {
         try {
             Event::dispatch('marketing.search_seo.search_terms.delete.before', $id);
-
-            $this->searchTermRepository->delete($id);
-
+            $this->search_term_repository->delete($id);
             Event::dispatch('marketing.search_seo.search_terms.delete.after', $id);
-
-            return response()->json([
-                'message' => trans('admin::app.marketing.search-seo.search-terms.index.edit.delete-success'),
-            ], 200);
+            return response()->json(['message' => trans('admin::app.marketing.search-seo.search-terms.index.edit.delete-success')], 200);
         } catch (\Exception $e) {
         }
-
-        return response()->json([
-            'message' => trans('admin::app.marketing.search-seo.search-terms.delete-failed'),
-        ], 500);
+        return response()->json(['message' => trans('admin::app.marketing.search-seo.search-terms.delete-failed')], 500);
     }
-
     /**
      * Mass delete the search terms.
      */
-    public function massDestroy(MassDestroyRequest $massDestroyRequest): JsonResponse
+    public function mass_destroy(Mass_Destroy_Request $mass_destroy_request): Json_Response
     {
-        $searchTermIds = $massDestroyRequest->input('indices');
-
+        $search_term_ids = $mass_destroy_request->input('indices');
         try {
-            foreach ($searchTermIds as $searchTermId) {
-                $searchTerm = $this->searchTermRepository->find($searchTermId);
-
-                if (isset($searchTerm)) {
-                    Event::dispatch('marketing.search_seo.search_terms.delete.before', $searchTermId);
-
-                    $this->searchTermRepository->delete($searchTermId);
-
-                    Event::dispatch('marketing.search_seo.search_terms.delete.after', $searchTermId);
+            foreach ($search_term_ids as $search_term_id) {
+                $search_term = $this->search_term_repository->find($search_term_id);
+                if (isset($search_term)) {
+                    Event::dispatch('marketing.search_seo.search_terms.delete.before', $search_term_id);
+                    $this->search_term_repository->delete($search_term_id);
+                    Event::dispatch('marketing.search_seo.search_terms.delete.after', $search_term_id);
                 }
             }
-
-            return new JsonResponse([
-                'message' => trans('admin::app.marketing.search-seo.search-terms.index.datagrid.mass-delete-success'),
-            ]);
+            return new Json_Response(['message' => trans('admin::app.marketing.search-seo.search-terms.index.datagrid.mass-delete-success')]);
         } catch (\Exception $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage(),
-            ], 500);
+            return new Json_Response(['message' => $e->get_message()], 500);
         }
     }
 }

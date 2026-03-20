@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-return new class () extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -23,22 +22,20 @@ return new class () extends Migration {
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->string('image')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->tiny_integer('status')->default(1);
             $table->string('password')->nullable();
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->integer('customer_group_id')->unsigned()->nullable();
             $table->boolean('subscribed_to_news_letter')->default(0);
             $table->boolean('is_verified')->default(0);
-            $table->tinyInteger('is_suspended')->unsigned()->default(0);
+            $table->tiny_integer('is_suspended')->unsigned()->default(0);
             $table->string('token')->nullable();
             $table->text('notes')->nullable();
-            $table->rememberToken();
+            $table->remember_token();
             $table->timestamps();
-
-            $table->foreign('customer_group_id')->references('id')->on('customer_groups')->onDelete('set null');
+            $table->foreign('customer_group_id')->references('id')->on('customer_groups')->on_delete('set null');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -46,6 +43,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::drop_if_exists('customers');
     }
 };

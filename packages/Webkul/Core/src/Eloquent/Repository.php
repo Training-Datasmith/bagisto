@@ -1,98 +1,79 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Eloquent;
 
-use Prettus\Repository\Contracts\CacheableInterface;
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Traits\CacheableRepository;
-
-abstract class Repository extends BaseRepository implements CacheableInterface
+use Prettus\Repository\Contracts\Cacheable_Interface;
+use Prettus\Repository\Eloquent\Base_Repository;
+use Prettus\Repository\Traits\Cacheable_Repository;
+abstract class Repository extends Base_Repository implements Cacheable_Interface
 {
-    use CacheableRepository;
-
+    use Cacheable_Repository;
     /**
      * Cache only enabled.
      *
      * @var array
      */
-    protected $cacheOnly;
-
+    protected $cache_only;
     /**
      * Cache except enabled.
      *
      * @var array
      */
-    protected $cacheExcept;
-
+    protected $cache_except;
     /**
      * Clean enabled.
      *
      * @var bool
      */
-    protected $cleanEnabled;
-
+    protected $clean_enabled;
     /**
      * Allowed clean.
      *
      * @return bool
      */
-    public function allowedClean()
+    public function allowed_clean()
     {
-        if (! isset($this->cleanEnabled)) {
+        if (!isset($this->clean_enabled)) {
             return config('repository.cache.clean.enabled', true);
         }
-
-        return $this->cleanEnabled;
+        return $this->clean_enabled;
     }
-
     /**
      * Allowed cache.
      *
      * @return bool
      */
-    protected function allowedCache($method)
+    protected function allowed_cache($method)
     {
-        $className = get_class($this);
-
-        $cacheEnabled = config("repository.cache.repositories.{$className}.enabled", config('repository.cache.enabled', true));
-
-        if (! $cacheEnabled) {
+        $class_name = get_class($this);
+        $cache_enabled = config("repository.cache.repositories.{$class_name}.enabled", config('repository.cache.enabled', true));
+        if (!$cache_enabled) {
             return false;
         }
-
-        $cacheOnly = isset($this->cacheOnly) ? $this->cacheOnly : config("repository.cache.repositories.{$className}.allowed.only", config('repository.cache.allowed.only', null));
-
-        $cacheExcept = isset($this->cacheExcept) ? $this->cacheExcept : config("repository.cache.repositories.{$className}.allowed.except", config('repository.cache.allowed.only', null));
-
-        if (is_array($cacheOnly)) {
-            return in_array($method, $cacheOnly);
+        $cache_only = isset($this->cache_only) ? $this->cache_only : config("repository.cache.repositories.{$class_name}.allowed.only", config('repository.cache.allowed.only', null));
+        $cache_except = isset($this->cache_except) ? $this->cache_except : config("repository.cache.repositories.{$class_name}.allowed.except", config('repository.cache.allowed.only', null));
+        if (is_array($cache_only)) {
+            return in_array($method, $cache_only);
         }
-
-        if (is_array($cacheExcept)) {
-            return ! in_array($method, $cacheExcept);
+        if (is_array($cache_except)) {
+            return !in_array($method, $cache_except);
         }
-
-        if (is_null($cacheOnly) && is_null($cacheExcept)) {
+        if (is_null($cache_only) && is_null($cache_except)) {
             return true;
         }
-
         return false;
     }
-
     /**
      * Reset model.
      *
      * @throws RepositoryException
      */
-    public function resetModel()
+    public function reset_model()
     {
-        $this->makeModel();
-
+        $this->make_model();
         return $this;
     }
-
     /**
      * Find data by field and value.
      *
@@ -101,13 +82,11 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      * @param  array  $columns
      * @return mixed
      */
-    public function findOneByField($field, $value = null, $columns = ['*'])
+    public function find_one_by_field($field, $value = null, $columns = ['*'])
     {
-        $model = $this->findByField($field, $value, $columns);
-
+        $model = $this->find_by_field($field, $value, $columns);
         return $model->first();
     }
-
     /**
      * Find data by field and value.
      *
@@ -116,13 +95,11 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      * @param  array  $columns
      * @return mixed
      */
-    public function findOneWhere(array $where, $columns = ['*'])
+    public function find_one_where(array $where, $columns = ['*'])
     {
-        $model = $this->findWhere($where, $columns);
-
+        $model = $this->find_where($where, $columns);
         return $model->first();
     }
-
     /**
      * Find data by id.
      *
@@ -132,14 +109,12 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      */
     public function find($id, $columns = ['*'])
     {
-        $this->applyCriteria();
-        $this->applyScope();
+        $this->apply_criteria();
+        $this->apply_scope();
         $model = $this->model->find($id, $columns);
-        $this->resetModel();
-
-        return $this->parserResult($model);
+        $this->reset_model();
+        return $this->parser_result($model);
     }
-
     /**
      * Find data by id.
      *
@@ -147,16 +122,14 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      * @param  array  $columns
      * @return mixed
      */
-    public function findOrFail($id, $columns = ['*'])
+    public function find_or_fail($id, $columns = ['*'])
     {
-        $this->applyCriteria();
-        $this->applyScope();
-        $model = $this->model->findOrFail($id, $columns);
-        $this->resetModel();
-
-        return $this->parserResult($model);
+        $this->apply_criteria();
+        $this->apply_scope();
+        $model = $this->model->find_or_fail($id, $columns);
+        $this->reset_model();
+        return $this->parser_result($model);
     }
-
     /**
      * Count results of repository.
      *
@@ -165,20 +138,16 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      */
     public function count(array $where = [], $columns = '*')
     {
-        $this->applyCriteria();
-        $this->applyScope();
-
+        $this->apply_criteria();
+        $this->apply_scope();
         if ($where) {
-            $this->applyConditions($where);
+            $this->apply_conditions($where);
         }
-
         $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
+        $this->reset_model();
+        $this->reset_scope();
         return $result;
     }
-
     /**
      * Sum.
      *
@@ -187,15 +156,12 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      */
     public function sum($columns)
     {
-        $this->applyCriteria();
-        $this->applyScope();
-
+        $this->apply_criteria();
+        $this->apply_scope();
         $sum = $this->model->sum($columns);
-        $this->resetModel();
-
+        $this->reset_model();
         return $sum;
     }
-
     /**
      * Avg.
      *
@@ -204,21 +170,18 @@ abstract class Repository extends BaseRepository implements CacheableInterface
      */
     public function avg($columns)
     {
-        $this->applyCriteria();
-        $this->applyScope();
-
+        $this->apply_criteria();
+        $this->apply_scope();
         $avg = $this->model->avg($columns);
-        $this->resetModel();
-
+        $this->reset_model();
         return $avg;
     }
-
     /**
      * Get model.
      *
      * @return mixed
      */
-    public function getModel()
+    public function get_model()
     {
         return $this->model;
     }

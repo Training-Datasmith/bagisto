@@ -1,46 +1,33 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Category\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Has_Factory;
 use Illuminate\Database\Eloquent\Model;
-use Webkul\Category\Contracts\CategoryTranslation as CategoryTranslationContract;
-use Webkul\Category\Database\Factories\CategoryTranslationFactory;
-
-class CategoryTranslation extends Model implements CategoryTranslationContract
+use Webkul\Category\Contracts\Category_Translation as CategoryTranslationContract;
+use Webkul\Category\Database\Factories\Category_Translation_Factory;
+class Category_Translation extends Model implements Category_Translation_Contract
 {
-    use HasFactory;
-
+    use Has_Factory;
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
     public $timestamps = false;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'description',
-        'slug',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-        'locale_id',
-    ];
-
+    protected $fillable = ['name', 'description', 'slug', 'meta_title', 'meta_description', 'meta_keywords', 'locale_id'];
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory(): Factory
+    protected static function new_factory(): Factory
     {
-        return CategoryTranslationFactory::new();
+        return Category_Translation_Factory::new();
     }
 }

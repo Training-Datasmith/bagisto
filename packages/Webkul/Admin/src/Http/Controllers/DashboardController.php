@@ -1,37 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers;
 
 use Webkul\Admin\Helpers\Dashboard;
-
-class DashboardController extends Controller
+class Dashboard_Controller extends Controller
 {
     /**
      * Request param functions
      *
      * @var array
      */
-    protected $typeFunctions = [
-        'over-all' => 'getOverAllStats',
-        'today' => 'getTodayStats',
-        'stock-threshold-products' => 'getStockThresholdProducts',
-        'total-sales' => 'getSalesStats',
-        'total-visitors' => 'getVisitorStats',
-        'top-selling-products' => 'getTopSellingProducts',
-        'top-customers' => 'getTopCustomers',
-    ];
-
+    protected $type_functions = ['over-all' => 'getOverAllStats', 'today' => 'getTodayStats', 'stock-threshold-products' => 'getStockThresholdProducts', 'total-sales' => 'getSalesStats', 'total-visitors' => 'getVisitorStats', 'top-selling-products' => 'getTopSellingProducts', 'top-customers' => 'getTopCustomers'];
     /**
      * Create a controller instance.
      *
      * @return void
      */
-    public function __construct(protected Dashboard $dashboardHelper)
+    public function __construct(protected Dashboard $dashboard_helper)
     {
     }
-
     /**
      * Dashboard page.
      *
@@ -39,12 +27,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin::dashboard.index')->with([
-            'startDate' => $this->dashboardHelper->getStartDate(),
-            'endDate' => $this->dashboardHelper->getEndDate(),
-        ]);
+        return view('admin::dashboard.index')->with(['startDate' => $this->dashboard_helper->get_start_date(), 'endDate' => $this->dashboard_helper->get_end_date()]);
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -52,11 +36,7 @@ class DashboardController extends Controller
      */
     public function stats()
     {
-        $stats = $this->dashboardHelper->{$this->typeFunctions[request()->query('type')]}();
-
-        return response()->json([
-            'statistics' => $stats,
-            'date_range' => $this->dashboardHelper->getDateRange(),
-        ]);
+        $stats = $this->dashboard_helper->{$this->type_functions[request()->query('type')]}();
+        return response()->json(['statistics' => $stats, 'date_range' => $this->dashboard_helper->get_date_range()]);
     }
 }

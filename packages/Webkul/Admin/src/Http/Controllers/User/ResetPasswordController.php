@@ -1,20 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Admin\Http\Controllers\User;
 
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Auth\Events\Password_Reset;
+use Illuminate\Foundation\Auth\Resets_Passwords;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Webkul\Admin\Http\Controllers\Controller;
-
-class ResetPasswordController extends Controller
+class Reset_Password_Controller extends Controller
 {
-    use ResetsPasswords;
-
+    use Resets_Passwords;
     /**
      * Display the password reset view for the given token.
      *
@@ -25,12 +22,8 @@ class ResetPasswordController extends Controller
      */
     public function create($token = null)
     {
-        return view('admin::users.reset-password.create')->with([
-            'token' => $token,
-            'email' => request('email'),
-        ]);
+        return view('admin::users.reset-password.create')->with(['token' => $token, 'email' => request('email')]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -39,35 +32,19 @@ class ResetPasswordController extends Controller
     public function store()
     {
         try {
-            $this->validate(request(), [
-                'token' => 'required',
-                'email' => 'required|email',
-                'password' => 'required|confirmed|min:6',
-            ]);
-
-            $response = $this->broker()->reset(
-                request(['email', 'password', 'password_confirmation', 'token']),
-                function ($admin, $password) {
-                    $this->resetPassword($admin, $password);
-                }
-            );
-
+            $this->validate(request(), ['token' => 'required', 'email' => 'required|email', 'password' => 'required|confirmed|min:6']);
+            $response = $this->broker()->reset(request(['email', 'password', 'password_confirmation', 'token']), function ($admin, $password) {
+                $this->reset_password($admin, $password);
+            });
             if ($response == Password::PASSWORD_RESET) {
                 return redirect()->route('admin.dashboard.index');
             }
-
-            return back()
-                ->withInput(request(['email']))
-                ->withErrors([
-                    'email' => trans($response),
-                ]);
+            return back()->with_input(request(['email']))->with_errors(['email' => trans($response)]);
         } catch (\Exception $e) {
-            session()->flash('error', trans($e->getMessage()));
-
+            session()->flash('error', trans($e->get_message()));
             return redirect()->back();
         }
     }
-
     /**
      * Reset the given admin's password.
      *
@@ -75,19 +52,14 @@ class ResetPasswordController extends Controller
      * @param  string  $password
      * @return void
      */
-    protected function resetPassword($admin, $password)
+    protected function reset_password($admin, $password)
     {
         $admin->password = Hash::make($password);
-
-        $admin->setRememberToken(Str::random(60));
-
+        $admin->set_remember_token(Str::random(60));
         $admin->save();
-
-        event(new PasswordReset($admin));
-
+        event(new Password_Reset($admin));
         auth()->guard('admin')->login($admin);
     }
-
     /**
      * Get the broker to be used during password reset.
      *

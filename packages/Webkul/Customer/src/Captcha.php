@@ -1,27 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Customer;
 
 use Webkul\Customer\Contracts\Captcha as CaptchaContract;
-
-class Captcha implements CaptchaContract
+class Captcha implements Captcha_Contract
 {
     /**
      * Site key.
      *
      * @var string
      */
-    protected $siteKey;
-
+    protected $site_key;
     /**
      * Secret key.
      *
      * @var string
      */
-    protected $secretKey;
-
+    protected $secret_key;
     /**
      * Create a new instance.
      *
@@ -29,161 +25,116 @@ class Captcha implements CaptchaContract
      */
     public function __construct()
     {
-        $this->siteKey = $this->getSiteKey();
-
-        $this->secretKey = $this->getSecretKey();
+        $this->site_key = $this->get_site_key();
+        $this->secret_key = $this->get_secret_key();
     }
-
     /**
      * Check whether captcha is active or not.
      */
-    public function isActive(): bool
+    public function is_active(): bool
     {
-        return (bool) core()->getConfigData('customer.captcha.credentials.status');
+        return (bool) core()->get_config_data('customer.captcha.credentials.status');
     }
-
     /**
      * Get site key from the core config.
      */
-    public function getSiteKey(): ?string
+    public function get_site_key(): ?string
     {
-        return core()->getConfigData('customer.captcha.credentials.site_key');
+        return core()->get_config_data('customer.captcha.credentials.site_key');
     }
-
     /**
      * Get secret key from the core config.
      */
-    public function getSecretKey(): ?string
+    public function get_secret_key(): ?string
     {
-        return core()->getConfigData('customer.captcha.credentials.secret_key');
+        return core()->get_config_data('customer.captcha.credentials.secret_key');
     }
-
     /**
      * Get client endpoint.
      */
-    public function getClientEndpoint(): string
+    public function get_client_endpoint(): string
     {
         return static::CLIENT_ENDPOINT;
     }
-
     /**
      * Get site verify endpoint.
      */
-    public function getSiteVerifyEndpoint(): string
+    public function get_site_verify_endpoint(): string
     {
         return static::SITE_VERIFY_ENDPOINT;
     }
-
     /**
      * Render JS.
      */
-    public function renderJS(): string
+    public function render_js(): string
     {
-        return $this->isActive()
-            ? $this->getCaptchaJSView()
-            : '';
+        return $this->is_active() ? $this->get_captcha_js_view() : '';
     }
-
     /**
      * Render Captcha.
      */
     public function render(): string
     {
-        return $this->isActive()
-            ? $this->getCaptchaView()
-            : '';
+        return $this->is_active() ? $this->get_captcha_view() : '';
     }
-
     /**
      * Validate response.
      */
-    public function validateResponse($response): bool
+    public function validate_response($response): bool
     {
-        $client = new \GuzzleHttp\Client();
-
-        $response = $client->post($this->getSiteVerifyEndpoint(), [
-            'query' => [
-                'secret' => $this->secretKey,
-                'response' => $response,
-            ],
-        ]);
-
-        return json_decode($response->getBody())->success;
+        $client = new \Guzzle_Http\Client();
+        $response = $client->post($this->get_site_verify_endpoint(), ['query' => ['secret' => $this->secret_key, 'response' => $response]]);
+        return json_decode($response->get_body())->success;
     }
-
     /**
      * Get or merge existing validations with your captcha validations.
      */
-    public function getValidations($rules = []): array
+    public function get_validations($rules = []): array
     {
-        return $this->isActive()
-            ? array_merge($rules, ['g-recaptcha-response' => 'required|captcha'])
-            : $rules;
+        return $this->is_active() ? array_merge($rules, ['g-recaptcha-response' => 'required|captcha']) : $rules;
     }
-
     /**
      * Get or merge existing validation messages with your captcha validation messages.
      */
-    public function getValidationMessages($messages = []): array
+    public function get_validation_messages($messages = []): array
     {
-        return $this->isActive()
-            ? array_merge($messages, [
-                'g-recaptcha-response.required' => trans('customer::app.validations.captcha.required'),
-                'g-recaptcha-response.captcha' => trans('customer::app.validations.captcha.captcha'),
-            ])
-            : $messages;
+        return $this->is_active() ? array_merge($messages, ['g-recaptcha-response.required' => trans('customer::app.validations.captcha.required'), 'g-recaptcha-response.captcha' => trans('customer::app.validations.captcha.captcha')]) : $messages;
     }
-
     /**
      * Get attributes.
      */
-    protected function getAttributes(): array
+    protected function get_attributes(): array
     {
-        return [
-            'class' => 'g-recaptcha',
-            'data-sitekey' => $this->siteKey,
-        ];
+        return ['class' => 'g-recaptcha', 'data-sitekey' => $this->site_key];
     }
-
     /**
      * Build attributes.
      */
-    protected function buildHTMLAttributes(array $attributes): string
+    protected function build_html_attributes(array $attributes): string
     {
-        $htmlAttributes = [];
-
+        $html_attributes = [];
         foreach ($attributes as $key => $value) {
-            $htmlAttributes[] = "{$key}=\"{$value}\"";
+            $html_attributes[] = "{$key}=\"{$value}\"";
         }
-
-        return count($htmlAttributes)
-            ? implode(' ', $htmlAttributes)
-            : '';
+        return count($html_attributes) ? implode(' ', $html_attributes) : '';
     }
-
     /**
      * Get captcha view.
      *
      * @return string
      */
-    protected function getCaptchaView()
+    protected function get_captcha_view()
     {
-        $htmlAttributes = $this->buildHTMLAttributes($this->getAttributes());
-
-        return view('customer::captcha.view', [
-            'htmlAttributes' => $htmlAttributes,
-        ])->render();
+        $html_attributes = $this->build_html_attributes($this->get_attributes());
+        return view('customer::captcha.view', ['htmlAttributes' => $html_attributes])->render();
     }
-
     /**
      * Get captcha script view.
      *
      * @return string
      */
-    protected function getCaptchaJSView()
+    protected function get_captcha_js_view()
     {
-        return view('customer::captcha.scripts', [
-            'clientEndPoint' => $this->getClientEndpoint(),
-        ])->render();
+        return view('customer::captcha.scripts', ['clientEndPoint' => $this->get_client_endpoint()])->render();
     }
 }

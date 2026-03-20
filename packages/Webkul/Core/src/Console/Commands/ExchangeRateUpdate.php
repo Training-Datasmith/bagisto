@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Webkul\Core\Console\Commands;
 
 use Illuminate\Console\Command;
-
-class ExchangeRateUpdate extends Command
+class Exchange_Rate_Update extends Command
 {
     /**
      * The name and signature of the console command.
@@ -14,14 +12,12 @@ class ExchangeRateUpdate extends Command
      * @var string
      */
     protected $signature = 'exchange-rate:update';
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Automatically updates currency exchange rates ';
-
     /**
      * Execute the console command.
      *
@@ -30,9 +26,8 @@ class ExchangeRateUpdate extends Command
     public function handle()
     {
         try {
-            app(config('services.exchange_api.'.config('services.exchange_api.default').'.class'))->updateRates();
+            app(config('services.exchange_api.' . config('services.exchange_api.default') . '.class'))->update_rates();
         } catch (\Exception $e) {
-
         }
     }
 }
