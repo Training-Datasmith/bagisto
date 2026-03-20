@@ -66,22 +66,22 @@
             "Database\\Seeders\\": "database/seeders/",
             "Webkul\\Admin\\": "packages/Webkul/Admin/src",
             "Webkul\\Attribute\\": "packages/Webkul/Attribute/src",
-            "Webkul\\BookingProduct\\": "packages/Webkul/BookingProduct/src",
-            "Webkul\\CartRule\\": "packages/Webkul/CartRule/src",
-            "Webkul\\CatalogRule\\": "packages/Webkul/CatalogRule/src",
+            "Webkul\\Booking_Product\\": "packages/Webkul/BookingProduct/src",
+            "Webkul\\Cart_Rule\\": "packages/Webkul/CartRule/src",
+            "Webkul\\Catalog_Rule\\": "packages/Webkul/CatalogRule/src",
             "Webkul\\Category\\": "packages/Webkul/Category/src",
             "Webkul\\Checkout\\": "packages/Webkul/Checkout/src",
             "Webkul\\CMS\\": "packages/Webkul/CMS/src",
             "Webkul\\Core\\": "packages/Webkul/Core/src",
             "Webkul\\Customer\\": "packages/Webkul/Customer/src",
-            "Webkul\\DataGrid\\": "packages/Webkul/DataGrid/src",
-            "Webkul\\DataTransfer\\": "packages/Webkul/DataTransfer/src",
-            "Webkul\\DebugBar\\": "packages/Webkul/DebugBar/src",
+            "Webkul\\Data_Grid\\": "packages/Webkul/DataGrid/src",
+            "Webkul\\Data_Transfer\\": "packages/Webkul/DataTransfer/src",
+            "Webkul\\Debug_Bar\\": "packages/Webkul/DebugBar/src",
             "Webkul\\FPC\\": "packages/Webkul/FPC/src",
             "Webkul\\GDPR\\": "packages/Webkul/GDPR/src",
             "Webkul\\Installer\\": "packages/Webkul/Installer/src",
             "Webkul\\Inventory\\": "packages/Webkul/Inventory/src",
-            "Webkul\\MagicAI\\": "packages/Webkul/MagicAI/src",
+            "Webkul\\Magic_AI\\": "packages/Webkul/MagicAI/src",
             "Webkul\\Marketing\\": "packages/Webkul/Marketing/src",
             "Webkul\\Notification\\": "packages/Webkul/Notification/src",
             "Webkul\\Paypal\\": "packages/Webkul/Paypal/src",
@@ -92,8 +92,8 @@
             "Webkul\\Shipping\\": "packages/Webkul/Shipping/src",
             "Webkul\\Shop\\": "packages/Webkul/Shop/src",
             "Webkul\\Sitemap\\": "packages/Webkul/Sitemap/src",
-            "Webkul\\SocialLogin\\": "packages/Webkul/SocialLogin/src",
-            "Webkul\\SocialShare\\": "packages/Webkul/SocialShare/src",
+            "Webkul\\Social_Login\\": "packages/Webkul/SocialLogin/src",
+            "Webkul\\Social_Share\\": "packages/Webkul/SocialShare/src",
             "Webkul\\Tax\\": "packages/Webkul/Tax/src",
             "Webkul\\Theme\\": "packages/Webkul/Theme/src",
             "Webkul\\User\\": "packages/Webkul/User/src"
@@ -104,7 +104,7 @@
             "Tests\\": "tests/",
             "Webkul\\Admin\\Tests\\": "packages/Webkul/Admin/tests",
             "Webkul\\Core\\Tests\\": "packages/Webkul/Core/tests",
-            "Webkul\\DataGrid\\Tests\\": "packages/Webkul/DataGrid/tests",
+            "Webkul\\Data_Grid\\Tests\\": "packages/Webkul/DataGrid/tests",
             "Webkul\\Installer\\Tests\\": "packages/Webkul/Installer/tests",
             "Webkul\\Shop\\Tests\\": "packages/Webkul/Shop/tests"
         }
@@ -128,13 +128,15 @@
             ]
         }
     },
-    "repositories": [{
-        "type": "path",
-        "url": "packages/*/*",
-        "options": {
-            "symlink": true
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*/*",
+            "options": {
+                "symlink": true
+            }
         }
-    }],
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
