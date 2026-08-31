@@ -92,7 +92,7 @@ class Tax
             {
                 $this->country = core()->getConfigData('sales.shipping.origin.country') != ''
                     ? core()->getConfigData('sales.shipping.origin.country')
-                    : strtoupper(config('app.default_country'));
+                    : strtoupper((string) (config('app.default_country') ?? ''));
 
                 $this->state = core()->getConfigData('sales.shipping.origin.state');
 
@@ -117,7 +117,7 @@ class Tax
             {
                 $this->country = core()->getConfigData('sales.taxes.default_destination_calculation.country') != ''
                     ? core()->getConfigData('sales.taxes.default_destination_calculation.country')
-                    : strtoupper(config('app.default_country'));
+                    : strtoupper((string) (config('app.default_country') ?? ''));
 
                 $this->state = core()->getConfigData('sales.taxes.default_destination_calculation.state');
 

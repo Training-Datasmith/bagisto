@@ -128,7 +128,7 @@ class CartRule
     public function canProcessRule($rule): bool
     {
         if ($rule->coupon_type) {
-            if (! strlen($this->cart->coupon_code)) {
+            if (! strlen((string) ($this->cart->coupon_code ?? ''))) {
                 return false;
             }
 
