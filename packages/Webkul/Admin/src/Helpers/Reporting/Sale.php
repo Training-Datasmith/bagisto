@@ -170,7 +170,7 @@ class Sale extends AbstractReporting
      */
     public function getTotalSales($startDate, $endDate): float
     {
-        return $this->orderRepository
+        return (float) $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -185,7 +185,7 @@ class Sale extends AbstractReporting
      */
     public function getSubTotalSales($startDate, $endDate): float
     {
-        return $this->orderRepository
+        return (float) $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -254,11 +254,13 @@ class Sale extends AbstractReporting
      */
     public function getAverageSales($startDate, $endDate): ?float
     {
-        return $this->orderRepository
+        $average = $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->avg(DB::raw('base_grand_total_invoiced - base_grand_total_refunded'));
+
+        return is_null($average) ? null : (float) $average;
     }
 
     /**
@@ -323,7 +325,7 @@ class Sale extends AbstractReporting
      */
     public function getRefunds($startDate, $endDate): float
     {
-        return $this->orderRepository
+        return (float) $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -392,7 +394,7 @@ class Sale extends AbstractReporting
      */
     public function getTaxCollected($startDate, $endDate): float
     {
-        return $this->orderRepository
+        return (float) $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -484,7 +486,7 @@ class Sale extends AbstractReporting
      */
     public function getShippingCollected($startDate, $endDate): float
     {
-        return $this->orderRepository
+        return (float) $this->orderRepository
             ->resetModel()
             ->whereIn('channel_id', $this->channelIds)
             ->whereBetween('created_at', [$startDate, $endDate])

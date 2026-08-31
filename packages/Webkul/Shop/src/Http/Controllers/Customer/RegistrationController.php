@@ -63,7 +63,7 @@ class RegistrationController extends Controller
             'is_verified' => ! core()->getConfigData('customer.settings.email.verification'),
             'customer_group_id' => $this->customerGroupRepository->findOneWhere(['code' => $customerGroup])->id,
             'channel_id' => core()->getCurrentChannel()->id,
-            'token' => md5(uniqid(rand(), true)),
+            'token' => md5(uniqid((string) rand(), true)),
             'subscribed_to_news_letter' => (bool) (request()->input('is_subscribed') ?? $subscription?->is_subscribed),
         ]);
 
@@ -147,7 +147,7 @@ class RegistrationController extends Controller
     {
         $verificationData = [
             'email' => $email,
-            'token' => md5(uniqid(rand(), true)),
+            'token' => md5(uniqid((string) rand(), true)),
         ];
 
         $customer = $this->customerRepository->findOneByField('email', $email);

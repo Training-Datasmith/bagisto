@@ -553,7 +553,7 @@ class Configurable extends AbstractType
     /**
      * Is product have sufficient quantity.
      */
-    public function haveSufficientQuantity(int $qty): bool
+    public function haveSufficientQuantity(int|string $qty): bool
     {
         foreach ($this->product->variants as $variant) {
             if ($variant->haveSufficientQuantity($qty)) {

@@ -148,7 +148,7 @@ class Cart extends AbstractReporting
      */
     public function getTotalAbandonedSales($startDate, $endDate): int
     {
-        return $this->cartRepository
+        return (int) $this->cartRepository
             ->resetModel()
             ->where('is_active', 1)
             ->whereIn('channel_id', $this->channelIds)

@@ -273,12 +273,12 @@ class ProductRepository extends Repository
 
             if (! empty($params['category_id'])) {
                 $qb->leftJoin('product_categories', 'product_categories.product_id', '=', 'products.id')
-                    ->whereIn('product_categories.category_id', explode(',', $params['category_id']));
+                    ->whereIn('product_categories.category_id', explode(',', (string) $params['category_id']));
             }
 
             if (! empty($params['channel_id'])) {
                 $qb->leftJoin('product_channels', 'products.id', '=', 'product_channels.product_id')
-                    ->where('product_channels.channel_id', explode(',', $params['channel_id']));
+                    ->whereIn('product_channels.channel_id', explode(',', (string) $params['channel_id']));
             }
 
             if (! empty($params['type'])) {

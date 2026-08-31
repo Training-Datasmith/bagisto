@@ -173,7 +173,7 @@ class Virtual extends AbstractType
     /**
      * Have sufficient quantity.
      */
-    public function haveSufficientQuantity(int $qty): bool
+    public function haveSufficientQuantity(int|string $qty): bool
     {
         if (! $this->product->manage_stock) {
             return true;

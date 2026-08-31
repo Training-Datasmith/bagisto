@@ -76,12 +76,12 @@ class Product extends AbstractReporting
      */
     public function getTotalSoldQuantities($startDate, $endDate): int
     {
-        return $this->orderItemRepository
+        return (int) ($this->orderItemRepository
             ->resetModel()
             ->leftJoin('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereIn('orders.channel_id', $this->channelIds)
             ->whereBetween('order_items.created_at', [$startDate, $endDate])
-            ->value(DB::raw('SUM(qty_invoiced - qty_refunded)')) ?? 0;
+            ->value(DB::raw('SUM(qty_invoiced - qty_refunded)')) ?? 0);
     }
 
     /**

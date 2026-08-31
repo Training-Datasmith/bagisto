@@ -338,7 +338,7 @@ class Product extends Model implements ProductContract
      *
      * @throws \Exception
      */
-    public function haveSufficientQuantity(int $qty): bool
+    public function haveSufficientQuantity(int|string $qty): bool
     {
         return $this->getTypeInstance()
             ->haveSufficientQuantity($qty);

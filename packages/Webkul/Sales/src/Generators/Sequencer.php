@@ -95,7 +95,8 @@ class Sequencer implements SequencerContract
     public function resolveGeneratorClass()
     {
         if (
-            $this->generatorClass !== ''
+            is_string($this->generatorClass)
+            && $this->generatorClass !== ''
             && class_exists($this->generatorClass)
             && in_array(SequencerContract::class, class_implements($this->generatorClass), true)
         ) {

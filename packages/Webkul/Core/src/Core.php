@@ -535,11 +535,13 @@ class Core
     /**
      * Format price.
      */
-    public function formatPrice(?float $price, ?string $currencyCode = null): string
+    public function formatPrice(int|float|string|null $price, ?string $currencyCode = null): string
     {
-        if (is_null($price)) {
+        if (is_null($price) || $price === '') {
             $price = 0;
         }
+
+        $price = (float) $price;
 
         $currency = $currencyCode
             ? $this->getAllCurrencies()->where('code', $currencyCode)->first()
@@ -551,11 +553,13 @@ class Core
     /**
      * Format price with base currency symbol.
      */
-    public function formatBasePrice(?float $price): string
+    public function formatBasePrice(int|float|string|null $price): string
     {
-        if (is_null($price)) {
+        if (is_null($price) || $price === '') {
             $price = 0;
         }
+
+        $price = (float) $price;
 
         $currency = $this->getBaseCurrency();
 
@@ -786,7 +790,11 @@ class Core
      */
     public function xWeekRange($date, $day)
     {
-        $ts = strtotime($date);
+        if ($date instanceof \DateTimeInterface) {
+            $date = $date->format('Y-m-d');
+        }
+
+        $ts = strtotime((string) $date);
 
         if (! $day) {
             $start = (date('D', $ts) == 'Sun') ? $ts : strtotime('last sunday', $ts);
@@ -954,12 +962,12 @@ class Core
             $prerenderEagerness = $this->getConfigData($configPath.'prerender_eagerness') ?? 'moderate';
 
             $prerenderIgnoreUrls = array_filter(
-                explode('|', $this->getConfigData($configPath.'prerender_ignore_urls')),
+                explode('|', (string) ($this->getConfigData($configPath.'prerender_ignore_urls') ?? '')),
                 fn ($url) => trim($url) !== ''
             );
 
             $prerenderIgnoreParams = array_filter(
-                explode('|', $this->getConfigData($configPath.'prerender_ignore_url_params')),
+                explode('|', (string) ($this->getConfigData($configPath.'prerender_ignore_url_params') ?? '')),
                 fn ($param) => trim($param) !== ''
             );
 
@@ -988,12 +996,12 @@ class Core
             $prefetchEagerness = $this->getConfigData($configPath.'prefetch_eagerness') ?? 'moderate';
 
             $prefetchIgnoreUrls = array_filter(
-                explode('|', $this->getConfigData($configPath.'prefetch_ignore_urls')),
+                explode('|', (string) ($this->getConfigData($configPath.'prefetch_ignore_urls') ?? '')),
                 fn ($url) => trim($url) !== ''
             );
 
             $prefetchIgnoreParams = array_filter(
-                explode('|', $this->getConfigData($configPath.'prefetch_ignore_url_params')),
+                explode('|', (string) ($this->getConfigData($configPath.'prefetch_ignore_url_params') ?? '')),
                 fn ($param) => trim($param) !== ''
             );
 

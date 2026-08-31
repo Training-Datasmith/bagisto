@@ -475,7 +475,7 @@ abstract class AbstractType
     /**
      * Have sufficient quantity.
      */
-    public function haveSufficientQuantity(int $qty): bool
+    public function haveSufficientQuantity(int|string $qty): bool
     {
         return $this->haveSufficientQuantity;
     }
@@ -602,10 +602,10 @@ abstract class AbstractType
     public function getMinimalPrice()
     {
         if (! $priceIndex = $this->getPriceIndex()) {
-            return $this->product->price;
+            return (float) $this->product->price;
         }
 
-        return $priceIndex->min_price;
+        return (float) $priceIndex->min_price;
     }
 
     /**
@@ -672,7 +672,7 @@ abstract class AbstractType
             ->setCustomerGroup($customerGroup)
             ->setProduct($this->product);
 
-        return $indexer->getMinimalPrice($qty);
+        return (float) $indexer->getMinimalPrice($qty);
     }
 
     /**

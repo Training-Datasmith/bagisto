@@ -162,7 +162,7 @@ class Grouped extends AbstractType
     /**
      * Is product have sufficient quantity.
      */
-    public function haveSufficientQuantity(int $qty): bool
+    public function haveSufficientQuantity(int|string $qty): bool
     {
         foreach ($this->product->grouped_products as $groupedProduct) {
             if ($groupedProduct->associated_product->haveSufficientQuantity($qty)) {

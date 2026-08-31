@@ -14,7 +14,7 @@ class Decimal implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! preg_match('/^\d*(\.\d{1,4})?$/', $value)) {
+        if (! preg_match('/^\d*(\.\d{1,4})?$/', (string) $value)) {
             $fail('core::validation.decimal')->translate();
         }
     }
