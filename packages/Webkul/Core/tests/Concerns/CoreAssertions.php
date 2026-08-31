@@ -35,13 +35,13 @@ trait CoreAssertions
     /**
      * Assert that two numbers are equal with optional decimal precision.
      */
-    public function assertPrice(float $expected, float $actual, ?int $decimal = null): void
+    public function assertPrice(float|int|string $expected, float|int|string $actual, ?int $decimal = null): void
     {
         $decimal = $decimal ?? core()->getCurrentChannel()->decimal;
 
-        $expectedFormatted = number_format($expected, $decimal);
+        $expectedFormatted = number_format((float) $expected, $decimal);
 
-        $actualFormatted = number_format($actual, $decimal);
+        $actualFormatted = number_format((float) $actual, $decimal);
 
         $this->assertEquals($expectedFormatted, $actualFormatted);
     }
@@ -290,11 +290,11 @@ trait CoreAssertions
             'base_tax_amount' => $cartItem->base_tax_amount,
             'discount_percent' => $cartItem->discount_percent,
             'base_discount_amount' => $cartItem->base_discount_amount,
-            'tax_percent' => number_format($cartItem->tax_percent, 4),
-            'tax_amount' => number_format($cartItem->tax_amount, 4),
-            'base_tax_amount' => number_format($cartItem->base_tax_amount, 4),
-            'discount_amount' => number_format($cartItem->discount_amount, 4),
-            'base_discount_amount' => number_format($cartItem->base_discount_amount, 4),
+            'tax_percent' => number_format((float) $cartItem->tax_percent, 4),
+            'tax_amount' => number_format((float) $cartItem->tax_amount, 4),
+            'base_tax_amount' => number_format((float) $cartItem->base_tax_amount, 4),
+            'discount_amount' => number_format((float) $cartItem->discount_amount, 4),
+            'base_discount_amount' => number_format((float) $cartItem->base_discount_amount, 4),
             'parent_id' => $cartItem->parent_id,
             'product_id' => $cartItem->product_id,
             'cart_id' => $cartItem->cart_id,

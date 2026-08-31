@@ -77,17 +77,16 @@ class ModuleCollector extends DataCollector implements AssetProvider, DataCollec
                     ? "/\?(?=(?:[^'\\\']*'[^'\\\']*')*[^'\\\']*$)/"
                     : "/:{$key}(?=(?:[^'\\\']*'[^'\\\']*')*[^'\\\']*$)/";
 
-                if (
-                    ! is_int($binding)
-                    && ! is_float($binding)
-                ) {
-                    if ($binding instanceof \Stringable) {
-                        $binding = (string) $binding;
+                if (is_int($binding) || is_float($binding)) {
+                    $binding = (string) $binding;
+                } else {
+                    if (! is_string($binding)) {
+                        $binding = $binding instanceof \Stringable
+                            ? (string) $binding
+                            : '['.get_debug_type($binding).']';
                     }
 
                     $binding = $query->connection->getPdo()->quote($binding ?? '');
-                } else {
-                    $binding = (string) $binding;
                 }
 
                 $sql = preg_replace($regex, $binding, $sql, 1);
